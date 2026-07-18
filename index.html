@@ -156,6 +156,33 @@
     --red: #a94a34;
     --font-title: 'Tajawal', sans-serif;
   }
+  /* ---------- Design theme: Ocampos (أحمر وبرتقالي على خلفية زنكية داكنة/بيضاء) ---------- */
+  [data-design="ocampos"][data-theme="dark"]{
+    --bg: #0a0a0c;
+    --panel: #17171a;
+    --panel-2: #202024;
+    --line: #333338;
+    --text: #f4f4f5;
+    --muted: #a1a1aa;
+    --gold: #f97316;
+    --gold-dim: #9a2f0f;
+    --green: #34d399;
+    --red: #f43f5e;
+    --font-title: 'Tajawal', sans-serif;
+  }
+  [data-design="ocampos"][data-theme="light"]{
+    --bg: #f5f5f6;
+    --panel: #ffffff;
+    --panel-2: #f7f7f8;
+    --line: #e4e4e7;
+    --text: #27272a;
+    --muted: #71717a;
+    --gold: #ef4444;
+    --gold-dim: #fdba74;
+    --green: #059669;
+    --red: #dc2626;
+    --font-title: 'Tajawal', sans-serif;
+  }
   *{ box-sizing: border-box; }
   body{
     margin:0;
@@ -772,6 +799,7 @@
 <div class="wrap" id="loginScreen" style="display:none;">
   <div class="login-top">
     <select class="design-select" id="designSelectLogin" title="نمط التصميم">
+      <option value="ocampos">🧡 Ocampos</option>
       <option value="normal">🎨 عادي</option>
       <option value="islamic">🕌 إسلامي</option>
       <option value="purple">💜 بنفسجي</option>
@@ -849,11 +877,11 @@ function toggleTheme(){
 }
 
 /* ---------- Design theme (عادي / إسلامي / بنفسجي / هوب / أخضر) ---------- */
-let designMode = 'normal';
+let designMode = 'ocampos';
 function getStoredDesign(){
   const saved = localStorage.getItem(DESIGN_KEY);
-  if(saved === 'normal' || saved === 'islamic' || saved === 'purple' || saved === 'hope' || saved === 'green') return saved;
-  return 'normal';
+  if(saved === 'ocampos' || saved === 'normal' || saved === 'islamic' || saved === 'purple' || saved === 'hope' || saved === 'green') return saved;
+  return 'ocampos';
 }
 function applyDesign(design){
   designMode = design;
@@ -2460,6 +2488,7 @@ function render(){
       <span class="u-name">${currentUser && currentUser.picture ? `<img src="${currentUser.picture}" alt="">` : ''}${escapeHtml(currentUser ? (currentUser.name || currentUser.email) : '')}</span>
       <span class="u-right">
         <select class="design-select" id="designSelect" title="نمط التصميم">
+          <option value="ocampos" ${currentDesign==='ocampos'?'selected':''}>🧡 Ocampos</option>
           <option value="normal" ${currentDesign==='normal'?'selected':''}>🎨 عادي</option>
           <option value="islamic" ${currentDesign==='islamic'?'selected':''}>🕌 إسلامي</option>
           <option value="purple" ${currentDesign==='purple'?'selected':''}>💜 بنفسجي</option>
