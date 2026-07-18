@@ -10,40 +10,40 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0f0e17">
+<meta name="theme-color" content="#030108">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Tajawal:wght@400;500;700;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;800&family=Tajawal:wght@400;500;700;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <style>
   :root{
-    --bg: #0f0e17;
-    --panel: #1a1826;
-    --panel-2: #221f33;
-    --line: #322e47;
-    --text: #efeaf7;
-    --muted: #948db3;
-    --gold: #f2c94c;
-    --gold-dim: #7a6a2a;
-    --green: #6ee7a8;
-    --red: #ff6b78;
+    --bg: #030108;
+    --panel: #0a0714;
+    --panel-2: #120d1f;
+    --line: #221a33;
+    --text: #f2f1f8;
+    --muted: #8b86a0;
+    --gold: #2DD4BF;
+    --gold-dim: #0f5850;
+    --green: #5EEAD4;
+    --red: #fb7185;
     --green-soft: color-mix(in srgb, var(--green) 55%, #888 45%);
     --red-soft: color-mix(in srgb, var(--red) 55%, #888 45%);
-    --font-display: 'Tajawal', sans-serif;
+    --font-display: 'Inter', 'Tajawal', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
-    --font-title: 'Tajawal', sans-serif;
+    --font-title: 'Inter', 'Tajawal', sans-serif;
   }
   [data-theme="light"]{
-    --bg: #f4f2fa;
+    --bg: #f5fafa;
     --panel: #ffffff;
-    --panel-2: #eeeaf8;
-    --line: #ddd5ec;
-    --text: #221e33;
-    --muted: #726a8c;
-    --gold: #b9860a;
-    --gold-dim: #ecd9a0;
-    --green: #1f9d5c;
+    --panel-2: #eaf6f4;
+    --line: #d7e9e6;
+    --text: #0a1f1c;
+    --muted: #5c6f6c;
+    --gold: #0f9c8c;
+    --gold-dim: #bfe9e2;
+    --green: #0f9c8c;
     --red: #d1414f;
   }
 
@@ -458,7 +458,7 @@
   .cal-day.goal{ background: rgba(110,231,168,.16); border-color: rgba(110,231,168,.4); }
   .cal-day.neg{ background: rgba(255,107,120,.16); border-color: rgba(255,107,120,.4); }
   .cal-day.today{ box-shadow: 0 0 0 2px var(--gold) inset; }
-  .cal-day.viewing{ box-shadow: 0 0 0 2px #5aa9e0 inset; }
+  .cal-day.viewing{ box-shadow: 0 0 0 2px var(--gold) inset; }
   .cal-day.today.viewing{ box-shadow: 0 0 0 2px var(--gold) inset, 0 0 0 4px #5aa9e0 inset; }
   .cal-daynum{ font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
   .cal-xp{ font-family: var(--font-mono); font-size: 10px; font-weight:700; }
@@ -648,7 +648,7 @@
     inset: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(ellipse at bottom, #321b35 0%, #090a0f 100%);
+    background: radial-gradient(ellipse at bottom, #0c2a28 0%, #030108 100%);
     overflow: hidden;
     z-index: -1;
     pointer-events: none;
@@ -765,175 +765,6 @@
   }
   [data-starfield="off"] #starfield-container{
     display: none;
-  }
-
-  /* =====================================================================
-     OCAMPOS-STYLE VISUAL LAYER
-     زوايا أكبر + ظلال ناعمة + هيدر عائم زجاجي + أزرار متدرجة + حركات hover
-     مبنية بالكامل على متغيرات كل ثيم، فتنطبق تلقائياً على الخمسة بألوانها
-     الخاصة دون تغيير أي منطق برمجي. الاختيار المضاعف للـ class (مثل
-     .card.card) يرفع خصوصية القاعدة لتتغلب على القواعد الأقدم بأمان.
-     ===================================================================== */
-
-  /* Ambient glow blobs behind the content (تظهر فقط عند إيقاف خلفية النجوم) */
-  body::before, body::after{
-    content:"";
-    position: fixed;
-    z-index: -2;
-    border-radius: 50%;
-    filter: blur(90px);
-    pointer-events: none;
-  }
-  body::before{
-    top: -110px; inset-inline-start: -90px;
-    width: 300px; height: 300px;
-    background: var(--gold);
-    opacity: .17;
-    animation: ocamposBlobA 17s ease-in-out infinite;
-  }
-  body::after{
-    top: 160px; inset-inline-end: -130px;
-    width: 280px; height: 280px;
-    background: var(--red);
-    opacity: .14;
-    animation: ocamposBlobB 21s ease-in-out infinite;
-  }
-  @keyframes ocamposBlobA{
-    0%,100%{ transform: translate(0,0) scale(1); }
-    50%{ transform: translate(26px,36px) scale(1.18); }
-  }
-  @keyframes ocamposBlobB{
-    0%,100%{ transform: translate(0,0) scale(1); }
-    50%{ transform: translate(-22px,26px) scale(1.12); }
-  }
-  [data-starfield="on"] body::before,
-  [data-starfield="on"] body::after{ display:none; }
-
-  /* بطاقات أكبر انحناءً وأعمق ظلاً، بحركة رفع خفيفة */
-  .card.card{
-    border-radius: 22px;
-    box-shadow: 0 14px 34px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.03);
-    transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease;
-  }
-  [data-theme="light"] .card.card{
-    box-shadow: 0 14px 30px rgba(0,0,0,.07), inset 0 1px 0 rgba(255,255,255,.7);
-  }
-  .add-panel.add-panel, .progress-add-panel.progress-add-panel, .note-editor.note-editor{
-    border-radius: 20px;
-  }
-  .log-item.log-item, .log-item-wrap.log-item-wrap, .stat-item.stat-item,
-  .achv-count-item.achv-count-item, .cal-day.cal-day, .progress-section.progress-section,
-  .daily-message.daily-message, .section-order-bar.section-order-bar,
-  .section-reorder-bar.section-reorder-bar{
-    border-radius: 14px;
-  }
-
-  /* هيدر عائم زجاجي (Glass floating pill nav) */
-  .user-bar.user-bar{
-    position: sticky; top: 10px; z-index: 30;
-    background: color-mix(in srgb, var(--panel) 80%, transparent);
-    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    padding: 9px 16px;
-    box-shadow: 0 10px 26px rgba(0,0,0,.18);
-    margin-bottom: 22px;
-  }
-  [data-theme="light"] .user-bar.user-bar{
-    box-shadow: 0 10px 24px rgba(0,0,0,.08);
-  }
-
-  /* أزرار دائرية بحركة رفع عند المرور */
-  .icon-toggle-btn.icon-toggle-btn, .daynav-btn.daynav-btn, .arrow-btn.arrow-btn,
-  .entry-icon-btn.entry-icon-btn{
-    transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
-  }
-  .icon-toggle-btn.icon-toggle-btn:hover, .daynav-btn.daynav-btn:hover{
-    transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(0,0,0,.18);
-  }
-
-  /* أزرار الحفظ الأساسية: كبسولة متدرجة مضيئة (نفس فلسفة أزرار Ocampos) */
-  .save-btn.save-btn{
-    background: linear-gradient(135deg, var(--gold-dim), var(--gold));
-    color:#fff; border:none; border-radius: 999px;
-    padding: 10px 20px;
-    box-shadow: 0 10px 22px color-mix(in srgb, var(--gold) 45%, transparent);
-    transition: transform .2s ease, box-shadow .2s ease;
-  }
-  .save-btn.save-btn:hover{
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 14px 28px color-mix(in srgb, var(--gold) 55%, transparent);
-  }
-  .save-btn.save-btn:active{ transform: scale(.97); }
-  .cancel-btn.cancel-btn{ border-radius: 999px; }
-  .quote-edit-btn.quote-edit-btn, .cal-toggle.cal-toggle, .progress-add-btn.progress-add-btn{
-    border-radius: 999px;
-  }
-  .signout-btn.signout-btn{ transition: color .2s ease; }
-
-  /* شبكة الإجراءات السريعة: رفع + ظل عند المرور، زوايا أوسع */
-  .act-btn.act-btn{
-    border-radius: 20px;
-    transition: transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s ease, background .3s ease;
-  }
-  .act-btn.act-btn:hover{
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0,0,0,.2);
-  }
-  [data-theme="light"] .act-btn.act-btn:hover{ box-shadow: 0 12px 22px rgba(0,0,0,.09); }
-  .act-btn.act-btn:active{ transform: translateY(-1px) scale(.98); }
-
-  /* شريط التقدم: كبسولة متوهجة */
-  .bar-track.bar-track{ border-radius: 999px; height: 15px; }
-  .bar-fill.bar-fill{
-    border-radius: 999px;
-    box-shadow: 0 0 12px color-mix(in srgb, var(--gold) 55%, transparent);
-  }
-  .bar-fill.done.done{ box-shadow: 0 0 12px color-mix(in srgb, var(--green) 55%, transparent); }
-  .phase-seg.phase-seg{ border-radius: 999px; }
-
-  /* شارة المستوى وسلسلة الأيام: كبسولات صغيرة أنيقة */
-  .level-badge.level-badge{
-    display:inline-flex; width:fit-content;
-    background: color-mix(in srgb, var(--gold) 14%, var(--panel));
-    border: 1px solid color-mix(in srgb, var(--gold) 35%, var(--line));
-    border-radius: 999px; padding: 6px 14px; margin-bottom: 8px;
-  }
-  .streak-line.streak-line{
-    display:inline-flex; width:fit-content;
-    background: var(--panel-2); border: 1px solid var(--line);
-    border-radius: 999px; padding: 5px 12px; margin-bottom: 18px;
-  }
-
-  /* العنوان الرئيسي: أكبر مع أيقونة مميزة بخلفية متدرجة */
-  .title.title{ font-size: 27px; gap: 10px; }
-  .title .mark{
-    display:inline-flex; align-items:center; justify-content:center;
-    width: 34px; height: 34px; border-radius: 12px; flex-shrink:0;
-    background: linear-gradient(135deg, var(--gold-dim), var(--gold));
-    box-shadow: 0 8px 18px color-mix(in srgb, var(--gold) 45%, transparent);
-    font-size: 16px;
-  }
-
-  /* الحقول والقوائم: زوايا أنعم */
-  .design-select.design-select,
-  .add-panel input, .add-panel textarea, .add-panel select,
-  .note-editor input, .note-editor textarea, .note-editor select,
-  .progress-add-panel input, .progress-add-panel textarea, .progress-add-panel select,
-  .quote-editor textarea, .emoji-swatch-btn.emoji-swatch-btn{
-    border-radius: 12px;
-  }
-
-  /* زر تسجيل الدخول بجوجل: ظل ناعم وحركة رفع */
-  #googleBtn button{
-    box-shadow: 0 10px 24px rgba(26,115,232,.35);
-    transition: transform .2s ease, box-shadow .2s ease;
-  }
-  #googleBtn button:hover{ transform: translateY(-2px); box-shadow: 0 14px 30px rgba(26,115,232,.4); }
-
-  @media (max-width: 380px){
-    body::before, body::after{ width:200px; height:200px; }
   }
 </style>
 </head>
@@ -1373,7 +1204,7 @@ function renderProgressPie(){
   const circumference = 2 * Math.PI * r;
   const doneLen = circumference * (pct/100);
   const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-  const trackColor = isLight ? '#ddd5ec' : '#322e47';
+  const trackColor = isLight ? '#d7e9e6' : '#221a33';
   return `
     <div class="progress-pie-wrap">
       <svg class="progress-pie-svg" width="110" height="110" viewBox="0 0 110 110">
