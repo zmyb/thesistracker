@@ -1903,15 +1903,16 @@ function computeStats(){
 }
 
 function computeAchievementCounts(){
+  const plusActions = getSectionActions('plus');
+  const plusIds = new Set(plusActions.map(a => a.id));
   const counts = {};
   Object.values(state.days).forEach(entries => {
     (entries || []).forEach(e => {
-      if(e.xp >= 0 && e.aid !== 'streak_bonus'){
+      if(plusIds.has(e.aid)){
         counts[e.label] = (counts[e.label] || 0) + 1;
       }
     });
   });
-  const plusActions = getSectionActions('plus');
   const ordered = [];
   plusActions.forEach(a => {
     if(counts[a.label] !== undefined) ordered.push({ label: a.label, count: counts[a.label] });
