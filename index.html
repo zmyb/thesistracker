@@ -1206,6 +1206,147 @@ function renderProgressPie(){
   `;
 }
 
+function getProgressItemFullLabel(id){
+  for(const sec of THESIS_STRUCTURE){
+    if(sec.type === 'flat'){
+      const item = sec.items.find(i => i.id === id);
+      if(item) return { section: sec.title, label: item.label };
+    } else {
+      for(const g of sec.groups){
+        if(id.indexOf(g.id + '_m') === 0){
+          const num = id.split('_m')[1];
+          return { section: sec.title, label: `${g.label} - مسألة ${num}` };
+        }
+      }
+    }
+  }
+  const custom = (state.customProgress || []).find(c => c.id === id);
+  if(custom){
+    const sec = THESIS_STRUCTURE.find(s => s.id === custom.sectionId);
+    return { section: sec ? sec.title : '', label: custom.label };
+  }
+  return { section: '', label: id };
+}
+
+function computeAppointments(){
+  const ts = state.progressTimestamps || {};
+  const items = Object.keys(state.progress || {})
+    .filter(id => state.progress[id])
+    .map(id => {
+      const info = getProgressItemFullLabel(id);
+      return { id, section: info.section, label: info.label, ts: ts[id] || 0 };
+    });
+  items.sort((a, b) => b.ts - a.ts);
+  return items;
+}
+
+/* ---------- Important deadline ---------- */
+async function saveImportantDeadline(label, date){
+  state.importantDeadline = { label, date };
+  editingDeadline = false;
+  await saveState();
+  render();
+}
+
+async function clearImportantDeadline(){
+  state.importantDeadline = null;
+  editingDeadline = false;
+  await saveState();
+  render();
+}
+
+function computeDeadlineInfo(){
+  if(!state.importantDeadline || !state.importantDeadline.date) return null;
+  const target = dateFromKey(state.importantDeadline.date);
+  const today = new Date(); today.setHours(0,0,0,0);
+  const diff = daysBetween(today, target);
+  return { label: state.importantDeadline.label, date: state.importantDeadline.date, diff };
+}
+
+/* ---------- Phase goals ---------- */
+function getPhaseGoals(phaseIdx){
+  return (state.phaseGoals && state.phaseGoals[phaseIdx]) || [];
+}
+
+async function addPhaseGoal(phaseIdx, label){
+  if(!state.phaseGoals) state.phaseGoals = {};
+  if(!state.phaseGoals[phaseIdx]) state.phaseGoals[phaseIdx] = [];
+  state.phaseGoals[phaseIdx].push({ id: uniqueId(), label, done: false });
+  addingPhaseGoal = false;
+  await saveState();
+  render();
+}
+
+async function removePhaseGoal(phaseIdx, id){
+  if(!state.phaseGoals || !state.phaseGoals[phaseIdx]) return;
+  state.phaseGoals[phaseIdx] = state.phaseGoals[phaseIdx].filter(g => g.id !== id);
+  await saveState();
+  render();
+}
+
+async function togglePhaseGoal(phaseIdx, id){
+  const goals = getPhaseGoals(phaseIdx);
+  const g = goals.find(x => x.id === id);
+  if(!g) return;
+  g.done = !g.done;
+  if(goals.length > 0 && goals.every(x => x.done)){
+    if(!state.phaseGoalsBonusAwarded) state.phaseGoalsBonusAwarded = {};
+    if(!state.phaseGoalsBonusAwarded[phaseIdx]){
+      const entries = getTodayEntries();
+      entries.push({ id: uniqueId(), aid:'phase_goals_bonus', label:`🎯 إنجاز جميع أهداف ${PHASES[phaseIdx].name}`, xp:500, ts: Date.now(), note:'' });
+      state.phaseGoalsBonusAwarded[phaseIdx] = true;
+    }
+  }
+  await saveState();
+  render();
+}
+
+/* ---------- Weekly goals ---------- */
+function getWeekStartKey(d = new Date()){
+  const day = d.getDay();
+  const diffToMonday = (day === 0 ? -6 : 1 - day);
+  const monday = new Date(d); monday.setHours(0,0,0,0); monday.setDate(monday.getDate() + diffToMonday);
+  return todayKey(monday);
+}
+
+function currentWeekGoals(){
+  const key = getWeekStartKey();
+  return (state.weeklyGoals && state.weeklyGoals[key]) || [];
+}
+
+async function addWeeklyGoal(label, xp){
+  const key = getWeekStartKey();
+  if(!state.weeklyGoals) state.weeklyGoals = {};
+  if(!state.weeklyGoals[key]) state.weeklyGoals[key] = [];
+  state.weeklyGoals[key].push({ id: uniqueId(), label, xp, done: false, awarded: false });
+  addingWeeklyGoal = false;
+  await saveState();
+  render();
+}
+
+async function removeWeeklyGoal(id){
+  const key = getWeekStartKey();
+  if(!state.weeklyGoals || !state.weeklyGoals[key]) return;
+  state.weeklyGoals[key] = state.weeklyGoals[key].filter(g => g.id !== id);
+  await saveState();
+  render();
+}
+
+async function toggleWeeklyGoal(id){
+  const key = getWeekStartKey();
+  const goals = (state.weeklyGoals && state.weeklyGoals[key]) || [];
+  const g = goals.find(x => x.id === id);
+  if(!g) return;
+  g.done = !g.done;
+  if(g.done && !g.awarded){
+    const entries = getTodayEntries();
+    entries.push({ id: uniqueId(), aid:'weekly_goal_bonus', label:`🎯 ${g.label}`, xp: g.xp, ts: Date.now(), note:'' });
+    g.awarded = true;
+  }
+  await saveState();
+  render();
+}
+
 function todayKey(d = new Date()){
   const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
   return `${y}-${m}-${day}`;
@@ -1222,6 +1363,11 @@ const MONTH_NAMES = ['يناير','فبراير','مارس','أبريل','ماي
 const WEEKDAY_SHORT = ['ن','ث','ر','خ','ج','س','ح'];
 
 let calendarOpen = false;
+let appointmentsOpen = false;
+let editingDeadline = false;
+let addingPhaseGoal = false;
+let selectedGoalsPhaseIdx = null;
+let addingWeeklyGoal = false;
 
 // Currently viewed day in the log/top card (defaults to today; navigable)
 let viewingDateKey = todayKey();
@@ -1292,7 +1438,7 @@ function migrateEntries(){
 }
 
 async function loadState(){
-  const emptyState = { days: {}, customActions: [], overrides: {}, sortMode: { plus:'default', minus:'default' }, manualOrder: { plus:[], minus:[] }, progress: {}, customProgress: [], deletedProgress: [], progressTimestamps: {}, favoriteQuote: '', starfield: 'on' };
+  const emptyState = { days: {}, customActions: [], overrides: {}, sortMode: { plus:'default', minus:'default' }, manualOrder: { plus:[], minus:[] }, progress: {}, customProgress: [], deletedProgress: [], progressTimestamps: {}, favoriteQuote: '', starfield: 'on', phaseGoals: {}, phaseGoalsBonusAwarded: {}, weeklyGoals: {}, importantDeadline: null };
   try{
     if(currentUser && currentUser.uid){
       const doc = await db.collection('xp-tracker-data').doc(currentUser.uid).get();
@@ -1308,6 +1454,10 @@ async function loadState(){
         if(!state.progressTimestamps) state.progressTimestamps = {};
         if(state.favoriteQuote === undefined) state.favoriteQuote = '';
         if(!state.starfield) state.starfield = 'on';
+        if(!state.phaseGoals) state.phaseGoals = {};
+        if(!state.phaseGoalsBonusAwarded) state.phaseGoalsBonusAwarded = {};
+        if(!state.weeklyGoals) state.weeklyGoals = {};
+        if(state.importantDeadline === undefined) state.importantDeadline = null;
         applyStarfield(state.starfield);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         if(migrateEntries()) await saveState();
@@ -1331,6 +1481,10 @@ async function loadState(){
     if(!state.progressTimestamps) state.progressTimestamps = {};
     if(state.favoriteQuote === undefined) state.favoriteQuote = '';
     if(!state.starfield) state.starfield = 'on';
+    if(!state.phaseGoals) state.phaseGoals = {};
+    if(!state.phaseGoalsBonusAwarded) state.phaseGoalsBonusAwarded = {};
+    if(!state.weeklyGoals) state.weeklyGoals = {};
+    if(state.importantDeadline === undefined) state.importantDeadline = null;
     applyStarfield(state.starfield);
     if(currentUser && currentUser.uid){
       try{ await db.collection('xp-tracker-data').doc(currentUser.uid).set(state); }catch(e2){}
@@ -1616,6 +1770,51 @@ async function checkStreakBonus(){
   }
 }
 
+function computeBreakStats(){
+  const today = new Date(); today.setHours(0,0,0,0);
+  const rangeStart = dateFromKey(START_DATE);
+  const rangeEnd = today < dateFromKey(END_DATE) ? today : dateFromKey(END_DATE);
+  if(rangeEnd < rangeStart) return { lastBreak: 0, longestThisMonth: 0 };
+
+  const daysArr = [];
+  let cur = new Date(rangeStart);
+  while(cur <= rangeEnd){
+    const key = todayKey(cur);
+    const entries = state.days[key] || [];
+    daysArr.push({ key, active: entries.length > 0 });
+    cur.setDate(cur.getDate() + 1);
+  }
+
+  const gaps = [];
+  let gapLen = 0, gapStartIdx = null;
+  daysArr.forEach((d, idx) => {
+    if(!d.active){
+      if(gapLen === 0) gapStartIdx = idx;
+      gapLen++;
+    } else {
+      if(gapLen > 0) gaps.push({ start: gapStartIdx, end: idx - 1, len: gapLen });
+      gapLen = 0;
+    }
+  });
+  if(gapLen > 0) gaps.push({ start: gapStartIdx, end: daysArr.length - 1, len: gapLen });
+
+  const lastBreak = gaps.length ? gaps[gaps.length - 1].len : 0;
+
+  const now = new Date();
+  let longestThisMonth = 0;
+  gaps.forEach(g => {
+    for(let i = g.start; i <= g.end; i++){
+      const dd = dateFromKey(daysArr[i].key);
+      if(dd.getFullYear() === now.getFullYear() && dd.getMonth() === now.getMonth()){
+        longestThisMonth = Math.max(longestThisMonth, g.len);
+        break;
+      }
+    }
+  });
+
+  return { lastBreak, longestThisMonth };
+}
+
 function computeStats(){
   const activeDays = Object.keys(state.days)
     .filter(k => (state.days[k] || []).length > 0)
@@ -1639,7 +1838,7 @@ function computeStats(){
     });
   });
 
-  return { avg, best, worst, achievementsCount, violationsCount, streak: computeStreak() };
+  return { avg, best, worst, achievementsCount, violationsCount, streak: computeStreak(), breaks: computeBreakStats() };
 }
 
 function computeAchievementCounts(){
@@ -1812,6 +2011,15 @@ function render(){
 
   const stats = computeStats();
   const achievementCounts = computeAchievementCounts();
+  const appointments = computeAppointments();
+  const deadlineInfo = computeDeadlineInfo();
+  if(selectedGoalsPhaseIdx === null) selectedGoalsPhaseIdx = notStarted ? 0 : (finished ? PHASES.length - 1 : currentPhaseIdx);
+  const phaseGoalsList = getPhaseGoals(selectedGoalsPhaseIdx);
+  const weekStartKey = getWeekStartKey();
+  const weekStartDate = dateFromKey(weekStartKey);
+  const weekEndDate = new Date(weekStartDate); weekEndDate.setDate(weekEndDate.getDate() + 6);
+  const weekRangeLabel = `${weekStartDate.getDate()} ${MONTH_NAMES[weekStartDate.getMonth()]} — ${weekEndDate.getDate()} ${MONTH_NAMES[weekEndDate.getMonth()]}`;
+  const weeklyGoalsList = currentWeekGoals();
 
   app.innerHTML = `
     <div class="user-bar">
@@ -1979,6 +2187,117 @@ function render(){
 
       <div class="content-block">
         <div class="card">
+          <button class="cal-toggle" id="apptToggle">${appointmentsOpen ? 'إخفاء المواعيد' : 'عرض المواعيد'}</button>
+          ${appointmentsOpen ? `
+          <div style="margin-top:10px;">
+            <div class="log-header"><h3>🗓️ المواعيد</h3></div>
+            <div class="log-list">
+              ${appointments.length ? appointments.map(a => `
+                <div class="log-item-wrap">
+                  <div class="log-item">
+                    <div class="l-left"><span>${a.section ? escapeHtml(a.section) + ' — ' : ''}${escapeHtml(a.label)}</span></div>
+                    <span class="l-time">${fmtProgressTimestamp(a.id)}</span>
+                  </div>
+                </div>
+              `).join('') : `<div class="log-empty">لا توجد عناصر مُنجزة بعد من نسبة التقدم</div>`}
+            </div>
+          </div>` : ''}
+        </div>
+      </div>
+
+      <div class="content-block">
+        <div class="card">
+          <div class="log-header">
+            <h3>⏰ أقرب موعد مهم</h3>
+            <button class="entry-icon-btn" id="editDeadlineBtn" title="تعديل">✎</button>
+          </div>
+          ${editingDeadline ? `
+          <div class="add-panel">
+            <input type="text" id="deadlineLabel" placeholder="اسم المهمة (مثال: إنهاء المسألة 4 - المبحث الثاني - الفصل الثالث)" maxlength="80" value="${state.importantDeadline ? escapeHtml(state.importantDeadline.label) : ''}">
+            <div class="row">
+              <input type="date" id="deadlineDate" value="${state.importantDeadline ? state.importantDeadline.date : ''}" min="${START_DATE}" max="${END_DATE}">
+            </div>
+            <div class="actions-row">
+              ${state.importantDeadline ? `<button class="reset-link" id="clearDeadlineBtn">حذف الموعد</button>` : ''}
+              <button class="cancel-btn" id="cancelDeadlineBtn">إلغاء</button>
+              <button class="save-btn" id="saveDeadlineBtn">حفظ</button>
+            </div>
+          </div>
+          ` : (deadlineInfo ? `
+          <div class="stat-item">
+            <span class="stat-label">${escapeHtml(deadlineInfo.label || 'الموعد')} — ${fmtStatDate(deadlineInfo.date)}</span>
+            <span class="stat-value ${deadlineInfo.diff<0?'neg':'pos'}">${deadlineInfo.diff > 0 ? 'باقي ' + deadlineInfo.diff + (deadlineInfo.diff===1?' يوم':' أيام') : (deadlineInfo.diff === 0 ? 'اليوم' : 'تأخر ' + Math.abs(deadlineInfo.diff) + (Math.abs(deadlineInfo.diff)===1?' يوم':' أيام'))}</span>
+          </div>
+          ` : `<div class="log-empty">لم يتم تحديد موعد مهم بعد</div>`)}
+        </div>
+      </div>
+
+      <div class="content-block">
+        <div class="card">
+          <div class="log-header"><h3>🎯 أهداف المرحلة</h3></div>
+          <div class="sort-controls" style="margin-bottom:10px;">
+            ${PHASES.map((p,i) => `<button class="sort-btn ${selectedGoalsPhaseIdx===i?'active':''}" data-goals-phase="${i}">${p.name}</button>`).join('')}
+          </div>
+          <div class="progress-custom-list">
+            ${phaseGoalsList.length ? phaseGoalsList.map(g => `
+              <div class="progress-custom-item">
+                <label class="progress-item">
+                  <input type="checkbox" data-phase-goal-id="${g.id}" ${g.done?'checked':''}>
+                  <span>${escapeHtml(g.label)}</span>
+                </label>
+                <button class="progress-custom-del" data-del-phase-goal="${g.id}" title="حذف الهدف">✕</button>
+              </div>
+            `).join('') : `<div class="log-empty">لا توجد أهداف لهذه المرحلة بعد</div>`}
+          </div>
+          ${phaseGoalsList.length > 0 ? `<div class="add-hint" style="margin-top:8px;">عند إنجاز جميع أهداف المرحلة تُضاف 500 XP إلى مجموع نقاط المرحلة${state.phaseGoalsBonusAwarded && state.phaseGoalsBonusAwarded[selectedGoalsPhaseIdx] ? ' (تم صرفها ✅)' : ''}</div>` : ''}
+          <button class="act-btn add-new wide" id="openAddPhaseGoal" style="width:100%; margin-top:10px;">
+            <span class="emoji">➕</span><span>${addingPhaseGoal ? 'إغلاق' : 'أضف هدفًا للمرحلة'}</span>
+          </button>
+          ${addingPhaseGoal ? `
+          <div class="add-panel">
+            <input type="text" id="newPhaseGoalLabel" placeholder="اسم الهدف" maxlength="60">
+            <div class="actions-row">
+              <button class="cancel-btn" id="cancelPhaseGoal">إلغاء</button>
+              <button class="save-btn" id="savePhaseGoal">حفظ الهدف</button>
+            </div>
+          </div>` : ''}
+        </div>
+      </div>
+
+      <div class="content-block">
+        <div class="card">
+          <div class="log-header"><h3>🎯 أهداف الأسبوع</h3><span class="stat-label">${weekRangeLabel}</span></div>
+          <div class="progress-custom-list">
+            ${weeklyGoalsList.length ? weeklyGoalsList.map(g => `
+              <div class="progress-custom-item">
+                <label class="progress-item">
+                  <input type="checkbox" data-weekly-goal-id="${g.id}" ${g.done?'checked':''}>
+                  <span>${escapeHtml(g.label)} <span style="font-family: var(--font-mono); font-size:12px; color: var(--gold);">(${g.xp>0?'+':''}${g.xp} XP)</span></span>
+                </label>
+                <button class="progress-custom-del" data-del-weekly-goal="${g.id}" title="حذف الهدف">✕</button>
+              </div>
+            `).join('') : `<div class="log-empty">لا توجد أهداف لهذا الأسبوع بعد</div>`}
+          </div>
+          <button class="act-btn add-new wide" id="openAddWeeklyGoal" style="width:100%; margin-top:10px;">
+            <span class="emoji">➕</span><span>${addingWeeklyGoal ? 'إغلاق' : 'أضف هدفًا للأسبوع'}</span>
+          </button>
+          ${addingWeeklyGoal ? `
+          <div class="add-panel">
+            <input type="text" id="newWeeklyGoalLabel" placeholder="اسم الهدف" maxlength="60">
+            <div class="row">
+              <input type="number" id="newWeeklyGoalXp" placeholder="XP" value="20">
+              <div class="add-hint">حدّد نقاط الخبرة التي تُضاف عند إنجاز هذا الهدف</div>
+            </div>
+            <div class="actions-row">
+              <button class="cancel-btn" id="cancelWeeklyGoal">إلغاء</button>
+              <button class="save-btn" id="saveWeeklyGoal">حفظ الهدف</button>
+            </div>
+          </div>` : ''}
+        </div>
+      </div>
+
+      <div class="content-block">
+        <div class="card">
           <div class="log-header"><h3>📊 الإحصائيات</h3></div>
           <div class="stats-grid">
             <div class="stat-item">
@@ -2006,6 +2325,14 @@ function render(){
             <div class="stat-item">
               <span class="stat-label">عدد المخالفات</span>
               <span class="stat-value neg">${stats.violationsCount}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">آخر انقطاع</span>
+              <span class="stat-value ${stats.breaks.lastBreak>0?'neg':'pos'}">${stats.breaks.lastBreak > 0 ? stats.breaks.lastBreak + (stats.breaks.lastBreak===1?' يوم':' أيام') : 'لا يوجد'}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">أطول انقطاع هذا الشهر</span>
+              <span class="stat-value ${stats.breaks.longestThisMonth>0?'neg':'pos'}">${stats.breaks.longestThisMonth > 0 ? stats.breaks.longestThisMonth + (stats.breaks.longestThisMonth===1?' يوم':' أيام') : 'لا يوجد'}</span>
             </div>
           </div>
           ${achievementCounts.length ? `
@@ -2256,6 +2583,69 @@ function render(){
 
   const calToggle = document.getElementById('calToggle');
   if(calToggle) calToggle.addEventListener('click', () => { calendarOpen = !calendarOpen; render(); });
+
+  const apptToggle = document.getElementById('apptToggle');
+  if(apptToggle) apptToggle.addEventListener('click', () => { appointmentsOpen = !appointmentsOpen; render(); });
+
+  const editDeadlineBtn = document.getElementById('editDeadlineBtn');
+  if(editDeadlineBtn) editDeadlineBtn.addEventListener('click', () => { editingDeadline = true; render(); });
+  const cancelDeadlineBtn = document.getElementById('cancelDeadlineBtn');
+  if(cancelDeadlineBtn) cancelDeadlineBtn.addEventListener('click', () => { editingDeadline = false; render(); });
+  const clearDeadlineBtn = document.getElementById('clearDeadlineBtn');
+  if(clearDeadlineBtn) clearDeadlineBtn.addEventListener('click', () => clearImportantDeadline());
+  const saveDeadlineBtn = document.getElementById('saveDeadlineBtn');
+  if(saveDeadlineBtn) saveDeadlineBtn.addEventListener('click', () => {
+    const labelEl = document.getElementById('deadlineLabel');
+    const dateEl = document.getElementById('deadlineDate');
+    const label = labelEl.value.trim();
+    const date = dateEl.value;
+    if(!label || !date) return;
+    saveImportantDeadline(label, date);
+  });
+
+  app.querySelectorAll('[data-goals-phase]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedGoalsPhaseIdx = parseInt(btn.getAttribute('data-goals-phase'), 10);
+      render();
+    });
+  });
+  app.querySelectorAll('[data-phase-goal-id]').forEach(cb => {
+    cb.addEventListener('change', () => togglePhaseGoal(selectedGoalsPhaseIdx, cb.getAttribute('data-phase-goal-id')));
+  });
+  app.querySelectorAll('[data-del-phase-goal]').forEach(btn => {
+    btn.addEventListener('click', () => removePhaseGoal(selectedGoalsPhaseIdx, btn.getAttribute('data-del-phase-goal')));
+  });
+  const openAddPhaseGoalBtn = document.getElementById('openAddPhaseGoal');
+  if(openAddPhaseGoalBtn) openAddPhaseGoalBtn.addEventListener('click', () => { addingPhaseGoal = !addingPhaseGoal; render(); });
+  const cancelPhaseGoalBtn = document.getElementById('cancelPhaseGoal');
+  if(cancelPhaseGoalBtn) cancelPhaseGoalBtn.addEventListener('click', () => { addingPhaseGoal = false; render(); });
+  const savePhaseGoalBtn = document.getElementById('savePhaseGoal');
+  if(savePhaseGoalBtn) savePhaseGoalBtn.addEventListener('click', () => {
+    const labelEl = document.getElementById('newPhaseGoalLabel');
+    const label = labelEl.value.trim();
+    if(!label) return;
+    addPhaseGoal(selectedGoalsPhaseIdx, label);
+  });
+
+  app.querySelectorAll('[data-weekly-goal-id]').forEach(cb => {
+    cb.addEventListener('change', () => toggleWeeklyGoal(cb.getAttribute('data-weekly-goal-id')));
+  });
+  app.querySelectorAll('[data-del-weekly-goal]').forEach(btn => {
+    btn.addEventListener('click', () => removeWeeklyGoal(btn.getAttribute('data-del-weekly-goal')));
+  });
+  const openAddWeeklyGoalBtn = document.getElementById('openAddWeeklyGoal');
+  if(openAddWeeklyGoalBtn) openAddWeeklyGoalBtn.addEventListener('click', () => { addingWeeklyGoal = !addingWeeklyGoal; render(); });
+  const cancelWeeklyGoalBtn = document.getElementById('cancelWeeklyGoal');
+  if(cancelWeeklyGoalBtn) cancelWeeklyGoalBtn.addEventListener('click', () => { addingWeeklyGoal = false; render(); });
+  const saveWeeklyGoalBtn = document.getElementById('saveWeeklyGoal');
+  if(saveWeeklyGoalBtn) saveWeeklyGoalBtn.addEventListener('click', () => {
+    const labelEl = document.getElementById('newWeeklyGoalLabel');
+    const xpEl = document.getElementById('newWeeklyGoalXp');
+    const label = labelEl.value.trim();
+    const xp = parseInt(xpEl.value, 10);
+    if(!label || isNaN(xp) || xp === 0) return;
+    addWeeklyGoal(label, xp);
+  });
 
   const openProgressAddBtn = document.getElementById('openProgressAdd');
   if(openProgressAddBtn) openProgressAddBtn.addEventListener('click', () => { progressAddPanelOpen = !progressAddPanelOpen; render(); });
