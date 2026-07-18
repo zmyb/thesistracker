@@ -156,33 +156,6 @@
     --red: #a94a34;
     --font-title: 'Tajawal', sans-serif;
   }
-  /* ---------- Design theme: Ocampos (أحمر وبرتقالي على خلفية زنكية داكنة/بيضاء) ---------- */
-  [data-design="ocampos"][data-theme="dark"]{
-    --bg: #0a0a0c;
-    --panel: #17171a;
-    --panel-2: #202024;
-    --line: #333338;
-    --text: #f4f4f5;
-    --muted: #a1a1aa;
-    --gold: #f97316;
-    --gold-dim: #9a2f0f;
-    --green: #34d399;
-    --red: #f43f5e;
-    --font-title: 'Tajawal', sans-serif;
-  }
-  [data-design="ocampos"][data-theme="light"]{
-    --bg: #f5f5f6;
-    --panel: #ffffff;
-    --panel-2: #f7f7f8;
-    --line: #e4e4e7;
-    --text: #27272a;
-    --muted: #71717a;
-    --gold: #ef4444;
-    --gold-dim: #fdba74;
-    --green: #059669;
-    --red: #dc2626;
-    --font-title: 'Tajawal', sans-serif;
-  }
   *{ box-sizing: border-box; }
   body{
     margin:0;
@@ -793,13 +766,181 @@
   [data-starfield="off"] #starfield-container{
     display: none;
   }
+
+  /* =====================================================================
+     OCAMPOS-STYLE VISUAL LAYER
+     زوايا أكبر + ظلال ناعمة + هيدر عائم زجاجي + أزرار متدرجة + حركات hover
+     مبنية بالكامل على متغيرات كل ثيم، فتنطبق تلقائياً على الخمسة بألوانها
+     الخاصة دون تغيير أي منطق برمجي. الاختيار المضاعف للـ class (مثل
+     .card.card) يرفع خصوصية القاعدة لتتغلب على القواعد الأقدم بأمان.
+     ===================================================================== */
+
+  /* Ambient glow blobs behind the content (تظهر فقط عند إيقاف خلفية النجوم) */
+  body::before, body::after{
+    content:"";
+    position: fixed;
+    z-index: -2;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+  }
+  body::before{
+    top: -110px; inset-inline-start: -90px;
+    width: 300px; height: 300px;
+    background: var(--gold);
+    opacity: .17;
+    animation: ocamposBlobA 17s ease-in-out infinite;
+  }
+  body::after{
+    top: 160px; inset-inline-end: -130px;
+    width: 280px; height: 280px;
+    background: var(--red);
+    opacity: .14;
+    animation: ocamposBlobB 21s ease-in-out infinite;
+  }
+  @keyframes ocamposBlobA{
+    0%,100%{ transform: translate(0,0) scale(1); }
+    50%{ transform: translate(26px,36px) scale(1.18); }
+  }
+  @keyframes ocamposBlobB{
+    0%,100%{ transform: translate(0,0) scale(1); }
+    50%{ transform: translate(-22px,26px) scale(1.12); }
+  }
+  [data-starfield="on"] body::before,
+  [data-starfield="on"] body::after{ display:none; }
+
+  /* بطاقات أكبر انحناءً وأعمق ظلاً، بحركة رفع خفيفة */
+  .card.card{
+    border-radius: 22px;
+    box-shadow: 0 14px 34px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.03);
+    transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease;
+  }
+  [data-theme="light"] .card.card{
+    box-shadow: 0 14px 30px rgba(0,0,0,.07), inset 0 1px 0 rgba(255,255,255,.7);
+  }
+  .add-panel.add-panel, .progress-add-panel.progress-add-panel, .note-editor.note-editor{
+    border-radius: 20px;
+  }
+  .log-item.log-item, .log-item-wrap.log-item-wrap, .stat-item.stat-item,
+  .achv-count-item.achv-count-item, .cal-day.cal-day, .progress-section.progress-section,
+  .daily-message.daily-message, .section-order-bar.section-order-bar,
+  .section-reorder-bar.section-reorder-bar{
+    border-radius: 14px;
+  }
+
+  /* هيدر عائم زجاجي (Glass floating pill nav) */
+  .user-bar.user-bar{
+    position: sticky; top: 10px; z-index: 30;
+    background: color-mix(in srgb, var(--panel) 80%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 9px 16px;
+    box-shadow: 0 10px 26px rgba(0,0,0,.18);
+    margin-bottom: 22px;
+  }
+  [data-theme="light"] .user-bar.user-bar{
+    box-shadow: 0 10px 24px rgba(0,0,0,.08);
+  }
+
+  /* أزرار دائرية بحركة رفع عند المرور */
+  .icon-toggle-btn.icon-toggle-btn, .daynav-btn.daynav-btn, .arrow-btn.arrow-btn,
+  .entry-icon-btn.entry-icon-btn{
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .icon-toggle-btn.icon-toggle-btn:hover, .daynav-btn.daynav-btn:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,.18);
+  }
+
+  /* أزرار الحفظ الأساسية: كبسولة متدرجة مضيئة (نفس فلسفة أزرار Ocampos) */
+  .save-btn.save-btn{
+    background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+    color:#fff; border:none; border-radius: 999px;
+    padding: 10px 20px;
+    box-shadow: 0 10px 22px color-mix(in srgb, var(--gold) 45%, transparent);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .save-btn.save-btn:hover{
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 14px 28px color-mix(in srgb, var(--gold) 55%, transparent);
+  }
+  .save-btn.save-btn:active{ transform: scale(.97); }
+  .cancel-btn.cancel-btn{ border-radius: 999px; }
+  .quote-edit-btn.quote-edit-btn, .cal-toggle.cal-toggle, .progress-add-btn.progress-add-btn{
+    border-radius: 999px;
+  }
+  .signout-btn.signout-btn{ transition: color .2s ease; }
+
+  /* شبكة الإجراءات السريعة: رفع + ظل عند المرور، زوايا أوسع */
+  .act-btn.act-btn{
+    border-radius: 20px;
+    transition: transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s ease, background .3s ease;
+  }
+  .act-btn.act-btn:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0,0,0,.2);
+  }
+  [data-theme="light"] .act-btn.act-btn:hover{ box-shadow: 0 12px 22px rgba(0,0,0,.09); }
+  .act-btn.act-btn:active{ transform: translateY(-1px) scale(.98); }
+
+  /* شريط التقدم: كبسولة متوهجة */
+  .bar-track.bar-track{ border-radius: 999px; height: 15px; }
+  .bar-fill.bar-fill{
+    border-radius: 999px;
+    box-shadow: 0 0 12px color-mix(in srgb, var(--gold) 55%, transparent);
+  }
+  .bar-fill.done.done{ box-shadow: 0 0 12px color-mix(in srgb, var(--green) 55%, transparent); }
+  .phase-seg.phase-seg{ border-radius: 999px; }
+
+  /* شارة المستوى وسلسلة الأيام: كبسولات صغيرة أنيقة */
+  .level-badge.level-badge{
+    display:inline-flex; width:fit-content;
+    background: color-mix(in srgb, var(--gold) 14%, var(--panel));
+    border: 1px solid color-mix(in srgb, var(--gold) 35%, var(--line));
+    border-radius: 999px; padding: 6px 14px; margin-bottom: 8px;
+  }
+  .streak-line.streak-line{
+    display:inline-flex; width:fit-content;
+    background: var(--panel-2); border: 1px solid var(--line);
+    border-radius: 999px; padding: 5px 12px; margin-bottom: 18px;
+  }
+
+  /* العنوان الرئيسي: أكبر مع أيقونة مميزة بخلفية متدرجة */
+  .title.title{ font-size: 27px; gap: 10px; }
+  .title .mark{
+    display:inline-flex; align-items:center; justify-content:center;
+    width: 34px; height: 34px; border-radius: 12px; flex-shrink:0;
+    background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+    box-shadow: 0 8px 18px color-mix(in srgb, var(--gold) 45%, transparent);
+    font-size: 16px;
+  }
+
+  /* الحقول والقوائم: زوايا أنعم */
+  .design-select.design-select,
+  .add-panel input, .add-panel textarea, .add-panel select,
+  .note-editor input, .note-editor textarea, .note-editor select,
+  .progress-add-panel input, .progress-add-panel textarea, .progress-add-panel select,
+  .quote-editor textarea, .emoji-swatch-btn.emoji-swatch-btn{
+    border-radius: 12px;
+  }
+
+  /* زر تسجيل الدخول بجوجل: ظل ناعم وحركة رفع */
+  #googleBtn button{
+    box-shadow: 0 10px 24px rgba(26,115,232,.35);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  #googleBtn button:hover{ transform: translateY(-2px); box-shadow: 0 14px 30px rgba(26,115,232,.4); }
+
+  @media (max-width: 380px){
+    body::before, body::after{ width:200px; height:200px; }
+  }
 </style>
 </head>
 <body>
 <div class="wrap" id="loginScreen" style="display:none;">
   <div class="login-top">
     <select class="design-select" id="designSelectLogin" title="نمط التصميم">
-      <option value="ocampos">🧡 Ocampos</option>
       <option value="normal">🎨 عادي</option>
       <option value="islamic">🕌 إسلامي</option>
       <option value="purple">💜 بنفسجي</option>
@@ -877,11 +1018,11 @@ function toggleTheme(){
 }
 
 /* ---------- Design theme (عادي / إسلامي / بنفسجي / هوب / أخضر) ---------- */
-let designMode = 'ocampos';
+let designMode = 'normal';
 function getStoredDesign(){
   const saved = localStorage.getItem(DESIGN_KEY);
-  if(saved === 'ocampos' || saved === 'normal' || saved === 'islamic' || saved === 'purple' || saved === 'hope' || saved === 'green') return saved;
-  return 'ocampos';
+  if(saved === 'normal' || saved === 'islamic' || saved === 'purple' || saved === 'hope' || saved === 'green') return saved;
+  return 'normal';
 }
 function applyDesign(design){
   designMode = design;
@@ -2488,7 +2629,6 @@ function render(){
       <span class="u-name">${currentUser && currentUser.picture ? `<img src="${currentUser.picture}" alt="">` : ''}${escapeHtml(currentUser ? (currentUser.name || currentUser.email) : '')}</span>
       <span class="u-right">
         <select class="design-select" id="designSelect" title="نمط التصميم">
-          <option value="ocampos" ${currentDesign==='ocampos'?'selected':''}>🧡 Ocampos</option>
           <option value="normal" ${currentDesign==='normal'?'selected':''}>🎨 عادي</option>
           <option value="islamic" ${currentDesign==='islamic'?'selected':''}>🕌 إسلامي</option>
           <option value="purple" ${currentDesign==='purple'?'selected':''}>💜 بنفسجي</option>
