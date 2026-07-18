@@ -421,12 +421,17 @@
     color: var(--text); font-family: var(--font-display); font-weight:700; font-size:13px;
     padding: 10px; cursor:pointer;
   }
-  .section-order-bar{ display:flex; align-items:center; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
-  .section-order-bar .cal-toggle{ width:auto; flex:1; min-width:160px; }
+  .section-order-bar{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    background: var(--panel-2); border:1px solid var(--gold-dim); border-radius:10px;
+    padding: 8px 12px; margin-bottom:14px; flex-wrap:wrap;
+  }
+  .section-order-hint{ font-size:12px; color: var(--gold); font-weight:700; }
   .section-order-bar .reset-link{
     background:transparent; border:none; color: var(--muted); font-family: var(--font-display);
-    font-size:12px; text-decoration:underline; cursor:pointer; padding:6px 4px; flex-shrink:0;
+    font-size:12px; text-decoration:underline; cursor:pointer; padding:4px; flex-shrink:0;
   }
+  .icon-toggle-btn.active{ background: var(--gold); color:#241f0a; border-color: var(--gold); }
   .section-reorder-bar{
     display:flex; align-items:center; justify-content:space-between; gap:10px;
     background: var(--panel-2); border:1px solid var(--gold-dim); border-radius:8px;
@@ -2463,15 +2468,17 @@ function render(){
         <button class="icon-toggle-btn" id="layoutToggleBtn" title="تبديل نمط العرض (عرضي/طولي)">${layoutMode === 'wide' ? '📱' : '💻'}</button>
         <button class="icon-toggle-btn" id="starfieldToggleBtn" title="تشغيل/إيقاف خلفية النجوم المتحركة">${starfieldMode === 'off' ? '✨' : '🌌'}</button>
         <button class="icon-toggle-btn" id="themeToggleBtn" title="تبديل الوضع الداكن/الفاتح">${isLight ? '🌙' : '☀️'}</button>
+        <button class="icon-toggle-btn ${sectionOrderEditMode?'active':''}" id="sectionOrderToggle" title="ترتيب الأقسام">${sectionOrderEditMode ? '✕' : '🔀'}</button>
         <button class="signout-btn" id="signOutBtn">تسجيل الخروج</button>
       </span>
     </div>
     <div class="title"><span class="mark">⚡</span> سجل XP اليومي</div>
     <div class="subtitle">${subtitleText}</div>
+    ${sectionOrderEditMode ? `
     <div class="section-order-bar">
-      <button class="cal-toggle" id="sectionOrderToggle">${sectionOrderEditMode ? '✕ إنهاء ترتيب الأقسام' : '🔀 ترتيب الأقسام'}</button>
-      ${sectionOrderEditMode ? `<button class="reset-link" id="resetSectionOrderBtn">استعادة الترتيب الافتراضي</button>` : ''}
-    </div>
+      <span class="section-order-hint">🔀 وضع ترتيب الأقسام مفعّل — استخدم ▲▼ فوق كل قسم</span>
+      <button class="reset-link" id="resetSectionOrderBtn">استعادة الترتيب الافتراضي</button>
+    </div>` : ''}
 
     <div class="phase-hud">${phaseHud}</div>
     <div class="phase-labels"><b>${phaseLabel}</b><span>${TOTAL_DAYS} يوم</span></div>
