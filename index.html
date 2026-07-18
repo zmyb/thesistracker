@@ -129,6 +129,33 @@
     --red: #a94a34;
     --font-title: 'Tajawal', sans-serif;
   }
+  /* ---------- Design theme: Green (أخضر داكن وذهبي مستوحى من الشعار) ---------- */
+  [data-design="green"][data-theme="dark"]{
+    --bg: #0a1f19;
+    --panel: #123028;
+    --panel-2: #1a3d32;
+    --line: #2d5346;
+    --text: #eef6f0;
+    --muted: #8fae9d;
+    --gold: #c9a668;
+    --gold-dim: #5f4f2f;
+    --green: #4a8f68;
+    --red: #c2555a;
+    --font-title: 'Tajawal', sans-serif;
+  }
+  [data-design="green"][data-theme="light"]{
+    --bg: #f4f1e6;
+    --panel: #ffffff;
+    --panel-2: #ece6d2;
+    --line: #d9d0b0;
+    --text: #1b2c22;
+    --muted: #7a8a7a;
+    --gold: #a9822b;
+    --gold-dim: #e8dcb0;
+    --green: #1f6b45;
+    --red: #a94a34;
+    --font-title: 'Tajawal', sans-serif;
+  }
   *{ box-sizing: border-box; }
   body{
     margin:0;
@@ -732,6 +759,7 @@
       <option value="islamic">🕌 إسلامي</option>
       <option value="purple">💜 بنفسجي</option>
       <option value="hope">✨ هوب</option>
+      <option value="green">🦅 أخضر</option>
     </select>
     <button class="icon-toggle-btn" id="starfieldToggleBtnLogin" title="تشغيل/إيقاف خلفية النجوم المتحركة">🌌</button>
     <button class="icon-toggle-btn" id="themeToggleBtnLogin" title="تبديل الوضع الداكن/الفاتح">☀️</button>
@@ -803,11 +831,11 @@ function toggleTheme(){
   if(state) render();
 }
 
-/* ---------- Design theme (عادي / إسلامي / بنفسجي / هوب) ---------- */
+/* ---------- Design theme (عادي / إسلامي / بنفسجي / هوب / أخضر) ---------- */
 let designMode = 'normal';
 function getStoredDesign(){
   const saved = localStorage.getItem(DESIGN_KEY);
-  if(saved === 'normal' || saved === 'islamic' || saved === 'purple' || saved === 'hope') return saved;
+  if(saved === 'normal' || saved === 'islamic' || saved === 'purple' || saved === 'hope' || saved === 'green') return saved;
   return 'normal';
 }
 function applyDesign(design){
@@ -1794,6 +1822,7 @@ function render(){
           <option value="islamic" ${currentDesign==='islamic'?'selected':''}>🕌 إسلامي</option>
           <option value="purple" ${currentDesign==='purple'?'selected':''}>💜 بنفسجي</option>
           <option value="hope" ${currentDesign==='hope'?'selected':''}>✨ هوب</option>
+          <option value="green" ${currentDesign==='green'?'selected':''}>🦅 أخضر</option>
         </select>
         <button class="icon-toggle-btn" id="layoutToggleBtn" title="تبديل نمط العرض (عرضي/طولي)">${layoutMode === 'wide' ? '📱' : '💻'}</button>
         <button class="icon-toggle-btn" id="starfieldToggleBtn" title="تشغيل/إيقاف خلفية النجوم المتحركة">${starfieldMode === 'off' ? '✨' : '🌌'}</button>
