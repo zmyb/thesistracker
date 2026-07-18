@@ -18,18 +18,16 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <style>
   :root{
-    --bg: #050506;
-    --panel: rgba(19,20,25,.74);
-    --panel-2: rgba(241,236,227,.05);
-    --line: rgba(241,236,227,.14);
-    --text: #f1ece3;
-    --muted: rgba(241,236,227,.62);
-    --faint: rgba(241,236,227,.4);
-    --gold: #d5b574;
-    --gold-dim: #7d6a3c;
-    --silver: #b8c7d9;
-    --green: #8fd6ab;
-    --red: #e88787;
+    --bg: #0f0e17;
+    --panel: #1a1826;
+    --panel-2: #221f33;
+    --line: #322e47;
+    --text: #efeaf7;
+    --muted: #948db3;
+    --gold: #f2c94c;
+    --gold-dim: #7a6a2a;
+    --green: #6ee7a8;
+    --red: #ff6b78;
     --green-soft: color-mix(in srgb, var(--green) 55%, #888 45%);
     --red-soft: color-mix(in srgb, var(--red) 55%, #888 45%);
     --font-display: 'Tajawal', sans-serif;
@@ -37,45 +35,41 @@
     --font-title: 'Tajawal', sans-serif;
   }
   [data-theme="light"]{
-    --bg: #ede7dc;
-    --panel: rgba(255,255,255,.72);
-    --panel-2: rgba(16,16,20,.045);
-    --line: rgba(16,16,20,.13);
-    --text: #17151d;
-    --muted: rgba(16,16,20,.6);
-    --faint: rgba(16,16,20,.4);
-    --gold: #a9822b;
+    --bg: #f4f2fa;
+    --panel: #ffffff;
+    --panel-2: #eeeaf8;
+    --line: #ddd5ec;
+    --text: #221e33;
+    --muted: #726a8c;
+    --gold: #b9860a;
     --gold-dim: #ecd9a0;
-    --silver: #6c8198;
-    --green: #1f8a56;
-    --red: #c14a4a;
+    --green: #1f9d5c;
+    --red: #d1414f;
   }
 
   /* ---------- Design theme: Islamic (احترافي أخضر وذهبي) ---------- */
   [data-design="islamic"][data-theme="dark"]{
-    --bg: #060c09;
-    --panel: rgba(18,32,25,.74);
-    --panel-2: rgba(238,246,239,.045);
-    --line: rgba(238,246,239,.13);
+    --bg: #0c1a14;
+    --panel: #122a20;
+    --panel-2: #193a2b;
+    --line: #2c5240;
     --text: #eef6ef;
-    --muted: rgba(238,246,239,.6);
+    --muted: #93b3a1;
     --gold: #d4af37;
     --gold-dim: #6b5a1f;
-    --silver: #8fb5a0;
-    --green: #6fc394;
-    --red: #dd8686;
+    --green: #4fae7a;
+    --red: #d9707a;
     --font-title: 'Amiri', serif;
   }
   [data-design="islamic"][data-theme="light"]{
     --bg: #faf6ec;
-    --panel: rgba(255,255,255,.78);
-    --panel-2: rgba(31,51,37,.05);
-    --line: rgba(31,51,37,.14);
+    --panel: #ffffff;
+    --panel-2: #f1ead9;
+    --line: #ddd0ad;
     --text: #1f3325;
-    --muted: rgba(31,51,37,.62);
+    --muted: #7a7060;
     --gold: #a9822b;
     --gold-dim: #e8d9ad;
-    --silver: #5f8a72;
     --green: #1f7a4c;
     --red: #b23a3a;
     --font-title: 'Amiri', serif;
@@ -83,121 +77,95 @@
 
   /* ---------- Design theme: Purple (لافندر وأبيض وأسود وزهري) ---------- */
   [data-design="purple"][data-theme="dark"]{
-    --bg: #100a17;
-    --panel: rgba(32,22,45,.74);
-    --panel-2: rgba(244,238,251,.05);
-    --line: rgba(244,238,251,.13);
+    --bg: #1a1225;
+    --panel: #241a33;
+    --panel-2: #2f2140;
+    --line: #4a3660;
     --text: #f4eefb;
-    --muted: rgba(244,238,251,.62);
+    --muted: #ac98c8;
     --gold: #e8a0c4;
     --gold-dim: #7a4a63;
-    --silver: #b79cff;
     --green: #a8d8bd;
     --red: #ef6f9e;
     --font-title: 'Tajawal', sans-serif;
   }
   [data-design="purple"][data-theme="light"]{
     --bg: #faf6ff;
-    --panel: rgba(255,255,255,.78);
-    --panel-2: rgba(36,24,51,.05);
-    --line: rgba(36,24,51,.13);
+    --panel: #ffffff;
+    --panel-2: #f3ecfc;
+    --line: #e0d0f0;
     --text: #241833;
-    --muted: rgba(36,24,51,.6);
+    --muted: #8a7a9c;
     --gold: #c060a0;
     --gold-dim: #f0c8e0;
-    --silver: #8a6ac0;
     --green: #4a9d6e;
     --red: #d1417a;
     --font-title: 'Tajawal', sans-serif;
   }
   /* ---------- Design theme: Hope (أسود وذهبي وألوان ترابية دافئة) ---------- */
   [data-design="hope"][data-theme="dark"]{
-    --bg: #060606;
-    --panel: rgba(18,18,18,.74);
-    --panel-2: rgba(245,240,230,.05);
-    --line: rgba(245,240,230,.13);
+    --bg: #0a0a0a;
+    --panel: #161616;
+    --panel-2: #1f1f1f;
+    --line: #333333;
     --text: #f5f0e6;
-    --muted: rgba(245,240,230,.58);
+    --muted: #999999;
     --gold: #d4af37;
     --gold-dim: #6b5a1f;
-    --silver: #9b968a;
-    --green: #6fc394;
-    --red: #dd8686;
+    --green: #4fae7a;
+    --red: #d9707a;
     --font-title: 'Tajawal', sans-serif;
   }
   [data-design="hope"][data-theme="light"]{
     --bg: #faf8f2;
-    --panel: rgba(255,255,255,.78);
-    --panel-2: rgba(26,26,26,.05);
-    --line: rgba(26,26,26,.13);
+    --panel: #ffffff;
+    --panel-2: #f0ece0;
+    --line: #ddd5c0;
     --text: #1a1a1a;
-    --muted: rgba(26,26,26,.58);
+    --muted: #767676;
     --gold: #a9822b;
     --gold-dim: #ecd9a0;
-    --silver: #8a8272;
     --green: #1f9d5c;
     --red: #d1414f;
     --font-title: 'Tajawal', sans-serif;
   }
   /* ---------- Design theme: Green (أخضر داكن وذهبي مستوحى من الشعار) ---------- */
   [data-design="green"][data-theme="dark"]{
-    --bg: #050f0a;
-    --panel: rgba(16,37,29,.74);
-    --panel-2: rgba(238,246,240,.045);
-    --line: rgba(238,246,240,.13);
+    --bg: #081712;
+    --panel: #10251d;
+    --panel-2: #173328;
+    --line: #2a4b3c;
     --text: #eef6f0;
-    --muted: rgba(238,246,240,.6);
+    --muted: #85a794;
     --gold: #c9a668;
     --gold-dim: #5f4f2f;
-    --silver: #7fa88f;
-    --green: #63b389;
-    --red: #d4787c;
+    --green: #4a8f68;
+    --red: #c2555a;
     --font-title: 'Tajawal', sans-serif;
   }
   [data-design="green"][data-theme="light"]{
     --bg: #f6f7f2;
-    --panel: rgba(255,255,255,.78);
-    --panel-2: rgba(20,38,28,.045);
-    --line: rgba(20,38,28,.13);
+    --panel: #ffffff;
+    --panel-2: #e9efe6;
+    --line: #cdd9cd;
     --text: #14261c;
-    --muted: rgba(20,38,28,.6);
+    --muted: #5f7268;
     --gold: #9c7a2e;
     --gold-dim: #ecdfb8;
-    --silver: #567564;
     --green: #1f6b45;
     --red: #a94a34;
     --font-title: 'Tajawal', sans-serif;
   }
   *{ box-sizing: border-box; }
-  html{ scroll-behavior: smooth; }
   body{
     margin:0;
-   background:
-      radial-gradient(120% 90% at 50% 30%, color-mix(in srgb, var(--gold) 6%, transparent), transparent 60%),
-      radial-gradient(100% 80% at 15% 90%, color-mix(in srgb, var(--silver) 8%, transparent), transparent 65%),
-      var(--bg);
-    background-attachment: fixed;
     background: var(--bg);
     color: var(--text);
     font-family: var(--font-display);
     padding: 20px 14px 60px;
     min-height: 100vh;
     transition: background .2s ease, color .2s ease;
-    position: relative;
   }
-  body::before{
-    content:"";
-    position: fixed;
-    inset: -50%;
-    z-index: 1;
-    pointer-events: none;
-    opacity: .04;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-  #loginScreen, #app{ position: relative; z-index: 2; }
-  ::selection{ background: color-mix(in srgb, var(--gold) 35%, transparent); color: var(--text); }
-
   .wrap{ max-width: 480px; margin: 0 auto; transition: max-width .2s ease; }
   .wrap.wide{ max-width: 1100px; }
 
@@ -2402,7 +2370,9 @@ function render(){
         </div>
   `;
   const sec_footnote = `
-        <div class="footnote">البيانات محفوظة تلقائيًا في السحابة (مرتبطة بحساب جوحل)</div>
+        <div class="footnote">البيانات محفوظة تلقائيًا في السحابة (مرتبطة بحساب جوجل) 
+        رسالتك محرابك | أنت في عبادة
+        </div>
         <div class="daily-message">${dailyMessage({ notStarted, daysUntilStart, finished, dayNum, currentPhaseIdx, dayInPhase })}</div>
   `;
   const sec_progress = `
