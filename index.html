@@ -421,6 +421,18 @@
     color: var(--text); font-family: var(--font-display); font-weight:700; font-size:13px;
     padding: 10px; cursor:pointer;
   }
+  .section-order-bar{ display:flex; align-items:center; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
+  .section-order-bar .cal-toggle{ width:auto; flex:1; min-width:160px; }
+  .section-order-bar .reset-link{
+    background:transparent; border:none; color: var(--muted); font-family: var(--font-display);
+    font-size:12px; text-decoration:underline; cursor:pointer; padding:6px 4px; flex-shrink:0;
+  }
+  .section-reorder-bar{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    background: var(--panel-2); border:1px solid var(--gold-dim); border-radius:8px;
+    padding: 6px 10px; margin-bottom:10px;
+  }
+  .section-reorder-label{ font-size:12px; font-weight:700; color: var(--gold); }
   .calendar{ margin-top: 14px; }
   .cal-month{ margin-bottom: 20px; }
   .cal-month-title{ font-size:13px; font-weight:700; color: var(--text); margin-bottom:8px; }
@@ -1368,6 +1380,7 @@ let editingDeadline = false;
 let addingPhaseGoal = false;
 let selectedGoalsPhaseIdx = null;
 let addingWeeklyGoal = false;
+let sectionOrderEditMode = false;
 
 // Currently viewed day in the log/top card (defaults to today; navigable)
 let viewingDateKey = todayKey();
@@ -1438,7 +1451,7 @@ function migrateEntries(){
 }
 
 async function loadState(){
-  const emptyState = { days: {}, customActions: [], overrides: {}, sortMode: { plus:'default', minus:'default' }, manualOrder: { plus:[], minus:[] }, progress: {}, customProgress: [], deletedProgress: [], progressTimestamps: {}, favoriteQuote: '', starfield: 'on', phaseGoals: {}, phaseGoalsBonusAwarded: {}, weeklyGoals: {}, importantDeadline: null };
+  const emptyState = { days: {}, customActions: [], overrides: {}, sortMode: { plus:'default', minus:'default' }, manualOrder: { plus:[], minus:[] }, progress: {}, customProgress: [], deletedProgress: [], progressTimestamps: {}, favoriteQuote: '', starfield: 'on', phaseGoals: {}, phaseGoalsBonusAwarded: {}, weeklyGoals: {}, importantDeadline: null, sectionOrder: [] };
   try{
     if(currentUser && currentUser.uid){
       const doc = await db.collection('xp-tracker-data').doc(currentUser.uid).get();
@@ -1552,6 +1565,49 @@ async function moveAction(kind, id, dir){
 
 let addPanelOpen = false;
 let editingId = null;
+
+const SECTION_META = [
+  { key:'today', label:'بطاقة نقاط اليوم' },
+  { key:'achievements', label:'🟢 الإنجازات' },
+  { key:'violations', label:'🔴 المخالفات' },
+  { key:'addAction', label:'➕ إضافة مهمة جديدة' },
+  { key:'log', label:'📋 سجل اليوم' },
+  { key:'last7', label:'📅 آخر ٧ أيام' },
+  { key:'calendar', label:'🗓️ التقويم الكامل' },
+  { key:'appointments', label:'🗓️ المواعيد' },
+  { key:'deadline', label:'⏰ أقرب موعد مهم' },
+  { key:'phaseGoals', label:'🎯 أهداف المرحلة' },
+  { key:'weeklyGoals', label:'🎯 أهداف الأسبوع' },
+  { key:'stats', label:'📊 الإحصائيات' },
+  { key:'footnote', label:'ملاحظة الحفظ ورسالة اليوم' },
+  { key:'progress', label:'📈 نسبة التقدم' },
+  { key:'quote', label:'💌 العبارة المفضلة' },
+];
+
+function getSectionOrder(){
+  const defaultOrder = SECTION_META.map(s => s.key);
+  let order = (state.sectionOrder && state.sectionOrder.length) ? state.sectionOrder.slice() : defaultOrder.slice();
+  order = order.filter(k => defaultOrder.includes(k));
+  defaultOrder.forEach(k => { if(!order.includes(k)) order.push(k); });
+  return order;
+}
+
+async function moveSection(key, dir){
+  const order = getSectionOrder();
+  const idx = order.indexOf(key);
+  const swapIdx = idx + dir;
+  if(idx === -1 || swapIdx < 0 || swapIdx >= order.length) return;
+  [order[idx], order[swapIdx]] = [order[swapIdx], order[idx]];
+  state.sectionOrder = order;
+  await saveState();
+  render();
+}
+
+async function resetSectionOrder(){
+  state.sectionOrder = SECTION_META.map(s => s.key);
+  await saveState();
+  render();
+}
 
 async function addCustomAction(label, xp, emoji){
   const action = {
@@ -1976,7 +2032,8 @@ function render(){
     </div>`;
   }).join('');
 
-  const actionSections = ['plus','minus'].map(kind => {
+  const actionSectionsMap = {};
+  ['plus','minus'].forEach(kind => {
     const sectionActions = getSectionActions(kind);
     const mode = state.sortMode[kind];
     const title = kind === 'plus' ? '🟢 الإنجازات ⭐' : '🔴 المخالفات ⚠️';
@@ -1994,8 +2051,7 @@ function render(){
           </span>` : ''}
       </button>
     `).join('');
-    return `
-    <div class="content-block">
+    actionSectionsMap[kind] = `
       <div class="section-header">
         <h3 class="section-title ${kind}">${title}</h3>
         <div class="sort-controls">
@@ -2005,9 +2061,8 @@ function render(){
         </div>
       </div>
       <div class="actions">${btnsHtml}</div>
-    </div>
     `;
-  }).join('');
+  });
 
   const stats = computeStats();
   const achievementCounts = computeAchievementCounts();
@@ -2021,35 +2076,7 @@ function render(){
   const weekRangeLabel = `${weekStartDate.getDate()} ${MONTH_NAMES[weekStartDate.getMonth()]} — ${weekEndDate.getDate()} ${MONTH_NAMES[weekEndDate.getMonth()]}`;
   const weeklyGoalsList = currentWeekGoals();
 
-  app.innerHTML = `
-    <div class="user-bar">
-      <span class="u-name">${currentUser && currentUser.picture ? `<img src="${currentUser.picture}" alt="">` : ''}${escapeHtml(currentUser ? (currentUser.name || currentUser.email) : '')}</span>
-      <span class="u-right">
-        <select class="design-select" id="designSelect" title="نمط التصميم">
-          <option value="normal" ${currentDesign==='normal'?'selected':''}>🎨 عادي</option>
-          <option value="islamic" ${currentDesign==='islamic'?'selected':''}>🕌 إسلامي</option>
-          <option value="purple" ${currentDesign==='purple'?'selected':''}>💜 بنفسجي</option>
-          <option value="hope" ${currentDesign==='hope'?'selected':''}>✨ هوب</option>
-          <option value="green" ${currentDesign==='green'?'selected':''}>🦅 أخضر</option>
-        </select>
-        <button class="icon-toggle-btn" id="layoutToggleBtn" title="تبديل نمط العرض (عرضي/طولي)">${layoutMode === 'wide' ? '📱' : '💻'}</button>
-        <button class="icon-toggle-btn" id="starfieldToggleBtn" title="تشغيل/إيقاف خلفية النجوم المتحركة">${starfieldMode === 'off' ? '✨' : '🌌'}</button>
-        <button class="icon-toggle-btn" id="themeToggleBtn" title="تبديل الوضع الداكن/الفاتح">${isLight ? '🌙' : '☀️'}</button>
-        <button class="signout-btn" id="signOutBtn">تسجيل الخروج</button>
-      </span>
-    </div>
-    <div class="title"><span class="mark">⚡</span> سجل XP اليومي</div>
-    <div class="subtitle">${subtitleText}</div>
-
-    <div class="phase-hud">${phaseHud}</div>
-    <div class="phase-labels"><b>${phaseLabel}</b><span>${TOTAL_DAYS} يوم</span></div>
-
-    <div class="level-badge">🎖️ <span class="lv-num">Level ${lvl.level}:</span> ${lvl.title}</div>
-    <div class="streak-line">🔥 <b>${streakCount}</b> ${streakCount === 1 ? 'يوم متتالي' : 'أيام متتالية'}</div>
-
-    <div class="content-area">
-
-      <div class="content-block">
+  const sec_today = `
         <div class="card">
           <div class="xp-row">
             <div>
@@ -2059,11 +2086,8 @@ function render(){
           </div>
           <div class="bar-track"><div class="bar-fill ${goalReached?'done':''}" style="width:${goalPct}%"></div></div>
         </div>
-      </div>
-
-      ${actionSections}
-
-      <div class="content-block">
+  `;
+  const sec_addAction = `
         <button class="act-btn add-new wide" id="openAddPanel" style="width:100%;">
           <span class="emoji">➕</span>
           <span>أضف مهمة جديدة</span>
@@ -2111,9 +2135,8 @@ function render(){
             </div>
           </div>`;
         })() : ''}
-      </div>
-
-      <div class="content-block">
+  `;
+  const sec_log = `
         <div class="card" id="logCard">
           <div class="log-header">
             <div class="log-day-nav">
@@ -2128,16 +2151,14 @@ function render(){
           </div>
           <div class="log-list">${renderLogList(viewingDateKey)}</div>
         </div>
-      </div>
-
-      <div class="content-block">
+  `;
+  const sec_last7 = `
         <div class="card">
           <div class="log-header"><h3>آخر ٧ أيام (تنتهي باليوم الحالي)</h3></div>
           <div class="history">${histHtml}</div>
         </div>
-      </div>
-
-      <div class="content-block">
+  `;
+  const sec_calendar = `
         <div class="card">
           <button class="cal-toggle" id="calToggle">${calendarOpen ? 'إخفاء التقويم الكامل' : 'عرض التقويم الكامل'}</button>
           ${calendarOpen ? `
@@ -2183,9 +2204,8 @@ function render(){
             <div class="add-hint" style="margin-top:8px;">اضغط على أي يوم داخل النطاق لعرض وتعديل سجله</div>
           </div>` : ''}
         </div>
-      </div>
-
-      <div class="content-block">
+  `;
+  const sec_appointments = `
         <div class="card">
           <button class="cal-toggle" id="apptToggle">${appointmentsOpen ? 'إخفاء المواعيد' : 'عرض المواعيد'}</button>
           ${appointmentsOpen ? `
@@ -2203,9 +2223,8 @@ function render(){
             </div>
           </div>` : ''}
         </div>
-      </div>
-
-      <div class="content-block">
+  `;
+  const sec_deadline = `
         <div class="card">
           <div class="log-header">
             <h3>⏰ أقرب موعد مهم</h3>
@@ -2230,9 +2249,8 @@ function render(){
           </div>
           ` : `<div class="log-empty">لم يتم تحديد موعد مهم بعد</div>`)}
         </div>
-      </div>
-
-      <div class="content-block">
+  `;
+  const sec_phaseGoals = `
         <div class="card">
           <div class="log-header"><h3>🎯 أهداف المرحلة</h3></div>
           <div class="sort-controls" style="margin-bottom:10px;">
@@ -2262,9 +2280,8 @@ function render(){
             </div>
           </div>` : ''}
         </div>
-      </div>
-
-      <div class="content-block">
+  `;
+  const sec_weeklyGoals = `
         <div class="card">
           <div class="log-header"><h3>🎯 أهداف الأسبوع</h3><span class="stat-label">${weekRangeLabel}</span></div>
           <div class="progress-custom-list">
@@ -2294,9 +2311,8 @@ function render(){
             </div>
           </div>` : ''}
         </div>
-      </div>
-
-      <div class="content-block">
+  `;
+  const sec_stats = `
         <div class="card">
           <div class="log-header"><h3>📊 الإحصائيات</h3></div>
           <div class="stats-grid">
@@ -2346,14 +2362,12 @@ function render(){
             `).join('')}
           </div>` : ''}
         </div>
-      </div>
-
-      <div class="content-block">
+  `;
+  const sec_footnote = `
         <div class="footnote">البيانات محفوظة تلقائيًا في السحابة (مرتبطة بحساب جوحل)</div>
         <div class="daily-message">${dailyMessage({ notStarted, daysUntilStart, finished, dayNum, currentPhaseIdx, dayInPhase })}</div>
-      </div>
-
-      <div class="content-block">
+  `;
+  const sec_progress = `
         <div class="card">
           <div class="progress-header">
             <h3>📈 نسبة التقدم</h3>
@@ -2377,9 +2391,8 @@ function render(){
             </div>
           </div>` : ''}
         </div>
-      </div>
-
-      <div class="content-block">
+  `;
+  const sec_quote = `
         <div class="card quote-card">
           <div class="quote-mark">💌</div>
           ${editingQuote ? `
@@ -2395,9 +2408,78 @@ function render(){
             <button class="quote-edit-btn" id="editQuoteBtn">${state.favoriteQuote ? '✎ تعديل العبارة' : '➕ أضف عبارة'}</button>
           `}
         </div>
-      </div>
+  `;
 
+  const sectionHtmlMap = {
+    today: sec_today,
+    achievements: actionSectionsMap.plus,
+    violations: actionSectionsMap.minus,
+    addAction: sec_addAction,
+    log: sec_log,
+    last7: sec_last7,
+    calendar: sec_calendar,
+    appointments: sec_appointments,
+    deadline: sec_deadline,
+    phaseGoals: sec_phaseGoals,
+    weeklyGoals: sec_weeklyGoals,
+    stats: sec_stats,
+    footnote: sec_footnote,
+    progress: sec_progress,
+    quote: sec_quote,
+  };
+  const sectionMetaMap = {};
+  SECTION_META.forEach(s => { sectionMetaMap[s.key] = s; });
+  const sectionOrderList = getSectionOrder();
+  const contentAreaHtml = sectionOrderList.map(key => {
+    const meta = sectionMetaMap[key];
+    const html = sectionHtmlMap[key];
+    if(!meta || html === undefined) return '';
+    return `
+      <div class="content-block" data-section-key="${key}">
+        ${sectionOrderEditMode ? `
+        <div class="section-reorder-bar">
+          <span class="section-reorder-label">${meta.label}</span>
+          <span class="order-arrows">
+            <button class="arrow-btn" data-move-section="${key}" data-move-dir="-1">▲</button>
+            <button class="arrow-btn" data-move-section="${key}" data-move-dir="1">▼</button>
+          </span>
+        </div>` : ''}
+        ${html}
+      </div>
+    `;
+  }).join('');
+
+  app.innerHTML = `
+    <div class="user-bar">
+      <span class="u-name">${currentUser && currentUser.picture ? `<img src="${currentUser.picture}" alt="">` : ''}${escapeHtml(currentUser ? (currentUser.name || currentUser.email) : '')}</span>
+      <span class="u-right">
+        <select class="design-select" id="designSelect" title="نمط التصميم">
+          <option value="normal" ${currentDesign==='normal'?'selected':''}>🎨 عادي</option>
+          <option value="islamic" ${currentDesign==='islamic'?'selected':''}>🕌 إسلامي</option>
+          <option value="purple" ${currentDesign==='purple'?'selected':''}>💜 بنفسجي</option>
+          <option value="hope" ${currentDesign==='hope'?'selected':''}>✨ هوب</option>
+          <option value="green" ${currentDesign==='green'?'selected':''}>🦅 أخضر</option>
+        </select>
+        <button class="icon-toggle-btn" id="layoutToggleBtn" title="تبديل نمط العرض (عرضي/طولي)">${layoutMode === 'wide' ? '📱' : '💻'}</button>
+        <button class="icon-toggle-btn" id="starfieldToggleBtn" title="تشغيل/إيقاف خلفية النجوم المتحركة">${starfieldMode === 'off' ? '✨' : '🌌'}</button>
+        <button class="icon-toggle-btn" id="themeToggleBtn" title="تبديل الوضع الداكن/الفاتح">${isLight ? '🌙' : '☀️'}</button>
+        <button class="signout-btn" id="signOutBtn">تسجيل الخروج</button>
+      </span>
     </div>
+    <div class="title"><span class="mark">⚡</span> سجل XP اليومي</div>
+    <div class="subtitle">${subtitleText}</div>
+    <div class="section-order-bar">
+      <button class="cal-toggle" id="sectionOrderToggle">${sectionOrderEditMode ? '✕ إنهاء ترتيب الأقسام' : '🔀 ترتيب الأقسام'}</button>
+      ${sectionOrderEditMode ? `<button class="reset-link" id="resetSectionOrderBtn">استعادة الترتيب الافتراضي</button>` : ''}
+    </div>
+
+    <div class="phase-hud">${phaseHud}</div>
+    <div class="phase-labels"><b>${phaseLabel}</b><span>${TOTAL_DAYS} يوم</span></div>
+
+    <div class="level-badge">🎖️ <span class="lv-num">Level ${lvl.level}:</span> ${lvl.title}</div>
+    <div class="streak-line">🔥 <b>${streakCount}</b> ${streakCount === 1 ? 'يوم متتالي' : 'أيام متتالية'}</div>
+
+    <div class="content-area">${contentAreaHtml}</div>
   `;
 
   allActions().forEach(a => {
@@ -2583,6 +2665,18 @@ function render(){
 
   const calToggle = document.getElementById('calToggle');
   if(calToggle) calToggle.addEventListener('click', () => { calendarOpen = !calendarOpen; render(); });
+
+  const sectionOrderToggle = document.getElementById('sectionOrderToggle');
+  if(sectionOrderToggle) sectionOrderToggle.addEventListener('click', () => { sectionOrderEditMode = !sectionOrderEditMode; render(); });
+  const resetSectionOrderBtn = document.getElementById('resetSectionOrderBtn');
+  if(resetSectionOrderBtn) resetSectionOrderBtn.addEventListener('click', () => resetSectionOrder());
+  app.querySelectorAll('[data-move-section]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.getAttribute('data-move-section');
+      const dir = parseInt(btn.getAttribute('data-move-dir'), 10);
+      moveSection(key, dir);
+    });
+  });
 
   const apptToggle = document.getElementById('apptToggle');
   if(apptToggle) apptToggle.addEventListener('click', () => { appointmentsOpen = !appointmentsOpen; render(); });
