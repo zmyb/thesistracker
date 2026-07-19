@@ -130,25 +130,24 @@
   }
   ::selection{ background: color-mix(in srgb, var(--accent) 35%, transparent); color: var(--text); }
 
-  .wrap{ max-width: 520px; margin: 0 auto; transition: max-width .35s var(--ease); }
+  .wrap{ max-width: 520px; margin: 0 auto; }
   .wrap.wide{ max-width: 1180px; }
+  @media (min-width: 1366px){ .wrap.wide{ max-width: 1320px; } }
+  @media (min-width: 1440px){ .wrap.wide{ max-width: 1400px; } }
+  @media (min-width: 1680px){ .wrap.wide{ max-width: 1600px; } }
+  @media (min-width: 1920px){ .wrap.wide{ max-width: 1760px; } }
 
   /* Content area / dashboard grid for wide layout */
-  .content-area{ display:flex; flex-direction:column; gap:16px; }
+  .content-area{ display:flex; flex-direction:column; gap:14px; }
   .wrap.wide .content-area{
-    display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:18px; align-items:start;
+    display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:16px; align-items:start;
+  }
+  @media (min-width: 1680px){
+    .wrap.wide .content-area{ grid-template-columns: repeat(3, minmax(0,1fr)); }
   }
   .content-block{
     break-inside: avoid; margin-bottom:0;
-    animation: rise .5s var(--ease) both;
   }
-  .content-area .content-block:nth-child(1){ animation-delay: .02s; }
-  .content-area .content-block:nth-child(2){ animation-delay: .06s; }
-  .content-area .content-block:nth-child(3){ animation-delay: .10s; }
-  .content-area .content-block:nth-child(4){ animation-delay: .14s; }
-  .content-area .content-block:nth-child(5){ animation-delay: .18s; }
-  .content-area .content-block:nth-child(n+6){ animation-delay: .2s; }
-  @keyframes rise{ from{ opacity:0; transform: translateY(10px); } to{ opacity:1; transform:none; } }
 
   /* Sections that deserve full-width treatment in the dashboard grid */
   .wrap.wide .content-block:has(.quote-card),
@@ -161,6 +160,15 @@
 
   @media (prefers-reduced-motion: reduce){
     *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important; }
+  }
+
+  /* Tighter, denser spacing on laptop/desktop widths — this is a productivity tool, not a landing page */
+  @media (min-width: 1024px){
+    body{ padding: 22px 24px 32px; }
+    .subtitle{ margin-bottom: 14px; }
+    .phase-labels{ margin-bottom: 14px; }
+    .card{ padding: 18px; }
+    .quote-card{ padding: 20px 22px; }
   }
 
   /* Icon toggle buttons (theme / layout) */
@@ -2033,6 +2041,7 @@ function renderLogList(key){
 
 function render(){
   const app = document.getElementById('app');
+  const __scrollY = window.scrollY;
   app.classList.toggle('wide', layoutMode === 'wide');
 
   const { notStarted, daysUntilStart, dayNum, currentPhaseIdx, dayInPhase, finished } = phaseInfo();
@@ -2827,6 +2836,8 @@ function render(){
   if(starfieldBtn) starfieldBtn.addEventListener('click', toggleStarfield);
   const designSelect = document.getElementById('designSelect');
   if(designSelect) designSelect.addEventListener('change', () => changeDesign(designSelect.value));
+
+  if(window.scrollY !== __scrollY) window.scrollTo({top: __scrollY, left: 0, behavior: 'instant'});
 }
 
 window.addEventListener('load', function(){
