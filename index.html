@@ -269,23 +269,37 @@
     padding: 18px;
     margin-bottom: 0;
     box-shadow: var(--shadow-card);
+    position: relative;
+    overflow: hidden;
   }
-  .xp-row{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:10px; }
+  .card::before{
+    content:''; position:absolute; inset: 0 0 auto 0; height: 3px;
+    background: linear-gradient(90deg, var(--gold-dim), var(--gold), var(--gold-dim));
+    opacity:.85;
+  }
+  .xp-row{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:12px; }
   .xp-today{
-    font-family: var(--font-mono); font-weight: 800; font-size: 34px; letter-spacing: -.3px;
+    font-family: var(--font-mono); font-weight: 800; font-size: 36px; letter-spacing: -.5px;
   }
-  .xp-today.neg{ color: var(--red); }
-  .xp-today.pos{ color: var(--green); }
+  .xp-today.neg{ color: var(--red); text-shadow: 0 0 24px color-mix(in srgb, var(--red) 30%, transparent); }
+  .xp-today.pos{ color: var(--green); text-shadow: 0 0 24px color-mix(in srgb, var(--green) 30%, transparent); }
   .xp-goal-label{ color: var(--muted); font-size: 13px; font-family: var(--font-mono); }
   .bar-track{
     height: 14px; background: var(--panel-2); border-radius: 8px;
-    border: 1px solid var(--line); overflow:hidden;
+    border: 1px solid var(--line); overflow:hidden; position: relative;
   }
   .bar-fill{
-    height:100%; border-radius: 8px;
+    height:100%; border-radius: 8px; position: relative; overflow:hidden;
     background: linear-gradient(90deg, var(--gold-dim), var(--gold));
     transition: width .5s var(--ease);
   }
+  .bar-fill::after{
+    content:''; position:absolute; inset:0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+    transform: translateX(-100%);
+    animation: barShine 2.6s ease-in-out infinite;
+  }
+  @keyframes barShine{ 0%,20%{ transform: translateX(-100%); } 60%,100%{ transform: translateX(100%); } }
   .bar-fill.done{ background: linear-gradient(90deg, #2d7a52, var(--green)); }
 
   /* Action grid */
@@ -294,45 +308,47 @@
   }
   .act-btn{
     display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap: 6px; padding: 14px 8px; border-radius: 15px;
+    gap: 8px; padding: 16px 8px; border-radius: 14px;
     color: var(--text); cursor:pointer;
     font-family: var(--font-display); font-size: 13px; font-weight:700;
     transition: 0.3s var(--ease), transform .15s var(--ease-spring);
     -webkit-tap-highlight-color: transparent;
     position: relative;
-    border: 2px solid transparent;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
   }
   .act-btn:active{ transform: scale(0.96); }
   .act-btn:hover{ transform: translateY(-2px); }
-  .act-btn .emoji{ font-size: 22px; }
+  .act-btn .emoji{
+    font-size: 18px; width: 36px; height: 36px; border-radius: 50%;
+    display:flex; align-items:center; justify-content:center;
+    background: var(--panel); border: 1px solid var(--line);
+    transition: background .3s var(--ease), border-color .3s var(--ease);
+  }
   .act-btn .xp{ font-family: var(--font-mono); font-size: 12px; }
 
-  /* Uiverse-style "user-profile" border look: only a thin edge carries the corner-fade
-     gradient (center stays the normal panel color), and it glows brighter on hover. */
-  .act-btn.plus{
-    background:
-      linear-gradient(var(--panel), var(--panel)) padding-box,
-      linear-gradient(135deg, var(--green-soft) 0%, transparent 50%) border-box;
+  .act-btn.plus{ border-color: color-mix(in srgb, var(--green-soft) 22%, var(--line)); }
+  .act-btn.plus .emoji{
+    background: color-mix(in srgb, var(--green-soft) 14%, var(--panel));
+    border-color: color-mix(in srgb, var(--green-soft) 28%, var(--line));
   }
   .act-btn.plus:hover, .act-btn.plus:focus-within{
-    background:
-      linear-gradient(var(--panel), var(--panel)) padding-box,
-      linear-gradient(135deg, var(--green-soft) 0%, transparent 65%) border-box;
-    box-shadow: 0 0 10px color-mix(in srgb, var(--green-soft) 50%, transparent);
+    border-color: color-mix(in srgb, var(--green-soft) 55%, var(--line));
+    box-shadow: 0 12px 26px -16px color-mix(in srgb, var(--green-soft) 65%, transparent);
   }
+  .act-btn.plus:hover .emoji{ background: color-mix(in srgb, var(--green-soft) 24%, var(--panel)); }
   .act-btn.plus .xp{ color: var(--green-soft); }
 
-  .act-btn.minus{
-    background:
-      linear-gradient(var(--panel), var(--panel)) padding-box,
-      linear-gradient(135deg, var(--red-soft) 0%, transparent 50%) border-box;
+  .act-btn.minus{ border-color: color-mix(in srgb, var(--red-soft) 22%, var(--line)); }
+  .act-btn.minus .emoji{
+    background: color-mix(in srgb, var(--red-soft) 14%, var(--panel));
+    border-color: color-mix(in srgb, var(--red-soft) 28%, var(--line));
   }
   .act-btn.minus:hover, .act-btn.minus:focus-within{
-    background:
-      linear-gradient(var(--panel), var(--panel)) padding-box,
-      linear-gradient(135deg, var(--red-soft) 0%, transparent 65%) border-box;
-    box-shadow: 0 0 10px color-mix(in srgb, var(--red-soft) 50%, transparent);
+    border-color: color-mix(in srgb, var(--red-soft) 55%, var(--line));
+    box-shadow: 0 12px 26px -16px color-mix(in srgb, var(--red-soft) 65%, transparent);
   }
+  .act-btn.minus:hover .emoji{ background: color-mix(in srgb, var(--red-soft) 24%, var(--panel)); }
   .act-btn.minus .xp{ color: var(--red-soft); }
 
   .act-btn.wide{ grid-column: span 2; flex-direction: row; }
