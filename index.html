@@ -1271,6 +1271,8 @@ function daysBetween(a,b){ return Math.round((b-a)/86400000); }
 // days count per phase, derived from its date range
 PHASES.forEach(p => { p.days = daysBetween(dateFromKey(p.start), dateFromKey(p.end)) + 1; });
 const TOTAL_DAYS = daysBetween(dateFromKey(START_DATE), dateFromKey(END_DATE)) + 1;
+const START_DATE_LABEL = (() => { const d = dateFromKey(START_DATE); return `${d.getDate()}/${d.getMonth()+1}`; })();
+const END_DATE_LABEL = (() => { const d = dateFromKey(END_DATE); return `${d.getDate()}/${d.getMonth()+1}`; })();
 
 const MONTH_NAMES = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
 // Monday-first weekday header
@@ -1920,7 +1922,7 @@ function render(){
     : `${PHASES[currentPhaseIdx].name} — يوم ${dayInPhase} من ${PHASES[currentPhaseIdx].days}`;
 
   const subtitleText = notStarted
-    ? `يبدأ التحدي في ٢٠/٧ وينتهي في ٣١/١٢ — يمكن تسجيل الإجراءات من الآن`
+    ? `يبدأ التحدي في ${START_DATE_LABEL} وينتهي في ${END_DATE_LABEL} — يمكن تسجيل الإجراءات من الآن`
     : (finished ? 'انتهت الرحلة — يمكن الاطلاع على النتيجة النهائية' : `اليوم رقم ${dayNum} من ${TOTAL_DAYS} إجمالًا`);
 
   const viewingLabel = viewingDateKey === todayK ? 'اليوم' : fmtStatDate(viewingDateKey);
