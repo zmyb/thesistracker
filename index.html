@@ -2905,10 +2905,16 @@ window.addEventListener('load', function(){
     // flat, single-column list so the ▲▼ controls stay simple to use.
     if(app.querySelector('.section-order-bar')){
       contentArea.style.display = '';
+      var staleShell = app.querySelector('.app-shell');
+      if(staleShell) staleShell.remove();
       return;
     }
 
-    var blocks = Array.prototype.slice.call(contentArea.querySelectorAll(':scope > .content-block'));
+    // Blocks may currently live inside .content-area (right after a fresh
+    // render()) OR already inside a previously-built .app-panel (when this
+    // call was triggered by clicking a nav tab, not by a re-render). Look
+    // for them wherever they actually are so tab clicks keep working.
+    var blocks = Array.prototype.slice.call(app.querySelectorAll('.content-block[data-section-key]'));
     if(!blocks.length) return;
 
     var byKey = {};
@@ -2946,6 +2952,11 @@ window.addEventListener('load', function(){
     shell.appendChild(nav);
     shell.appendChild(main);
     contentArea.style.display = 'none';
+
+    // blocks have already been moved (via appendChild above) out of any
+    // previous shell, so it's now safe to discard that empty leftover.
+    var oldShell = app.querySelector('.app-shell');
+    if(oldShell) oldShell.remove();
     contentArea.parentNode.insertBefore(shell, contentArea.nextSibling);
   }
 
