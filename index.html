@@ -930,6 +930,117 @@
 
   a{ color: var(--accent-2); }
 
+  /* =====================================================================
+     STRUCTURE — hero header, spacing rhythm, section identity
+     ===================================================================== */
+
+  body{ padding: 22px 16px 70px; }
+  .wrap{ animation: pageIn .5s cubic-bezier(.2,.8,.2,1); }
+  @keyframes pageIn{ from{ opacity:0; transform: translateY(6px); } to{ opacity:1; transform: translateY(0); } }
+
+  .content-block{ margin-bottom: 22px; }
+  .card{ padding: 22px; }
+
+  .app-header{
+    position: relative;
+    background: color-mix(in srgb, var(--panel) 82%, transparent);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 16px 20px 20px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px -28px rgba(0,0,0,.6), 0 1px 0 0 color-mix(in srgb, var(--text) 5%, transparent) inset;
+  }
+  .app-header-glow{
+    position:absolute; inset:0; pointer-events:none; z-index:0;
+    background:
+      radial-gradient(340px 220px at 90% -20%, color-mix(in srgb, var(--accent-2) 22%, transparent), transparent 70%),
+      radial-gradient(300px 200px at -10% 120%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 70%);
+  }
+  .app-header > *{ position:relative; z-index:1; }
+
+  .user-bar{
+    background: color-mix(in srgb, var(--panel-2) 70%, transparent);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 6px 6px 14px;
+    margin-bottom: 18px;
+  }
+  .user-bar .u-right{ background: transparent; }
+  .user-bar .signout-btn{ margin-inline-start: 4px; }
+
+  .hero-identity{
+    display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    margin-bottom: 18px;
+  }
+  .hero-identity .title{ font-size: 26px; margin-bottom: 4px; }
+  .hero-identity .subtitle{ margin-bottom: 0; }
+  .hero-badges{ display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0; }
+  .hero-badges .level-badge, .hero-badges .streak-line{ margin-bottom:0; }
+  .hero-badges .level-badge{
+    background: linear-gradient(135deg, color-mix(in srgb, var(--gold) 18%, transparent), transparent);
+    border: 1px solid color-mix(in srgb, var(--gold) 35%, transparent);
+    border-radius: 999px; padding: 5px 14px; font-size: 12.5px;
+  }
+  .hero-badges .streak-line{
+    background: color-mix(in srgb, var(--panel-2) 70%, transparent);
+    border: 1px solid var(--line);
+    border-radius: 999px; padding: 5px 14px; font-size: 12px;
+  }
+
+  .app-header .phase-hud{ margin-bottom: 8px; }
+  .app-header .phase-labels{ margin-bottom: 0; }
+
+  /* Section titles get a small accent stripe for visual rhythm */
+  .section-title{ position: relative; padding-inline-start: 12px; }
+  .section-title::before{
+    content:''; position:absolute; inset-inline-start:0; top:50%; transform: translateY(-50%);
+    width:4px; height:14px; border-radius: 3px;
+    background: linear-gradient(180deg, var(--gold), var(--accent-2));
+  }
+  .section-title.plus::before{ background: linear-gradient(180deg, var(--green), var(--accent)); }
+  .section-title.minus::before{ background: linear-gradient(180deg, var(--red), var(--accent-2)); }
+  .progress-header h3, .log-header h3{ position:relative; padding-inline-start:12px; }
+  .progress-header h3::before, .log-header h3::before{
+    content:''; position:absolute; inset-inline-start:0; top:50%; transform: translateY(-50%);
+    width:4px; height:13px; border-radius:3px; background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  }
+
+  /* Actions grid: icon sits in a soft circular badge */
+  .act-btn{ gap: 8px; padding: 16px 10px; }
+  .act-btn .emoji{
+    display:flex; align-items:center; justify-content:center;
+    width: 40px; height:40px; border-radius: 50%; font-size: 19px;
+    background: color-mix(in srgb, var(--panel-2) 80%, transparent);
+    border: 1px solid var(--line);
+  }
+  .act-btn.plus .emoji{ border-color: color-mix(in srgb, var(--green-soft) 40%, var(--line)); }
+  .act-btn.minus .emoji{ border-color: color-mix(in srgb, var(--red-soft) 40%, var(--line)); }
+
+  /* Login hero */
+  #loginScreen{ padding-top: 12vh; }
+  #loginScreen .login-top{
+    position: fixed; top:16px; inset-inline-end:16px; margin-bottom:0; z-index:5;
+    background: color-mix(in srgb, var(--panel-2) 75%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border:1px solid var(--line); border-radius:999px; padding:6px;
+  }
+  .login-hero-mark{
+    width: 64px; height:64px; border-radius: 22px; margin: 0 auto 18px;
+    display:flex; align-items:center; justify-content:center; font-size: 30px;
+    background: linear-gradient(135deg, var(--gold), var(--accent-2));
+    box-shadow: 0 16px 34px -14px color-mix(in srgb, var(--accent-2) 55%, transparent);
+  }
+  #loginScreen .login-title{ font-size: 28px; margin-bottom: 6px; }
+  #loginScreen .login-sub{ margin: 0 0 34px; font-size: 14.5px; }
+  #googleBtn{ margin-bottom: 10px; }
+  #googleBtn button{
+    box-shadow: 0 14px 30px -14px rgba(26,115,232,.55);
+  }
+  #googleBtn button:hover{ transform: translateY(-1px); }
+  .login-footnote{ color: var(--muted); font-size: 12px; margin-top: 30px; }
+
   @media (prefers-reduced-motion: reduce){
     *{ animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
   }
@@ -948,7 +1059,8 @@
     <button class="icon-toggle-btn" id="starfieldToggleBtnLogin" title="تشغيل/إيقاف خلفية النجوم المتحركة">🌌</button>
     <button class="icon-toggle-btn" id="themeToggleBtnLogin" title="تبديل الوضع الداكن/الفاتح">☀️</button>
   </div>
-  <div class="title login-title"><span class="mark">⚡</span> سجل XP اليومي</div>
+  <div class="login-hero-mark">⚡</div>
+  <div class="title login-title"><span class="mark">سجل XP</span> اليومي</div>
   <div class="login-sub">سجّل الدخول بحساب جوجل لتستخدم الموقع</div>
   <div id="googleBtn">
     <button onclick="signInWithGoogle()" style="background:#1a73e8;color:#fff;border:none;border-radius:24px;padding:12px 32px;font-size:16px;font-family:var(--font-display);font-weight:700;cursor:pointer;display:flex;align-items:center;gap:10px;">
@@ -956,6 +1068,7 @@
       سجّل الدخول بحساب جوجل
     </button>
   </div>
+  <div class="login-footnote">تتبّع إنجازك اليومي بأسلوب أنيق وبسيط</div>
 </div>
 
 <div class="wrap" id="app" style="display:none;">
@@ -2623,36 +2736,46 @@ function render(){
   }).join('');
 
   app.innerHTML = `
-    <div class="user-bar">
-      <span class="u-name">${currentUser && currentUser.picture ? `<img src="${currentUser.picture}" alt="">` : ''}${escapeHtml(currentUser ? (currentUser.name || currentUser.email) : '')}</span>
-      <span class="u-right">
-        <select class="design-select" id="designSelect" title="نمط التصميم">
-          <option value="normal" ${currentDesign==='normal'?'selected':''}>🎨 عادي</option>
-          <option value="islamic" ${currentDesign==='islamic'?'selected':''}>🕌 إسلامي</option>
-          <option value="purple" ${currentDesign==='purple'?'selected':''}>💜 بنفسجي</option>
-          <option value="hope" ${currentDesign==='hope'?'selected':''}>✨ هوب</option>
-          <option value="green" ${currentDesign==='green'?'selected':''}>🦅 أخضر</option>
-        </select>
-        <button class="icon-toggle-btn" id="layoutToggleBtn" title="تبديل نمط العرض (عرضي/طولي)">${layoutMode === 'wide' ? '📱' : '💻'}</button>
-        <button class="icon-toggle-btn" id="starfieldToggleBtn" title="تشغيل/إيقاف خلفية النجوم المتحركة">${starfieldMode === 'off' ? '✨' : '🌌'}</button>
-        <button class="icon-toggle-btn" id="themeToggleBtn" title="تبديل الوضع الداكن/الفاتح">${isLight ? '🌙' : '☀️'}</button>
-        <button class="icon-toggle-btn ${sectionOrderEditMode?'active':''}" id="sectionOrderToggle" title="ترتيب الأقسام">${sectionOrderEditMode ? '✕' : '🔀'}</button>
-        <button class="signout-btn" id="signOutBtn">تسجيل الخروج</button>
-      </span>
+    <div class="app-header">
+      <div class="app-header-glow"></div>
+      <div class="user-bar">
+        <span class="u-name">${currentUser && currentUser.picture ? `<img src="${currentUser.picture}" alt="">` : ''}${escapeHtml(currentUser ? (currentUser.name || currentUser.email) : '')}</span>
+        <span class="u-right">
+          <select class="design-select" id="designSelect" title="نمط التصميم">
+            <option value="normal" ${currentDesign==='normal'?'selected':''}>🎨 عادي</option>
+            <option value="islamic" ${currentDesign==='islamic'?'selected':''}>🕌 إسلامي</option>
+            <option value="purple" ${currentDesign==='purple'?'selected':''}>💜 بنفسجي</option>
+            <option value="hope" ${currentDesign==='hope'?'selected':''}>✨ هوب</option>
+            <option value="green" ${currentDesign==='green'?'selected':''}>🦅 أخضر</option>
+          </select>
+          <button class="icon-toggle-btn" id="layoutToggleBtn" title="تبديل نمط العرض (عرضي/طولي)">${layoutMode === 'wide' ? '📱' : '💻'}</button>
+          <button class="icon-toggle-btn" id="starfieldToggleBtn" title="تشغيل/إيقاف خلفية النجوم المتحركة">${starfieldMode === 'off' ? '✨' : '🌌'}</button>
+          <button class="icon-toggle-btn" id="themeToggleBtn" title="تبديل الوضع الداكن/الفاتح">${isLight ? '🌙' : '☀️'}</button>
+          <button class="icon-toggle-btn ${sectionOrderEditMode?'active':''}" id="sectionOrderToggle" title="ترتيب الأقسام">${sectionOrderEditMode ? '✕' : '🔀'}</button>
+          <button class="signout-btn" id="signOutBtn">تسجيل الخروج</button>
+        </span>
+      </div>
+
+      <div class="hero-identity">
+        <div class="hero-text">
+          <div class="title"><span class="mark">⚡</span> سجل XP اليومي</div>
+          <div class="subtitle">${subtitleText}</div>
+        </div>
+        <div class="hero-badges">
+          <div class="level-badge">🎖️ <span class="lv-num">Level ${lvl.level}:</span> ${lvl.title}</div>
+          <div class="streak-line">🔥 <b>${streakCount}</b> ${streakCount === 1 ? 'يوم متتالي' : 'أيام متتالية'}</div>
+        </div>
+      </div>
+
+      ${sectionOrderEditMode ? `
+      <div class="section-order-bar">
+        <span class="section-order-hint">🔀 وضع ترتيب الأقسام مفعّل — استخدم ▲▼ فوق كل قسم</span>
+        <button class="reset-link" id="resetSectionOrderBtn">استعادة الترتيب الافتراضي</button>
+      </div>` : ''}
+
+      <div class="phase-hud">${phaseHud}</div>
+      <div class="phase-labels"><b>${phaseLabel}</b><span>${TOTAL_DAYS} يوم</span></div>
     </div>
-    <div class="title"><span class="mark">⚡</span> سجل XP اليومي</div>
-    <div class="subtitle">${subtitleText}</div>
-    ${sectionOrderEditMode ? `
-    <div class="section-order-bar">
-      <span class="section-order-hint">🔀 وضع ترتيب الأقسام مفعّل — استخدم ▲▼ فوق كل قسم</span>
-      <button class="reset-link" id="resetSectionOrderBtn">استعادة الترتيب الافتراضي</button>
-    </div>` : ''}
-
-    <div class="phase-hud">${phaseHud}</div>
-    <div class="phase-labels"><b>${phaseLabel}</b><span>${TOTAL_DAYS} يوم</span></div>
-
-    <div class="level-badge">🎖️ <span class="lv-num">Level ${lvl.level}:</span> ${lvl.title}</div>
-    <div class="streak-line">🔥 <b>${streakCount}</b> ${streakCount === 1 ? 'يوم متتالي' : 'أيام متتالية'}</div>
 
     <div class="content-area">${contentAreaHtml}</div>
   `;
