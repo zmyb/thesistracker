@@ -159,34 +159,43 @@
     gap: 6px; padding: 16px 8px; border-radius: 14px;
     color: var(--text); cursor:pointer;
     font-family: var(--font-display); font-size: 13px; font-weight:700;
-    transition: transform .22s cubic-bezier(.4,0,.2,1), border-color .22s cubic-bezier(.4,0,.2,1), background-color .22s cubic-bezier(.4,0,.2,1), box-shadow .22s cubic-bezier(.4,0,.2,1);
+    transition: transform .32s cubic-bezier(.19,1,.22,1), border-color .28s ease, background-color .28s ease, box-shadow .32s cubic-bezier(.19,1,.22,1);
     -webkit-tap-highlight-color: transparent;
     position: relative;
+    overflow: hidden;
     background: var(--panel-2);
     border: 1px solid var(--line);
-    box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    box-shadow: 0 1px 0 0 rgba(255,255,255,.02) inset, 0 1px 2px rgba(0,0,0,.08);
+    will-change: transform;
   }
-  .act-btn:hover{ transform: translateY(-1.5px); }
+  .act-btn::before{
+    content:''; position:absolute; inset:0; border-radius: inherit;
+    background: linear-gradient(155deg, rgba(255,255,255,.07), rgba(255,255,255,0) 45%);
+    opacity: 0; transition: opacity .3s ease; pointer-events: none;
+  }
+  .act-btn:hover::before{ opacity: 1; }
+  .act-btn:hover{ transform: translateY(-3px); }
   .act-btn:active{
-    transform: translateY(0) scale(.985);
+    transform: translateY(-1px) scale(0.98);
     transition-duration: .1s;
   }
-  .act-btn .emoji{ font-size: 22px; }
+  .act-btn .emoji{ font-size: 22px; transition: transform .32s cubic-bezier(.19,1,.22,1); }
+  .act-btn:hover .emoji{ transform: scale(1.1); }
   .act-btn .xp{ font-family: var(--font-mono); font-size: 12px; }
 
   .act-btn.plus{ border-color: color-mix(in srgb, var(--green) 25%, var(--line) 75%); }
   .act-btn.plus:hover, .act-btn.plus:focus-visible{
-    border-color: color-mix(in srgb, var(--green) 45%, var(--line) 55%);
-    background: color-mix(in srgb, var(--green) 5%, var(--panel-2) 95%);
-    box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--green) 40%, transparent), 0 1px 2px rgba(0,0,0,.06);
+    border-color: color-mix(in srgb, var(--green) 70%, var(--line) 30%);
+    background: color-mix(in srgb, var(--green) 7%, var(--panel-2) 93%);
+    box-shadow: 0 14px 28px -16px color-mix(in srgb, var(--green) 60%, transparent), 0 2px 6px -2px color-mix(in srgb, var(--green) 30%, transparent);
   }
   .act-btn.plus .xp{ color: var(--green-soft); }
 
   .act-btn.minus{ border-color: color-mix(in srgb, var(--red) 25%, var(--line) 75%); }
   .act-btn.minus:hover, .act-btn.minus:focus-visible{
-    border-color: color-mix(in srgb, var(--red) 45%, var(--line) 55%);
-    background: color-mix(in srgb, var(--red) 5%, var(--panel-2) 95%);
-    box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--red) 40%, transparent), 0 1px 2px rgba(0,0,0,.06);
+    border-color: color-mix(in srgb, var(--red) 70%, var(--line) 30%);
+    background: color-mix(in srgb, var(--red) 7%, var(--panel-2) 93%);
+    box-shadow: 0 14px 28px -16px color-mix(in srgb, var(--red) 60%, transparent), 0 2px 6px -2px color-mix(in srgb, var(--red) 30%, transparent);
   }
   .act-btn.minus .xp{ color: var(--red-soft); }
 
