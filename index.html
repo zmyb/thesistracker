@@ -18,16 +18,17 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <style>
   :root{
-    --bg: #0f0e17;
-    --panel: #1a1826;
-    --panel-2: #221f33;
-    --line: #322e47;
-    --text: #efeaf7;
-    --muted: #948db3;
-    --gold: #f2c94c;
-    --gold-dim: #7a6a2a;
+    --bg: #0a0a13;
+    --panel: #121223;
+    --panel-2: #171a2c;
+    --line: #262a40;
+    --text: #f3f1f9;
+    --muted: #8d89a8;
+    --gold: #f0b542;
+    --gold-dim: #6b5528;
     --green: #6ee7a8;
     --red: #ff6b78;
+    --accent: #5396ee;
     --green-soft: color-mix(in srgb, var(--green) 55%, #888 45%);
     --red-soft: color-mix(in srgb, var(--red) 55%, #888 45%);
     --font-display: 'Tajawal', sans-serif;
@@ -45,9 +46,33 @@
     --gold-dim: #ecd9a0;
     --green: #1f9d5c;
     --red: #d1414f;
+    --accent: #2f6fd6;
   }
 
   *{ box-sizing: border-box; }
+
+  /* ---------- Global interaction polish ----------
+     Every clickable control gets a light, consistent feel:
+     a small lift + brighten on hover, a gentle press on click,
+     and a visible focus ring for keyboard users. No flashes,
+     no full-opacity fades — just quick, smooth transform/filter. */
+  button, select{
+    font-family: inherit;
+  }
+  button:not(:disabled), select{
+    cursor: pointer;
+    transition: transform .15s ease, filter .15s ease, border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+  }
+  button:not(:disabled):hover, select:hover{ filter: brightness(1.1); }
+  button:not(:disabled):active{ transform: scale(0.96); }
+  button:focus-visible, select:focus-visible, input:focus-visible{
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+  input[type="checkbox"]{
+    cursor:pointer; transition: transform .12s ease;
+  }
+  input[type="checkbox"]:hover{ transform: scale(1.12); }
+
   body{
     margin:0;
     background: var(--bg);
@@ -131,43 +156,33 @@
   }
   .act-btn{
     display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap: 6px; padding: 14px 8px; border-radius: 15px;
+    gap: 6px; padding: 16px 8px; border-radius: 14px;
     color: var(--text); cursor:pointer;
     font-family: var(--font-display); font-size: 13px; font-weight:700;
-    transition: 0.3s ease, transform .12s ease;
+    transition: transform .16s ease, border-color .16s ease, background-color .16s ease, box-shadow .16s ease;
     -webkit-tap-highlight-color: transparent;
     position: relative;
-    border: 2px solid transparent;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
   }
-  .act-btn:active{ transform: scale(0.96); }
+  .act-btn:hover{ transform: translateY(-2px); }
+  .act-btn:active{ transform: translateY(0) scale(0.97); }
   .act-btn .emoji{ font-size: 22px; }
   .act-btn .xp{ font-family: var(--font-mono); font-size: 12px; }
 
-  /* Uiverse-style "user-profile" border look: only a thin edge carries the corner-fade
-     gradient (center stays the normal panel color), and it glows brighter on hover. */
-  .act-btn.plus{
-    background:
-      linear-gradient(var(--panel), var(--panel)) padding-box,
-      linear-gradient(135deg, var(--green-soft) 0%, transparent 50%) border-box;
-  }
-  .act-btn.plus:hover, .act-btn.plus:focus-within{
-    background:
-      linear-gradient(var(--panel), var(--panel)) padding-box,
-      linear-gradient(135deg, var(--green-soft) 0%, transparent 65%) border-box;
-    box-shadow: 0 0 10px color-mix(in srgb, var(--green-soft) 50%, transparent);
+  .act-btn.plus{ border-color: color-mix(in srgb, var(--green) 25%, var(--line) 75%); }
+  .act-btn.plus:hover, .act-btn.plus:focus-visible{
+    border-color: var(--green);
+    background: color-mix(in srgb, var(--green) 8%, var(--panel-2) 92%);
+    box-shadow: 0 8px 18px -10px color-mix(in srgb, var(--green) 55%, transparent);
   }
   .act-btn.plus .xp{ color: var(--green-soft); }
 
-  .act-btn.minus{
-    background:
-      linear-gradient(var(--panel), var(--panel)) padding-box,
-      linear-gradient(135deg, var(--red-soft) 0%, transparent 50%) border-box;
-  }
-  .act-btn.minus:hover, .act-btn.minus:focus-within{
-    background:
-      linear-gradient(var(--panel), var(--panel)) padding-box,
-      linear-gradient(135deg, var(--red-soft) 0%, transparent 65%) border-box;
-    box-shadow: 0 0 10px color-mix(in srgb, var(--red-soft) 50%, transparent);
+  .act-btn.minus{ border-color: color-mix(in srgb, var(--red) 25%, var(--line) 75%); }
+  .act-btn.minus:hover, .act-btn.minus:focus-visible{
+    border-color: var(--red);
+    background: color-mix(in srgb, var(--red) 8%, var(--panel-2) 92%);
+    box-shadow: 0 8px 18px -10px color-mix(in srgb, var(--red) 55%, transparent);
   }
   .act-btn.minus .xp{ color: var(--red-soft); }
 
@@ -176,22 +191,30 @@
     position:absolute; top:4px; left:4px; width:18px; height:18px;
     border-radius:50%; background: var(--panel-2); border:1px solid var(--line);
     color: var(--muted); font-size:11px; line-height:16px; text-align:center;
-    cursor:pointer; z-index:2;
+    cursor:pointer; z-index:2; transition: .15s ease;
   }
+  .act-btn .del-x:hover{ background: var(--red); border-color: var(--red); color: #2a0a0d; }
   .act-btn .edit-pencil{
     position:absolute; top:4px; right:4px; width:18px; height:18px;
     border-radius:50%; background: var(--panel-2); border:1px solid var(--line);
     color: var(--muted); font-size:10px; line-height:16px; text-align:center;
-    cursor:pointer; z-index:2;
+    cursor:pointer; z-index:2; transition: .15s ease;
   }
+  .act-btn .edit-pencil:hover{ background: var(--gold); border-color: var(--gold); color: #241f0a; }
   .add-panel .reset-link{
     background:none; border:none; color: var(--muted); font-size:12px;
     text-decoration: underline; cursor:pointer; padding:0; margin-inline-end:auto;
   }
   .act-btn.add-new{
     border-style: dashed; border-color: var(--line); color: var(--muted);
-    background: transparent; border-width: 2px;
+    background: transparent; border-width: 1.5px;
   }
+  .act-btn.add-new:hover{
+    border-style: solid; border-color: var(--gold); color: var(--gold);
+    background: color-mix(in srgb, var(--gold) 6%, transparent);
+    box-shadow: none;
+  }
+
 
   /* Sections + sorting */
   .section-header{
@@ -414,7 +437,8 @@
   }
   .progress-section-pct{ font-family: var(--font-mono); font-size:11px; color: var(--muted); font-weight:700; white-space:nowrap; }
   .progress-section-body{ padding: 10px 12px 12px; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:10px; }
-  .progress-item{ display:flex; align-items:center; gap:8px; font-size:13px; cursor:pointer; }
+  .progress-item{ display:flex; align-items:center; gap:8px; font-size:13px; cursor:pointer; border-radius:8px; padding:3px 4px; margin:-3px -4px; transition: background-color .15s ease; }
+  .progress-item:hover{ background: var(--panel-2); }
   .progress-item input[type="checkbox"]{ width:16px; height:16px; accent-color: var(--gold); cursor:pointer; flex-shrink:0; }
   .progress-group{ display:flex; flex-direction:column; gap:6px; }
   .progress-group-title{ font-size:12px; font-weight:800; color: var(--text); }
@@ -519,26 +543,28 @@
     text-decoration: underline; cursor:pointer; padding:0;
   }
 
-  /* Unified emoji style: Microsoft 3D Fluent images (same rendering on iPhone/Android/desktop) */
-  img.femoji{
-    height: 1em; width: 1em;
-    vertical-align: -0.18em;
-    object-fit: contain;
-    display: inline-block;
-    margin: 0 0.02em;
-  }
-
   /* ---------- Starfield background effect (Uiverse.io by sinful_9361) ---------- */
   #starfield-container {
     position: fixed;
     inset: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(ellipse at bottom, #321b35 0%, #090a0f 100%);
+    background: radial-gradient(ellipse at bottom, #141a33 0%, #07070d 100%);
     overflow: hidden;
     z-index: -1;
     pointer-events: none;
   }
+  /* Soft light that follows the cursor, like a hand-held lamp over the stars.
+     Purely decorative, GPU-cheap (opacity/background only), disabled on touch
+     devices and for people who prefer reduced motion. */
+  #cursor-glow{
+    position: absolute; inset: 0;
+    background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--accent) 20%, transparent), transparent 65%);
+    opacity: 0;
+    transition: opacity .4s ease;
+    mix-blend-mode: screen;
+  }
+  #cursor-glow.active{ opacity: 1; }
   #stars, #stars2, #stars3 { position: absolute; top: 0; left: 0; }
   #stars {
     width: 1px;
@@ -2672,141 +2698,36 @@ window.addEventListener('load', function(){
 });
 </script>
 
-<script>
-/* =====================================================================
-   Unify emoji rendering across all devices/platforms.
-   Replaces native text emoji with Microsoft "Fluent Emoji 3D" images
-   so they look identical on iPhone, Android, and every browser/OS,
-   instead of relying on each device's own built-in emoji font.
-   ===================================================================== */
-(function(){
-  var CDN = 'https://cdn.jsdelivr.net/gh/shuding/fluentui-emoji-unicode/assets/';
-  // Matches a pictographic emoji, optional variation selector, and ZWJ sequences.
-  var EMOJI_RE = /\p{Extended_Pictographic}\uFE0F?(?:\u200D\p{Extended_Pictographic}\uFE0F?)*/gu;
-  var SKIP_TAGS = { SCRIPT:1, STYLE:1, IMG:1, TEXTAREA:1, INPUT:1 };
-
-  function codepointsOf(str){
-    return Array.from(str).map(function(ch){ return ch.codePointAt(0).toString(16); });
-  }
-
-  function candidateUrls(match){
-    var cps = codepointsOf(match);
-    var urls = [];
-    var withFe0f = cps.join('-') + '_3d.png';
-    urls.push(CDN + withFe0f);
-    var noFe0f = cps.filter(function(c){ return c !== 'fe0f'; }).join('-') + '_3d.png';
-    if(noFe0f !== withFe0f) urls.push(CDN + noFe0f);
-    var base = cps.filter(function(c){ return c !== 'fe0f' && c !== '200d'; })[0];
-    if(base){
-      var baseUrl = CDN + base + '_3d.png';
-      if(urls.indexOf(baseUrl) === -1) urls.push(baseUrl);
-    }
-    return urls;
-  }
-
-  function makeImg(match){
-    var img = document.createElement('img');
-    img.className = 'femoji';
-    img.alt = match;
-    img.loading = 'lazy';
-    img.draggable = false;
-    var urls = candidateUrls(match);
-    var i = 0;
-    img.src = urls[i];
-    img.addEventListener('error', function onErr(){
-      i++;
-      if(i < urls.length){
-        img.src = urls[i];
-      } else {
-        // No Fluent 3D asset available anywhere: fall back to the plain emoji text.
-        var textNode = document.createTextNode(match);
-        if(img.parentNode) img.parentNode.replaceChild(textNode, img);
-      }
-    });
-    return img;
-  }
-
-  function replaceInTextNode(node){
-    var text = node.nodeValue;
-    EMOJI_RE.lastIndex = 0;
-    if(!EMOJI_RE.test(text)) return;
-    EMOJI_RE.lastIndex = 0;
-    var frag = document.createDocumentFragment();
-    var lastIndex = 0;
-    var m;
-    while((m = EMOJI_RE.exec(text)) !== null){
-      if(m.index > lastIndex){
-        frag.appendChild(document.createTextNode(text.slice(lastIndex, m.index)));
-      }
-      frag.appendChild(makeImg(m[0]));
-      lastIndex = m.index + m[0].length;
-    }
-    if(lastIndex < text.length){
-      frag.appendChild(document.createTextNode(text.slice(lastIndex)));
-    }
-    node.parentNode.replaceChild(frag, node);
-  }
-
-  function walk(node){
-    if(node.nodeType === 3){
-      replaceInTextNode(node);
-      return;
-    }
-    if(node.nodeType !== 1) return;
-    if(SKIP_TAGS[node.tagName]) return;
-    if(node.classList && node.classList.contains('femoji')) return;
-    var children = Array.prototype.slice.call(node.childNodes);
-    for(var i=0;i<children.length;i++) walk(children[i]);
-  }
-
-  function emojifyAttrs(root){
-    // Cover common attributes that may carry emoji glyphs (titles/placeholders/aria-labels).
-    var ATTRS = ['title','placeholder','aria-label'];
-    var all = root.querySelectorAll ? root.querySelectorAll('*') : [];
-    for(var i=0;i<all.length;i++){
-      var el = all[i];
-      for(var j=0;j<ATTRS.length;j++){
-        var a = ATTRS[j];
-        var v = el.getAttribute && el.getAttribute(a);
-        if(v){
-          EMOJI_RE.lastIndex = 0;
-          if(EMOJI_RE.test(v)){
-            // Strip the emoji glyph from the attribute (images can't render inside plain attributes).
-            EMOJI_RE.lastIndex = 0;
-            el.setAttribute(a, v.replace(EMOJI_RE, '').replace(/\s{2,}/g,' ').trim());
-          }
-        }
-      }
-    }
-  }
-
-  var scheduled = false;
-  function scheduleWalk(){
-    if(scheduled) return;
-    scheduled = true;
-    requestAnimationFrame(function(){
-      scheduled = false;
-      walk(document.body);
-      emojifyAttrs(document.body);
-    });
-  }
-
-  var observer = new MutationObserver(function(){ scheduleWalk(); });
-  observer.observe(document.documentElement, { childList:true, subtree:true, characterData:true });
-
-  if(document.body){
-    scheduleWalk();
-  } else {
-    document.addEventListener('DOMContentLoaded', scheduleWalk);
-  }
-})();
-</script>
-
 <!-- Starfield background effect -->
 <div id="starfield-container">
   <div id="stars"></div>
   <div id="stars2"></div>
   <div id="stars3"></div>
+  <div id="cursor-glow"></div>
 </div>
+<script>
+(function(){
+  // Only on devices with a real mouse, and only if the person hasn't asked for less motion.
+  if(!window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var glow = document.getElementById('cursor-glow');
+  if(!glow) return;
+  var tx = 0, ty = 0, cx = 0, cy = 0, started = false;
+  function loop(){
+    cx += (tx - cx) * 0.14;
+    cy += (ty - cy) * 0.14;
+    glow.style.setProperty('--mx', cx + 'px');
+    glow.style.setProperty('--my', cy + 'px');
+    requestAnimationFrame(loop);
+  }
+  window.addEventListener('mousemove', function(e){
+    tx = e.clientX; ty = e.clientY;
+    if(!started){ cx = tx; cy = ty; started = true; }
+    glow.classList.add('active');
+  }, { passive: true });
+  document.addEventListener('mouseleave', function(){ glow.classList.remove('active'); });
+  loop();
+})();
+</script>
 </body>
 </html>
