@@ -543,28 +543,26 @@
     text-decoration: underline; cursor:pointer; padding:0;
   }
 
+  /* Unified emoji style: Microsoft 3D Fluent images (same rendering on iPhone/Android/desktop) */
+  img.femoji{
+    height: 1em; width: 1em;
+    vertical-align: -0.18em;
+    object-fit: contain;
+    display: inline-block;
+    margin: 0 0.02em;
+  }
+
   /* ---------- Starfield background effect (Uiverse.io by sinful_9361) ---------- */
   #starfield-container {
     position: fixed;
     inset: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(ellipse at bottom, #141a33 0%, #07070d 100%);
+    background: radial-gradient(ellipse 70% 55% at 50% 8%, #10152a 0%, #06070e 55%, #05060d 100%);
     overflow: hidden;
     z-index: -1;
     pointer-events: none;
   }
-  /* Soft light that follows the cursor, like a hand-held lamp over the stars.
-     Purely decorative, GPU-cheap (opacity/background only), disabled on touch
-     devices and for people who prefer reduced motion. */
-  #cursor-glow{
-    position: absolute; inset: 0;
-    background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--accent) 20%, transparent), transparent 65%);
-    opacity: 0;
-    transition: opacity .4s ease;
-    mix-blend-mode: screen;
-  }
-  #cursor-glow.active{ opacity: 1; }
   #stars, #stars2, #stars3 { position: absolute; top: 0; left: 0; }
   #stars {
     width: 1px;
@@ -2698,36 +2696,155 @@ window.addEventListener('load', function(){
 });
 </script>
 
+<script>
+/* =====================================================================
+   Unify emoji rendering across all devices/platforms.
+   Replaces native text emoji with Microsoft "Fluent Emoji 3D" images
+   so they look identical on iPhone, Android, and every browser/OS,
+   instead of relying on each device's own built-in emoji font.
+
+   Anti-flash fix: once an emoji's working CDN URL is found, it's kept
+   in resolvedUrlCache for the rest of the session. Every later render()
+   creates fresh <img> tags (because it rebuilds the whole screen), but
+   they now point straight at the already-cached URL — no retry chain,
+   no lazy-load delay — so the browser paints them from cache instantly
+   instead of popping in a beat after the text disappears.
+   ===================================================================== */
+(function(){
+  var CDN = 'https://cdn.jsdelivr.net/gh/shuding/fluentui-emoji-unicode/assets/';
+  // Matches a pictographic emoji, optional variation selector, and ZWJ sequences.
+  var EMOJI_RE = /\p{Extended_Pictographic}\uFE0F?(?:\u200D\p{Extended_Pictographic}\uFE0F?)*/gu;
+  var SKIP_TAGS = { SCRIPT:1, STYLE:1, IMG:1, TEXTAREA:1, INPUT:1 };
+  var resolvedUrlCache = {}; // emoji -> known-working URL, filled in as images succeed
+
+  function codepointsOf(str){
+    return Array.from(str).map(function(ch){ return ch.codePointAt(0).toString(16); });
+  }
+
+  function candidateUrls(match){
+    var cps = codepointsOf(match);
+    var urls = [];
+    var withFe0f = cps.join('-') + '_3d.png';
+    urls.push(CDN + withFe0f);
+    var noFe0f = cps.filter(function(c){ return c !== 'fe0f'; }).join('-') + '_3d.png';
+    if(noFe0f !== withFe0f) urls.push(CDN + noFe0f);
+    var base = cps.filter(function(c){ return c !== 'fe0f' && c !== '200d'; })[0];
+    if(base){
+      var baseUrl = CDN + base + '_3d.png';
+      if(urls.indexOf(baseUrl) === -1) urls.push(baseUrl);
+    }
+    return urls;
+  }
+
+  function makeImg(match){
+    var img = document.createElement('img');
+    img.className = 'femoji';
+    img.alt = match;
+    img.loading = 'eager';
+    img.decoding = 'sync';
+    img.draggable = false;
+
+    var known = resolvedUrlCache[match];
+    var urls = known ? [known] : candidateUrls(match);
+    var i = 0;
+    img.src = urls[i];
+    img.addEventListener('load', function onLoad(){
+      resolvedUrlCache[match] = urls[i];
+    });
+    img.addEventListener('error', function onErr(){
+      i++;
+      if(i < urls.length){
+        img.src = urls[i];
+      } else {
+        // No Fluent 3D asset available anywhere: fall back to the plain emoji text.
+        var textNode = document.createTextNode(match);
+        if(img.parentNode) img.parentNode.replaceChild(textNode, img);
+      }
+    });
+    return img;
+  }
+
+  function replaceInTextNode(node){
+    var text = node.nodeValue;
+    EMOJI_RE.lastIndex = 0;
+    if(!EMOJI_RE.test(text)) return;
+    EMOJI_RE.lastIndex = 0;
+    var frag = document.createDocumentFragment();
+    var lastIndex = 0;
+    var m;
+    while((m = EMOJI_RE.exec(text)) !== null){
+      if(m.index > lastIndex){
+        frag.appendChild(document.createTextNode(text.slice(lastIndex, m.index)));
+      }
+      frag.appendChild(makeImg(m[0]));
+      lastIndex = m.index + m[0].length;
+    }
+    if(lastIndex < text.length){
+      frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+    }
+    node.parentNode.replaceChild(frag, node);
+  }
+
+  function walk(node){
+    if(node.nodeType === 3){
+      replaceInTextNode(node);
+      return;
+    }
+    if(node.nodeType !== 1) return;
+    if(SKIP_TAGS[node.tagName]) return;
+    if(node.classList && node.classList.contains('femoji')) return;
+    var children = Array.prototype.slice.call(node.childNodes);
+    for(var i=0;i<children.length;i++) walk(children[i]);
+  }
+
+  function emojifyAttrs(root){
+    // Cover common attributes that may carry emoji glyphs (titles/placeholders/aria-labels).
+    var ATTRS = ['title','placeholder','aria-label'];
+    var all = root.querySelectorAll ? root.querySelectorAll('*') : [];
+    for(var i=0;i<all.length;i++){
+      var el = all[i];
+      for(var j=0;j<ATTRS.length;j++){
+        var a = ATTRS[j];
+        var v = el.getAttribute && el.getAttribute(a);
+        if(v){
+          EMOJI_RE.lastIndex = 0;
+          if(EMOJI_RE.test(v)){
+            // Strip the emoji glyph from the attribute (images can't render inside plain attributes).
+            EMOJI_RE.lastIndex = 0;
+            el.setAttribute(a, v.replace(EMOJI_RE, '').replace(/\s{2,}/g,' ').trim());
+          }
+        }
+      }
+    }
+  }
+
+  var scheduled = false;
+  function scheduleWalk(){
+    if(scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(function(){
+      scheduled = false;
+      walk(document.body);
+      emojifyAttrs(document.body);
+    });
+  }
+
+  var observer = new MutationObserver(function(){ scheduleWalk(); });
+  observer.observe(document.documentElement, { childList:true, subtree:true, characterData:true });
+
+  if(document.body){
+    scheduleWalk();
+  } else {
+    document.addEventListener('DOMContentLoaded', scheduleWalk);
+  }
+})();
+</script>
+
 <!-- Starfield background effect -->
 <div id="starfield-container">
   <div id="stars"></div>
   <div id="stars2"></div>
   <div id="stars3"></div>
-  <div id="cursor-glow"></div>
 </div>
-<script>
-(function(){
-  // Only on devices with a real mouse, and only if the person hasn't asked for less motion.
-  if(!window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var glow = document.getElementById('cursor-glow');
-  if(!glow) return;
-  var tx = 0, ty = 0, cx = 0, cy = 0, started = false;
-  function loop(){
-    cx += (tx - cx) * 0.14;
-    cy += (ty - cy) * 0.14;
-    glow.style.setProperty('--mx', cx + 'px');
-    glow.style.setProperty('--my', cy + 'px');
-    requestAnimationFrame(loop);
-  }
-  window.addEventListener('mousemove', function(e){
-    tx = e.clientX; ty = e.clientY;
-    if(!started){ cx = tx; cy = ty; started = true; }
-    glow.classList.add('active');
-  }, { passive: true });
-  document.addEventListener('mouseleave', function(){ glow.classList.remove('active'); });
-  loop();
-})();
-</script>
 </body>
 </html>
