@@ -18,19 +18,19 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <style>
   :root{
-    --bg: #0f0e17;
-    --bg-deep: #020308;
-    --accent: #6fd6ff;
-    --accent-2: #a68cff;
-    --panel: #1a1826;
-    --panel-2: #221f33;
-    --line: #322e47;
-    --text: #efeaf7;
-    --muted: #948db3;
+    --bg: #08080f;
+    --bg-deep: #030308;
+    --accent: #7c93ff;
+    --accent-2: #ff5fa8;
+    --panel: #14131f;
+    --panel-2: #1b1a29;
+    --line: #2c2a40;
+    --text: #f4f3fb;
+    --muted: #9391b0;
     --gold: #f2c94c;
     --gold-dim: #7a6a2a;
-    --green: #6ee7a8;
-    --red: #ff6b78;
+    --green: #34e0a6;
+    --red: #ff5470;
     --green-soft: color-mix(in srgb, var(--green) 55%, #888 45%);
     --red-soft: color-mix(in srgb, var(--red) 55%, #888 45%);
     --font-display: 'Tajawal', sans-serif;
@@ -38,66 +38,66 @@
     --font-title: 'Tajawal', sans-serif;
   }
   [data-theme="light"]{
-    --bg: #f4f2fa;
-    --bg-deep: #eceef7;
-    --accent: #2f8fd6;
-    --accent-2: #7c5cd6;
+    --bg: #f6f5fb;
+    --bg-deep: #ecebf6;
+    --accent: #4f6ee0;
+    --accent-2: #d6488f;
     --panel: #ffffff;
-    --panel-2: #eeeaf8;
-    --line: #ddd5ec;
-    --text: #221e33;
-    --muted: #726a8c;
+    --panel-2: #f1eefb;
+    --line: #e0dcf0;
+    --text: #211f30;
+    --muted: #6f6c8a;
     --gold: #b9860a;
     --gold-dim: #ecd9a0;
-    --green: #1f9d5c;
-    --red: #d1414f;
+    --green: #189d68;
+    --red: #d1415f;
   }
 
   /* ---------- Design theme: Islamic (احترافي أخضر وذهبي) ---------- */
   [data-design="islamic"][data-theme="dark"]{
-    --bg: #0c1a14;
-    --bg-deep: #030b08;
+    --bg: #081712;
+    --bg-deep: #030a07;
     --accent: #4fe0b0;
     --accent-2: #d4af37;
-    --panel: #122a20;
-    --panel-2: #193a2b;
-    --line: #2c5240;
+    --panel: #0f241c;
+    --panel-2: #163527;
+    --line: #2a5040;
     --text: #eef6ef;
-    --muted: #93b3a1;
+    --muted: #8fb09e;
     --gold: #d4af37;
     --gold-dim: #6b5a1f;
-    --green: #4fae7a;
-    --red: #d9707a;
+    --green: #4fce8f;
+    --red: #e07d86;
     --font-title: 'Amiri', serif;
   }
   [data-design="islamic"][data-theme="light"]{
-    --bg: #faf6ec;
-    --bg-deep: #f2eddb;
-    --accent: #157a6b;
+    --bg: #faf7ee;
+    --bg-deep: #f1ecd8;
+    --accent: #147a6a;
     --accent-2: #9c7a1f;
     --panel: #ffffff;
-    --panel-2: #f1ead9;
-    --line: #ddd0ad;
-    --text: #1f3325;
-    --muted: #7a7060;
+    --panel-2: #f2ecdc;
+    --line: #ddd0ab;
+    --text: #1c3123;
+    --muted: #756b5b;
     --gold: #a9822b;
     --gold-dim: #e8d9ad;
-    --green: #1f7a4c;
+    --green: #1c7a4a;
     --red: #b23a3a;
     --font-title: 'Amiri', serif;
   }
 
   /* ---------- Design theme: Purple (لافندر وأبيض وأسود وزهري) ---------- */
   [data-design="purple"][data-theme="dark"]{
-    --bg: #1a1225;
-    --bg-deep: #0a0614;
+    --bg: #150e20;
+    --bg-deep: #090511;
     --accent: #b98cff;
     --accent-2: #ef6f9e;
-    --panel: #241a33;
-    --panel-2: #2f2140;
-    --line: #4a3660;
-    --text: #f4eefb;
-    --muted: #ac98c8;
+    --panel: #1e1530;
+    --panel-2: #291c3d;
+    --line: #453264;
+    --text: #f5efFC;
+    --muted: #a897c4;
     --gold: #e8a0c4;
     --gold-dim: #7a4a63;
     --green: #a8d8bd;
@@ -106,44 +106,44 @@
   }
   [data-design="purple"][data-theme="light"]{
     --bg: #faf6ff;
-    --bg-deep: #f2ecfc;
+    --bg-deep: #f0e9fb;
     --accent: #8a5cd6;
     --accent-2: #c23a72;
     --panel: #ffffff;
     --panel-2: #f3ecfc;
-    --line: #e0d0f0;
-    --text: #241833;
-    --muted: #8a7a9c;
+    --line: #ded0f0;
+    --text: #231733;
+    --muted: #83739a;
     --gold: #c060a0;
     --gold-dim: #f0c8e0;
-    --green: #4a9d6e;
+    --green: #439366;
     --red: #d1417a;
     --font-title: 'Tajawal', sans-serif;
   }
   /* ---------- Design theme: Hope (أسود وذهبي وألوان ترابية دافئة) ---------- */
   [data-design="hope"][data-theme="dark"]{
-    --bg: #0a0a0a;
+    --bg: #0a0a0c;
     --bg-deep: #040405;
     --accent: #d4af37;
     --accent-2: #c97b4a;
-    --panel: #161616;
-    --panel-2: #1f1f1f;
+    --panel: #151515;
+    --panel-2: #1e1e1e;
     --line: #333333;
-    --text: #f5f0e6;
-    --muted: #999999;
+    --text: #f6f1e7;
+    --muted: #9c9c9c;
     --gold: #d4af37;
     --gold-dim: #6b5a1f;
-    --green: #4fae7a;
-    --red: #d9707a;
+    --green: #55b483;
+    --red: #dd7c85;
     --font-title: 'Tajawal', sans-serif;
   }
   [data-design="hope"][data-theme="light"]{
     --bg: #faf8f2;
-    --bg-deep: #f2ede0;
+    --bg-deep: #f0ebdd;
     --accent: #9c7a1f;
     --accent-2: #b06035;
     --panel: #ffffff;
-    --panel-2: #f0ece0;
+    --panel-2: #f1ede0;
     --line: #ddd5c0;
     --text: #1a1a1a;
     --muted: #767676;
@@ -155,19 +155,19 @@
   }
   /* ---------- Design theme: Green (أخضر داكن وذهبي مستوحى من الشعار) ---------- */
   [data-design="green"][data-theme="dark"]{
-    --bg: #081712;
-    --bg-deep: #030c08;
+    --bg: #071510;
+    --bg-deep: #030b07;
     --accent: #c9a668;
     --accent-2: #4fae7a;
-    --panel: #10251d;
-    --panel-2: #173328;
-    --line: #2a4b3c;
+    --panel: #0e211a;
+    --panel-2: #153025;
+    --line: #294737;
     --text: #eef6f0;
-    --muted: #85a794;
+    --muted: #86a595;
     --gold: #c9a668;
     --gold-dim: #5f4f2f;
-    --green: #4a8f68;
-    --red: #c2555a;
+    --green: #57a879;
+    --red: #cd646a;
     --font-title: 'Tajawal', sans-serif;
   }
   [data-design="green"][data-theme="light"]{
@@ -802,6 +802,136 @@
   }
   [data-starfield="off"] #starfield-container{
     display: none;
+  }
+
+  /* =====================================================================
+     PREMIUM VISUAL LAYER — glass depth, softer motion, refined surfaces.
+     Everything below layers on top of the rules above (same selectors),
+     nothing here changes structure, only presentation.
+     ===================================================================== */
+
+  ::selection{ background: color-mix(in srgb, var(--accent-2) 45%, transparent); color: var(--text); }
+
+  html{ scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+  ::-webkit-scrollbar{ width:8px; height:8px; }
+  ::-webkit-scrollbar-thumb{ background: var(--line); border-radius:8px; }
+  ::-webkit-scrollbar-track{ background: transparent; }
+
+  body{
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    background:
+      radial-gradient(900px 620px at 18% -8%, color-mix(in srgb, var(--accent-2) 12%, transparent), transparent 62%),
+      radial-gradient(800px 560px at 108% 4%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 65%),
+      var(--bg);
+    background-attachment: fixed;
+    transition: background .35s ease, color .35s ease;
+  }
+
+  button, .icon-toggle-btn, .design-select, input, select, textarea{
+    transition: background .2s ease, border-color .2s ease, box-shadow .2s ease, transform .15s cubic-bezier(.2,.8,.2,1), color .2s ease;
+  }
+
+  /* Header identity */
+  .title{
+    background: linear-gradient(90deg, var(--text) 30%, var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    letter-spacing: .2px;
+  }
+  .title span.mark{
+    background: linear-gradient(120deg, var(--gold), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+
+  .icon-toggle-btn{
+    background: color-mix(in srgb, var(--panel-2) 75%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 1px 0 0 color-mix(in srgb, var(--text) 6%, transparent) inset;
+  }
+  .icon-toggle-btn:hover{ border-color: var(--accent-2); transform: translateY(-1px); }
+  .icon-toggle-btn.active{
+    background: linear-gradient(135deg, var(--gold), color-mix(in srgb, var(--gold) 70%, var(--accent-2)));
+    box-shadow: 0 4px 14px -4px color-mix(in srgb, var(--gold) 60%, transparent);
+  }
+  .design-select{
+    background: color-mix(in srgb, var(--panel-2) 75%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  }
+
+  /* Glass surfaces: cards, panels, list rows */
+  .card, .add-panel, .progress-add-panel, .quote-card, .daily-message,
+  .log-item-wrap, .log-item, .stat-item, .achv-count-item, .progress-section,
+  .cal-toggle, .section-order-bar, .section-reorder-bar, .emoji-swatch-btn{
+    background: color-mix(in srgb, var(--panel) 88%, transparent);
+    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 12px 30px -18px rgba(0,0,0,.55), 0 1px 0 0 color-mix(in srgb, var(--text) 5%, transparent) inset;
+  }
+  .stat-item, .achv-count-item, .log-item, .log-item-wrap{
+    background: color-mix(in srgb, var(--panel-2) 82%, transparent);
+  }
+  .card{ border-radius: 20px; }
+  .add-panel, .progress-add-panel{ border-radius: 18px; }
+  .progress-section{ border-radius: 16px; }
+  .stat-item{ border-radius: 14px; }
+
+  /* Actions grid — soft lift + glow on interaction */
+  .act-btn{
+    background: color-mix(in srgb, var(--panel) 88%, transparent);
+    box-shadow: 0 8px 20px -14px rgba(0,0,0,.5);
+  }
+  .act-btn:hover{ transform: translateY(-2px); }
+  .act-btn.plus:hover, .act-btn.plus:focus-within{
+    box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--green-soft) 55%, transparent);
+  }
+  .act-btn.minus:hover, .act-btn.minus:focus-within{
+    box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--red-soft) 55%, transparent);
+  }
+
+  /* Buttons: gold "save"/primary actions get a gentle gradient + lift */
+  .add-panel .save-btn, .note-editor .save-btn, .progress-add-panel .save-btn, .quote-editor .save-btn{
+    background: linear-gradient(135deg, var(--gold), color-mix(in srgb, var(--gold) 65%, var(--accent-2)));
+    border: none; box-shadow: 0 8px 18px -8px color-mix(in srgb, var(--gold) 55%, transparent);
+  }
+  .add-panel .save-btn:hover, .note-editor .save-btn:hover, .progress-add-panel .save-btn:hover, .quote-editor .save-btn:hover,
+  .quote-edit-btn:hover, .cal-toggle:hover, .progress-add-btn:hover{ transform: translateY(-1px); }
+  .add-panel .cancel-btn:hover, .note-editor .cancel-btn:hover, .progress-add-panel .cancel-btn:hover, .quote-editor .cancel-btn:hover{
+    color: var(--text);
+  }
+  .sort-btn.active{
+    background: linear-gradient(135deg, var(--gold), color-mix(in srgb, var(--gold) 65%, var(--accent-2)));
+    box-shadow: 0 6px 14px -8px color-mix(in srgb, var(--gold) 55%, transparent);
+  }
+
+  /* Bars: subtle glow + smoother easing */
+  .bar-track, .phase-seg{ overflow:hidden; }
+  .bar-fill, .phase-seg .fill{ transition: width .5s cubic-bezier(.2,.8,.2,1); }
+  .bar-fill{ box-shadow: 0 0 10px -2px color-mix(in srgb, var(--gold) 60%, transparent) inset; }
+  .bar-fill.done{ box-shadow: 0 0 10px -2px color-mix(in srgb, var(--green) 60%, transparent) inset; }
+
+  /* Progress pie / calendar day cells: rounder, softer edges */
+  .cal-day{ border-radius: 10px; }
+  .emoji-swatch-btn{ border-radius: 10px; }
+
+  /* Quote card as a hero moment */
+  .quote-card{
+    background:
+      linear-gradient(160deg, color-mix(in srgb, var(--accent-2) 8%, transparent), transparent 55%),
+      color-mix(in srgb, var(--panel) 88%, transparent);
+    border-radius: 20px;
+  }
+  .quote-mark{
+    background: linear-gradient(120deg, var(--gold), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+
+  /* Login screen: give it presence */
+  #loginScreen .title{ justify-content:center; font-size: 26px; }
+  #googleBtn > *{ border-radius: 12px !important; }
+
+  a{ color: var(--accent-2); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
   }
 </style>
 </head>
