@@ -236,18 +236,11 @@
 
   /* Header */
   .title{
-    font-size: 23px; font-weight: 900; letter-spacing: .3px;
-    display:flex; align-items:center; gap:9px; margin-bottom:3px;
+    font-size: 22px; font-weight: 900; letter-spacing: .4px;
+    display:flex; align-items:center; gap:8px; margin-bottom:3px;
     font-family: var(--font-title);
   }
-  .title span.mark{
-    display:inline-flex; align-items:center; justify-content:center;
-    width: 30px; height: 30px; border-radius: 10px; font-size: 15px;
-    background: linear-gradient(150deg, color-mix(in srgb, var(--gold) 22%, var(--panel)), var(--panel));
-    border: 1px solid color-mix(in srgb, var(--gold) 35%, var(--line));
-    color: var(--gold);
-    box-shadow: 0 6px 14px -8px color-mix(in srgb, var(--gold) 55%, transparent);
-  }
+  .title span.mark{ color: var(--gold); }
   .subtitle{ color: var(--muted); font-size: 13px; margin-bottom: 18px; }
 
   /* Phase HUD */
@@ -276,37 +269,23 @@
     padding: 18px;
     margin-bottom: 0;
     box-shadow: var(--shadow-card);
-    position: relative;
-    overflow: hidden;
   }
-  .card::before{
-    content:''; position:absolute; inset: 0 0 auto 0; height: 3px;
-    background: linear-gradient(90deg, var(--gold-dim), var(--gold), var(--gold-dim));
-    opacity:.85;
-  }
-  .xp-row{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:12px; }
+  .xp-row{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:10px; }
   .xp-today{
-    font-family: var(--font-mono); font-weight: 800; font-size: 36px; letter-spacing: -.5px;
+    font-family: var(--font-mono); font-weight: 800; font-size: 34px; letter-spacing: -.3px;
   }
-  .xp-today.neg{ color: var(--red); text-shadow: 0 0 24px color-mix(in srgb, var(--red) 30%, transparent); }
-  .xp-today.pos{ color: var(--green); text-shadow: 0 0 24px color-mix(in srgb, var(--green) 30%, transparent); }
+  .xp-today.neg{ color: var(--red); }
+  .xp-today.pos{ color: var(--green); }
   .xp-goal-label{ color: var(--muted); font-size: 13px; font-family: var(--font-mono); }
   .bar-track{
     height: 14px; background: var(--panel-2); border-radius: 8px;
-    border: 1px solid var(--line); overflow:hidden; position: relative;
+    border: 1px solid var(--line); overflow:hidden;
   }
   .bar-fill{
-    height:100%; border-radius: 8px; position: relative; overflow:hidden;
+    height:100%; border-radius: 8px;
     background: linear-gradient(90deg, var(--gold-dim), var(--gold));
     transition: width .5s var(--ease);
   }
-  .bar-fill::after{
-    content:''; position:absolute; inset:0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
-    transform: translateX(-100%);
-    animation: barShine 2.6s ease-in-out infinite;
-  }
-  @keyframes barShine{ 0%,20%{ transform: translateX(-100%); } 60%,100%{ transform: translateX(100%); } }
   .bar-fill.done{ background: linear-gradient(90deg, #2d7a52, var(--green)); }
 
   /* Action grid */
@@ -383,17 +362,10 @@
     display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; gap:8px; flex-wrap:wrap;
   }
   .section-title{
-    font-size:13.5px; font-weight:800; margin:0; display:flex; align-items:center; gap:8px;
-    text-transform: uppercase; letter-spacing: .4px;
-  }
-  .section-title::before{
-    content:''; display:inline-block; width:4px; height:14px; border-radius:3px;
-    background: var(--muted); opacity:.5;
+    font-size:14px; font-weight:800; margin:0; display:flex; align-items:center; gap:6px;
   }
   .section-title.plus{ color: var(--green); }
-  .section-title.plus::before{ background: var(--green); opacity:.9; }
   .section-title.minus{ color: var(--red); }
-  .section-title.minus::before{ background: var(--red); opacity:.9; }
   .sort-controls{ display:flex; gap:4px; }
   /* Consistent, subtle hover feedback for secondary buttons across the app */
   .sort-btn, .arrow-btn, .add-panel button, .progress-add-panel button, .daynav-btn{
@@ -564,17 +536,13 @@
 
   /* Level + Streak */
   .level-badge{
-    display:inline-flex; align-items:center; gap:6px; font-weight:800; font-size:13px;
-    color: var(--gold); margin-bottom: 8px;
-    background: color-mix(in srgb, var(--gold) 12%, var(--panel));
-    border: 1px solid color-mix(in srgb, var(--gold) 30%, var(--line));
-    border-radius: 999px; padding: 6px 13px;
+    display:flex; align-items:center; gap:6px; font-weight:800; font-size:14px;
+    color: var(--gold); margin-bottom: 4px;
   }
   .level-badge .lv-num{ font-family: var(--font-mono); }
   .streak-line{
-    display:inline-flex; align-items:center; gap:6px; font-size:12.5px; color: var(--muted);
-    margin-bottom: 16px; margin-inline-start: 6px; font-family: var(--font-mono); font-weight:700;
-    background: var(--panel-2); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px;
+    display:flex; align-items:center; gap:6px; font-size:13px; color: var(--muted);
+    margin-bottom: 12px; font-family: var(--font-mono); font-weight:700;
   }
   .streak-line b{ color: var(--text); }
 
