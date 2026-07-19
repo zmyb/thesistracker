@@ -18,7 +18,8 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <style>
   :root{
-    --bg: #0f0e17;
+    --bg: #06070d;
+    --bg-deep: #020308;
     --panel: #1a1826;
     --panel-2: #221f33;
     --line: #322e47;
@@ -33,9 +34,17 @@
     --font-display: 'Tajawal', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
     --font-title: 'Tajawal', sans-serif;
+    --accent: #6fd6ff;
+    --accent-2: #a68cff;
+    --ease: cubic-bezier(.16,.8,.24,1);
+    --ease-spring: cubic-bezier(.34,1.4,.42,1);
+    --shadow-card: 0 1px 0 rgba(255,255,255,.03) inset, 0 20px 40px -24px rgba(0,0,0,.6);
+    --shadow-pop: 0 24px 60px -20px rgba(0,0,0,.7);
+    --shadow-btn: 0 6px 16px -8px rgba(0,0,0,.5);
   }
   [data-theme="light"]{
-    --bg: #f4f2fa;
+    --bg: #f3f4fa;
+    --bg-deep: #eceef7;
     --panel: #ffffff;
     --panel-2: #eeeaf8;
     --line: #ddd5ec;
@@ -45,11 +54,17 @@
     --gold-dim: #ecd9a0;
     --green: #1f9d5c;
     --red: #d1414f;
+    --accent: #2f8fd6;
+    --accent-2: #7c5cd6;
+    --shadow-card: 0 1px 0 rgba(255,255,255,.6) inset, 0 20px 40px -28px rgba(30,34,60,.25);
+    --shadow-pop: 0 24px 50px -20px rgba(30,34,60,.3);
+    --shadow-btn: 0 6px 14px -8px rgba(30,34,60,.22);
   }
 
   /* ---------- Design theme: Islamic (احترافي أخضر وذهبي) ---------- */
   [data-design="islamic"][data-theme="dark"]{
-    --bg: #0c1a14;
+    --bg: #05100c;
+    --bg-deep: #030b08;
     --panel: #122a20;
     --panel-2: #193a2b;
     --line: #2c5240;
@@ -60,9 +75,12 @@
     --green: #4fae7a;
     --red: #d9707a;
     --font-title: 'Amiri', serif;
+    --accent: #4fe0b0;
+    --accent-2: #d4af37;
   }
   [data-design="islamic"][data-theme="light"]{
-    --bg: #faf6ec;
+    --bg: #f9f6ec;
+    --bg-deep: #f2eddb;
     --panel: #ffffff;
     --panel-2: #f1ead9;
     --line: #ddd0ad;
@@ -73,11 +91,14 @@
     --green: #1f7a4c;
     --red: #b23a3a;
     --font-title: 'Amiri', serif;
+    --accent: #157a6b;
+    --accent-2: #9c7a1f;
   }
 
   /* ---------- Design theme: Purple (لافندر وأبيض وأسود وزهري) ---------- */
   [data-design="purple"][data-theme="dark"]{
-    --bg: #1a1225;
+    --bg: #100a1c;
+    --bg-deep: #0a0614;
     --panel: #241a33;
     --panel-2: #2f2140;
     --line: #4a3660;
@@ -88,9 +109,12 @@
     --green: #a8d8bd;
     --red: #ef6f9e;
     --font-title: 'Tajawal', sans-serif;
+    --accent: #b98cff;
+    --accent-2: #ef6f9e;
   }
   [data-design="purple"][data-theme="light"]{
-    --bg: #faf6ff;
+    --bg: #faf7ff;
+    --bg-deep: #f2ecfc;
     --panel: #ffffff;
     --panel-2: #f3ecfc;
     --line: #e0d0f0;
@@ -101,10 +125,13 @@
     --green: #4a9d6e;
     --red: #d1417a;
     --font-title: 'Tajawal', sans-serif;
+    --accent: #8a5cd6;
+    --accent-2: #c23a72;
   }
   /* ---------- Design theme: Hope (أسود وذهبي وألوان ترابية دافئة) ---------- */
   [data-design="hope"][data-theme="dark"]{
-    --bg: #0a0a0a;
+    --bg: #07070a;
+    --bg-deep: #040405;
     --panel: #161616;
     --panel-2: #1f1f1f;
     --line: #333333;
@@ -115,9 +142,12 @@
     --green: #4fae7a;
     --red: #d9707a;
     --font-title: 'Tajawal', sans-serif;
+    --accent: #d4af37;
+    --accent-2: #c97b4a;
   }
   [data-design="hope"][data-theme="light"]{
     --bg: #faf8f2;
+    --bg-deep: #f2ede0;
     --panel: #ffffff;
     --panel-2: #f0ece0;
     --line: #ddd5c0;
@@ -128,10 +158,13 @@
     --green: #1f9d5c;
     --red: #d1414f;
     --font-title: 'Tajawal', sans-serif;
+    --accent: #9c7a1f;
+    --accent-2: #b06035;
   }
   /* ---------- Design theme: Green (أخضر داكن وذهبي مستوحى من الشعار) ---------- */
   [data-design="green"][data-theme="dark"]{
-    --bg: #081712;
+    --bg: #05130e;
+    --bg-deep: #030c08;
     --panel: #10251d;
     --panel-2: #173328;
     --line: #2a4b3c;
@@ -142,9 +175,12 @@
     --green: #4a8f68;
     --red: #c2555a;
     --font-title: 'Tajawal', sans-serif;
+    --accent: #c9a668;
+    --accent-2: #4fae7a;
   }
   [data-design="green"][data-theme="light"]{
-    --bg: #f6f7f2;
+    --bg: #f6f8f2;
+    --bg-deep: #eef2e6;
     --panel: #ffffff;
     --panel-2: #e9efe6;
     --line: #cdd9cd;
@@ -155,8 +191,12 @@
     --green: #1f6b45;
     --red: #a94a34;
     --font-title: 'Tajawal', sans-serif;
+    --accent: #8a6a1f;
+    --accent-2: #167a4a;
   }
   *{ box-sizing: border-box; }
+  *:focus-visible{ outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+  html{ scroll-behavior: smooth; }
   body{
     margin:0;
     background: var(--bg);
@@ -164,35 +204,50 @@
     font-family: var(--font-display);
     padding: 20px 14px 60px;
     min-height: 100vh;
-    transition: background .2s ease, color .2s ease;
+    transition: background .3s var(--ease), color .3s var(--ease);
+    letter-spacing: .1px;
   }
-  .wrap{ max-width: 480px; margin: 0 auto; transition: max-width .2s ease; }
+  .wrap{ max-width: 480px; margin: 0 auto; transition: max-width .25s var(--ease); }
   .wrap.wide{ max-width: 1100px; }
 
   /* Content area / columns for wide layout */
   .content-area{ display:block; }
-  .wrap.wide .content-area{ column-count: 2; column-gap: 20px; }
-  .content-block{ break-inside: avoid; margin-bottom: 16px; }
+  .wrap.wide .content-area{ display:flex; align-items:flex-start; gap:20px; }
+  .content-col{ display:flex; flex-direction:column; gap:16px; flex:1; min-width:0; }
+  .content-col .content-block{ margin-bottom:0; }
+  .content-block{ margin-bottom:16px; }
 
   /* Icon toggle buttons (theme / layout) */
   .icon-toggle-btn{
     background: var(--panel-2); border:1px solid var(--line); color: var(--text);
     width:30px; height:30px; border-radius:50%; cursor:pointer; font-size:14px;
     display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    transition: transform .18s var(--ease-spring), border-color .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease);
   }
+  .icon-toggle-btn:hover{ border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); box-shadow: 0 4px 12px -6px color-mix(in srgb, var(--accent) 40%, transparent); transform: translateY(-1px); }
+  .icon-toggle-btn:active{ transform: translateY(0) scale(.94); }
   .design-select{
     background: var(--panel-2); border:1px solid var(--line); color: var(--text);
     border-radius: 8px; padding: 5px 6px; font-family: var(--font-display);
     font-size: 11px; cursor:pointer; flex-shrink:0;
+    transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
   }
+  .design-select:hover{ border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
 
   /* Header */
   .title{
-    font-size: 22px; font-weight: 900; letter-spacing: .5px;
-    display:flex; align-items:center; gap:8px; margin-bottom:2px;
+    font-size: 23px; font-weight: 900; letter-spacing: .3px;
+    display:flex; align-items:center; gap:9px; margin-bottom:3px;
     font-family: var(--font-title);
   }
-  .title span.mark{ color: var(--gold); }
+  .title span.mark{
+    display:inline-flex; align-items:center; justify-content:center;
+    width: 30px; height: 30px; border-radius: 10px; font-size: 15px;
+    background: linear-gradient(150deg, color-mix(in srgb, var(--gold) 22%, var(--panel)), var(--panel));
+    border: 1px solid color-mix(in srgb, var(--gold) 35%, var(--line));
+    color: var(--gold);
+    box-shadow: 0 6px 14px -8px color-mix(in srgb, var(--gold) 55%, transparent);
+  }
   .subtitle{ color: var(--muted); font-size: 13px; margin-bottom: 18px; }
 
   /* Phase HUD */
@@ -205,7 +260,7 @@
   }
   .phase-seg .fill{
     height:100%; border-radius: 6px 0 0 6px;
-    transition: width .4s ease;
+    transition: width .5s var(--ease);
   }
   .phase-labels{
     display:flex; justify-content:space-between; font-family: var(--font-mono);
@@ -220,23 +275,38 @@
     border-radius: 16px;
     padding: 18px;
     margin-bottom: 0;
+    box-shadow: var(--shadow-card);
+    position: relative;
+    overflow: hidden;
   }
-  .xp-row{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:10px; }
+  .card::before{
+    content:''; position:absolute; inset: 0 0 auto 0; height: 3px;
+    background: linear-gradient(90deg, var(--gold-dim), var(--gold), var(--gold-dim));
+    opacity:.85;
+  }
+  .xp-row{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:12px; }
   .xp-today{
-    font-family: var(--font-mono); font-weight: 800; font-size: 34px;
+    font-family: var(--font-mono); font-weight: 800; font-size: 36px; letter-spacing: -.5px;
   }
-  .xp-today.neg{ color: var(--red); }
-  .xp-today.pos{ color: var(--green); }
+  .xp-today.neg{ color: var(--red); text-shadow: 0 0 24px color-mix(in srgb, var(--red) 30%, transparent); }
+  .xp-today.pos{ color: var(--green); text-shadow: 0 0 24px color-mix(in srgb, var(--green) 30%, transparent); }
   .xp-goal-label{ color: var(--muted); font-size: 13px; font-family: var(--font-mono); }
   .bar-track{
     height: 14px; background: var(--panel-2); border-radius: 8px;
-    border: 1px solid var(--line); overflow:hidden;
+    border: 1px solid var(--line); overflow:hidden; position: relative;
   }
   .bar-fill{
-    height:100%; border-radius: 8px;
+    height:100%; border-radius: 8px; position: relative; overflow:hidden;
     background: linear-gradient(90deg, var(--gold-dim), var(--gold));
-    transition: width .4s ease;
+    transition: width .5s var(--ease);
   }
+  .bar-fill::after{
+    content:''; position:absolute; inset:0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+    transform: translateX(-100%);
+    animation: barShine 2.6s ease-in-out infinite;
+  }
+  @keyframes barShine{ 0%,20%{ transform: translateX(-100%); } 60%,100%{ transform: translateX(100%); } }
   .bar-fill.done{ background: linear-gradient(90deg, #2d7a52, var(--green)); }
 
   /* Action grid */
@@ -248,12 +318,13 @@
     gap: 6px; padding: 14px 8px; border-radius: 15px;
     color: var(--text); cursor:pointer;
     font-family: var(--font-display); font-size: 13px; font-weight:700;
-    transition: 0.3s ease, transform .12s ease;
+    transition: 0.3s var(--ease), transform .15s var(--ease-spring);
     -webkit-tap-highlight-color: transparent;
     position: relative;
     border: 2px solid transparent;
   }
   .act-btn:active{ transform: scale(0.96); }
+  .act-btn:hover{ transform: translateY(-2px); }
   .act-btn .emoji{ font-size: 22px; }
   .act-btn .xp{ font-family: var(--font-mono); font-size: 12px; }
 
@@ -311,10 +382,29 @@
   .section-header{
     display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; gap:8px; flex-wrap:wrap;
   }
-  .section-title{ font-size:14px; font-weight:800; margin:0; display:flex; align-items:center; gap:6px; }
+  .section-title{
+    font-size:13.5px; font-weight:800; margin:0; display:flex; align-items:center; gap:8px;
+    text-transform: uppercase; letter-spacing: .4px;
+  }
+  .section-title::before{
+    content:''; display:inline-block; width:4px; height:14px; border-radius:3px;
+    background: var(--muted); opacity:.5;
+  }
   .section-title.plus{ color: var(--green); }
+  .section-title.plus::before{ background: var(--green); opacity:.9; }
   .section-title.minus{ color: var(--red); }
+  .section-title.minus::before{ background: var(--red); opacity:.9; }
   .sort-controls{ display:flex; gap:4px; }
+  /* Consistent, subtle hover feedback for secondary buttons across the app */
+  .sort-btn, .arrow-btn, .add-panel button, .progress-add-panel button, .daynav-btn{
+    transition: border-color .2s var(--ease), box-shadow .2s var(--ease), transform .12s var(--ease), background .2s var(--ease), color .2s var(--ease);
+  }
+  .sort-btn:hover, .arrow-btn:hover, .daynav-btn:not(:disabled):hover{
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); color: var(--text);
+  }
+  .add-panel .save-btn:hover, .progress-add-panel .save-btn:hover, .note-editor .save-btn:hover, .quote-editor .save-btn:hover{
+    box-shadow: 0 8px 18px -10px color-mix(in srgb, var(--gold) 60%, transparent); transform: translateY(-1px);
+  }
   .sort-btn{
     background: var(--panel-2); border:1px solid var(--line); color: var(--muted);
     font-family: var(--font-display); font-size:11px; border-radius:8px; padding:5px 8px; cursor:pointer;
@@ -474,13 +564,17 @@
 
   /* Level + Streak */
   .level-badge{
-    display:flex; align-items:center; gap:6px; font-weight:800; font-size:14px;
-    color: var(--gold); margin-bottom: 4px;
+    display:inline-flex; align-items:center; gap:6px; font-weight:800; font-size:13px;
+    color: var(--gold); margin-bottom: 8px;
+    background: color-mix(in srgb, var(--gold) 12%, var(--panel));
+    border: 1px solid color-mix(in srgb, var(--gold) 30%, var(--line));
+    border-radius: 999px; padding: 6px 13px;
   }
   .level-badge .lv-num{ font-family: var(--font-mono); }
   .streak-line{
-    display:flex; align-items:center; gap:6px; font-size:13px; color: var(--muted);
-    margin-bottom: 12px; font-family: var(--font-mono); font-weight:700;
+    display:inline-flex; align-items:center; gap:6px; font-size:12.5px; color: var(--muted);
+    margin-bottom: 16px; margin-inline-start: 6px; font-family: var(--font-mono); font-weight:700;
+    background: var(--panel-2); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px;
   }
   .streak-line b{ color: var(--text); }
 
@@ -648,12 +742,19 @@
     inset: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(ellipse at bottom, #321b35 0%, #090a0f 100%);
+    background:
+      radial-gradient(ellipse 60% 40% at 18% 12%, color-mix(in srgb, var(--accent-2) 16%, transparent), transparent 60%),
+      radial-gradient(ellipse 55% 45% at 85% 8%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 65%),
+      radial-gradient(ellipse at bottom, color-mix(in srgb, var(--panel) 60%, var(--bg-deep)) 0%, var(--bg-deep) 100%);
     overflow: hidden;
     z-index: -1;
     pointer-events: none;
   }
-  #stars, #stars2, #stars3 { position: absolute; top: 0; left: 0; }
+  [data-theme="light"] #starfield-container{ opacity:.5; }
+  #stars, #stars2, #stars3 { position: absolute; top: 0; left: 0; opacity:.8; }
+  #stars2{ animation-delay: -2s; }
+  #stars3{ animation-delay: -4s; }
+  @keyframes twinkle{ 0%,100%{ opacity:.55; } 50%{ opacity:1; } }
   #stars {
     width: 1px;
     height: 1px;
@@ -684,7 +785,7 @@
       787px 1235px #fff, 557px 524px #fff, 1582px 1285px #fff, 1725px 1366px #fff,
       952px 747px #fff, 251px 458px #fff, 1500px 1250px #fff, 1999px 1734px #fff,
       1336px 1955px #fff, 1705px 1464px #fff, 728px 697px #fff, 594px 510px #fff;
-    animation: animStar 50s linear infinite;
+    animation: animStar 80s linear infinite, twinkle 6s ease-in-out infinite;
   }
   #stars:after {
     content: " ";
@@ -716,7 +817,7 @@
       955px 659px #fff, 428px 1805px #fff, 237px 557px #fff, 1689px 1058px #fff,
       636px 1882px #fff, 1349px 1664px #fff, 1548px 432px #fff, 1841px 504px #fff,
       302px 252px #fff, 827px 1765px #fff, 620px 123px #fff, 207px 748px #fff;
-    animation: animStar 100s linear infinite;
+    animation: animStar 130s linear infinite, twinkle 7s ease-in-out infinite;
   }
   #stars2:after {
     content: " ";
@@ -748,7 +849,7 @@
       450px 415px #fff, 492px 901px #fff, 170px 1641px #fff, 56px 1129px #fff,
       627px 1514px #fff, 1221px 500px #fff, 324px 1895px #fff, 1397px 1775px #fff,
       1966px 598px #fff, 1550px 763px #fff, 326px 1605px #fff, 261px 969px #fff;
-    animation: animStar 150s linear infinite;
+    animation: animStar 180s linear infinite, twinkle 8s ease-in-out infinite;
   }
   #stars3:after {
     content: " ";
@@ -2784,7 +2885,79 @@ function render(){
   if(starfieldBtn) starfieldBtn.addEventListener('click', toggleStarfield);
   const designSelect = document.getElementById('designSelect');
   if(designSelect) designSelect.addEventListener('change', () => changeDesign(designSelect.value));
+
+  balanceContentColumns();
 }
+
+/* Distributes .content-block cards across two columns in wide layout the way
+   the original mysite did — first cards in the right column, the rest in the
+   left column, top to bottom, never interleaved — but picks the split point
+   using each card's *real measured height* instead of CSS multi-column's
+   naive height guess, so the right column never ends with a big empty gap
+   under it. */
+function balanceContentColumns(){
+  const area = document.querySelector('.content-area');
+  if(!area) return;
+
+  if(layoutMode !== 'wide'){
+    // Narrow layout: make sure cards are flat, single-column, in original order.
+    const cols = Array.prototype.slice.call(area.querySelectorAll('.content-col'));
+    if(cols.length){
+      const blocks = [];
+      cols.forEach(col => { Array.prototype.slice.call(col.children).forEach(b => blocks.push(b)); });
+      blocks.sort((a, b) => (+a.dataset.blockOrder || 0) - (+b.dataset.blockOrder || 0));
+      area.innerHTML = '';
+      blocks.forEach(b => area.appendChild(b));
+    }
+    return;
+  }
+
+  const flatBlocks = Array.prototype.slice.call(area.children).filter(el => el.classList.contains('content-block'));
+  if(flatBlocks.length === 0) return;
+
+  flatBlocks.forEach((b, i) => { b.dataset.blockOrder = i; });
+
+  // Pass 1: temporarily place every card in a single column so it reflows at
+  // its real final column width, then measure its true height.
+  const measureCol = document.createElement('div');
+  measureCol.className = 'content-col';
+  flatBlocks.forEach(block => measureCol.appendChild(block));
+  area.innerHTML = '';
+  area.appendChild(measureCol);
+
+  const heights = flatBlocks.map(b => b.offsetHeight);
+  const total = heights.reduce((a, h) => a + h, 0);
+  const target = total / 2;
+
+  // Pass 2: find the split index whose cumulative height lands closest to
+  // half the total, keeping cards in their original top-to-bottom order.
+  let bestIdx = 1, bestDiff = Infinity, cum = 0;
+  for(let i = 0; i < flatBlocks.length; i++){
+    cum += heights[i];
+    const diff = Math.abs(cum - target);
+    if(diff < bestDiff && i < flatBlocks.length - 1){
+      bestDiff = diff;
+      bestIdx = i + 1;
+    }
+  }
+  if(flatBlocks.length === 1) bestIdx = 1;
+
+  const colA = document.createElement('div');
+  colA.className = 'content-col';
+  const colB = document.createElement('div');
+  colB.className = 'content-col';
+  flatBlocks.forEach((block, i) => { (i < bestIdx ? colA : colB).appendChild(block); });
+  area.innerHTML = '';
+  area.appendChild(colA);
+  area.appendChild(colB);
+}
+
+let _balanceResizeTimer = null;
+window.addEventListener('resize', () => {
+  if(layoutMode !== 'wide') return;
+  clearTimeout(_balanceResizeTimer);
+  _balanceResizeTimer = setTimeout(balanceContentColumns, 150);
+});
 
 window.addEventListener('load', function(){
   applyTheme(getStoredTheme());
