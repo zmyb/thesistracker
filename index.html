@@ -71,12 +71,6 @@
     width:30px; height:30px; border-radius:50%; cursor:pointer; font-size:14px;
     display:flex; align-items:center; justify-content:center; flex-shrink:0;
   }
-  .design-select{
-    background: var(--panel-2); border:1px solid var(--line); color: var(--text);
-    border-radius: 8px; padding: 5px 6px; font-family: var(--font-display);
-    font-size: 11px; cursor:pointer; flex-shrink:0;
-  }
-
   /* Header */
   .title{
     font-size: 22px; font-weight: 900; letter-spacing: .5px;
@@ -662,9 +656,6 @@
 <body>
 <div class="wrap" id="loginScreen" style="display:none;">
   <div class="login-top">
-    <select class="design-select" id="designSelectLogin" title="نمط التصميم">
-      <option value="normal">🎨 عادي</option>
-    </select>
     <button class="icon-toggle-btn" id="starfieldToggleBtnLogin" title="تشغيل/إيقاف خلفية النجوم المتحركة">🌌</button>
     <button class="icon-toggle-btn" id="themeToggleBtnLogin" title="تبديل الوضع الداكن/الفاتح">☀️</button>
   </div>
@@ -710,7 +701,6 @@ db.enablePersistence({ synchronizeTabs: true }).catch(function(err){
 const AUTH_KEY = 'xp-tracker-auth-v1';
 const THEME_KEY = 'xp-tracker-theme';
 const LAYOUT_KEY = 'xp-tracker-layout';
-const DESIGN_KEY = 'xp-tracker-design';
 const STARFIELD_KEY = 'xp-tracker-starfield';
 let currentUser = null;
 
@@ -732,23 +722,6 @@ function toggleTheme(){
   applyTheme(next);
   const loginBtn = document.getElementById('themeToggleBtnLogin');
   if(loginBtn) loginBtn.textContent = next === 'light' ? '🌙' : '☀️';
-  if(state) render();
-}
-
-/* ---------- Design theme (عادي / إسلامي / بنفسجي / هوب / أخضر) ---------- */
-let designMode = 'normal';
-function getStoredDesign(){
-  return 'normal';
-}
-function applyDesign(design){
-  designMode = design;
-  document.documentElement.setAttribute('data-design', design);
-}
-function changeDesign(design){
-  localStorage.setItem(DESIGN_KEY, design);
-  applyDesign(design);
-  const loginSelect = document.getElementById('designSelectLogin');
-  if(loginSelect) loginSelect.value = design;
   if(state) render();
 }
 
@@ -1888,7 +1861,6 @@ function render(){
   const lvl = levelInfo();
   const streakCount = computeStreak();
   const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-  const currentDesign = designMode;
 
   const phaseHud = PHASES.map((p,i)=>{
     let pct = 0;
@@ -2344,9 +2316,6 @@ function render(){
     <div class="user-bar">
       <span class="u-name">${currentUser && currentUser.picture ? `<img src="${currentUser.picture}" alt="">` : ''}${escapeHtml(currentUser ? (currentUser.name || currentUser.email) : '')}</span>
       <span class="u-right">
-        <select class="design-select" id="designSelect" title="نمط التصميم">
-          <option value="normal" ${currentDesign==='normal'?'selected':''}>🎨 عادي</option>
-        </select>
         <button class="icon-toggle-btn" id="layoutToggleBtn" title="تبديل نمط العرض (عرضي/طولي)">${layoutMode === 'wide' ? '📱' : '💻'}</button>
         <button class="icon-toggle-btn" id="starfieldToggleBtn" title="تشغيل/إيقاف خلفية النجوم المتحركة">${starfieldMode === 'off' ? '✨' : '🌌'}</button>
         <button class="icon-toggle-btn" id="themeToggleBtn" title="تبديل الوضع الداكن/الفاتح">${isLight ? '🌙' : '☀️'}</button>
@@ -2663,13 +2632,10 @@ function render(){
   if(layoutBtn) layoutBtn.addEventListener('click', toggleLayout);
   const starfieldBtn = document.getElementById('starfieldToggleBtn');
   if(starfieldBtn) starfieldBtn.addEventListener('click', toggleStarfield);
-  const designSelect = document.getElementById('designSelect');
-  if(designSelect) designSelect.addEventListener('change', () => changeDesign(designSelect.value));
 }
 
 window.addEventListener('load', function(){
   applyTheme(getStoredTheme());
-  applyDesign(getStoredDesign());
   applyStarfield(getStoredStarfield());
   layoutMode = getStoredLayout();
 
@@ -2683,12 +2649,6 @@ window.addEventListener('load', function(){
   if(loginStarfieldBtn){
     loginStarfieldBtn.textContent = starfieldMode === 'off' ? '✨' : '🌌';
     loginStarfieldBtn.addEventListener('click', toggleStarfield);
-  }
-
-  const loginDesignSelect = document.getElementById('designSelectLogin');
-  if(loginDesignSelect){
-    loginDesignSelect.value = designMode;
-    loginDesignSelect.addEventListener('change', () => changeDesign(loginDesignSelect.value));
   }
 
   initFirebaseAuth();
