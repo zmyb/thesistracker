@@ -862,6 +862,7 @@ async function showApp(user){
   currentUser = user;
   STORAGE_KEY = 'xp-tracker-state-v1-' + user.email;
   viewingDateKey = todayKey();
+  viewingWeekStartKey = clampWeekStartKey(getWeekStartKey());
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   var footer = document.getElementById('siteFooter');
@@ -1231,13 +1232,34 @@ function getWeekStartKey(d = new Date()){
   return todayKey(monday);
 }
 
+// bounds for week navigation: first/last Monday touching the challenge range
+const MIN_WEEK_START = getWeekStartKey(dateFromKey(START_DATE));
+const MAX_WEEK_START = getWeekStartKey(dateFromKey(END_DATE));
+
+function clampWeekStartKey(key){
+  if(key < MIN_WEEK_START) return MIN_WEEK_START;
+  if(key > MAX_WEEK_START) return MAX_WEEK_START;
+  return key;
+}
+let viewingWeekStartKey = clampWeekStartKey(getWeekStartKey());
+function shiftViewingWeek(delta){
+  const d = dateFromKey(viewingWeekStartKey);
+  d.setDate(d.getDate() + delta*7);
+  viewingWeekStartKey = clampWeekStartKey(getWeekStartKey(d));
+  render();
+}
+function jumpToCurrentWeek(){
+  viewingWeekStartKey = clampWeekStartKey(getWeekStartKey());
+  render();
+}
+
 function currentWeekGoals(){
-  const key = getWeekStartKey();
+  const key = viewingWeekStartKey;
   return (state.weeklyGoals && state.weeklyGoals[key]) || [];
 }
 
 async function addWeeklyGoal(label, xp){
-  const key = getWeekStartKey();
+  const key = viewingWeekStartKey;
   if(!state.weeklyGoals) state.weeklyGoals = {};
   if(!state.weeklyGoals[key]) state.weeklyGoals[key] = [];
   state.weeklyGoals[key].push({ id: uniqueId(), label, xp, done: false, awarded: false });
@@ -1247,7 +1269,7 @@ async function addWeeklyGoal(label, xp){
 }
 
 async function removeWeeklyGoal(id){
-  const key = getWeekStartKey();
+  const key = viewingWeekStartKey;
   if(!state.weeklyGoals || !state.weeklyGoals[key]) return;
   state.weeklyGoals[key] = state.weeklyGoals[key].filter(g => g.id !== id);
   await saveState();
@@ -1255,7 +1277,7 @@ async function removeWeeklyGoal(id){
 }
 
 async function toggleWeeklyGoal(id){
-  const key = getWeekStartKey();
+  const key = viewingWeekStartKey;
   const goals = (state.weeklyGoals && state.weeklyGoals[key]) || [];
   const g = goals.find(x => x.id === id);
   if(!g) return;
@@ -1980,10 +2002,11 @@ function render(){
   const deadlineInfo = computeDeadlineInfo();
   if(selectedGoalsPhaseIdx === null) selectedGoalsPhaseIdx = notStarted ? 0 : (finished ? PHASES.length - 1 : currentPhaseIdx);
   const phaseGoalsList = getPhaseGoals(selectedGoalsPhaseIdx);
-  const weekStartKey = getWeekStartKey();
+  const weekStartKey = viewingWeekStartKey;
   const weekStartDate = dateFromKey(weekStartKey);
   const weekEndDate = new Date(weekStartDate); weekEndDate.setDate(weekEndDate.getDate() + 6);
   const weekRangeLabel = `${weekStartDate.getDate()} ${MONTH_NAMES[weekStartDate.getMonth()]} — ${weekEndDate.getDate()} ${MONTH_NAMES[weekEndDate.getMonth()]}`;
+  const isCurrentWeek = weekStartKey === clampWeekStartKey(getWeekStartKey());
   const weeklyGoalsList = currentWeekGoals();
 
   const sec_today = `
@@ -2193,7 +2216,17 @@ function render(){
   `;
   const sec_weeklyGoals = `
         <div class="card">
-          <div class="log-header"><h3>🎯 أهداف الأسبوع</h3><span class="stat-label">${weekRangeLabel}</span></div>
+          <div class="log-header">
+            <div class="log-day-nav">
+              <button class="daynav-btn" id="prevWeekBtn" ${weekStartKey<=MIN_WEEK_START?'disabled':''} title="الأسبوع السابق">‹</button>
+              <h3>🎯 أهداف الأسبوع</h3>
+              <button class="daynav-btn" id="nextWeekBtn" ${weekStartKey>=MAX_WEEK_START?'disabled':''} title="الأسبوع التالي">›</button>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              ${!isCurrentWeek ? `<button class="undo" id="jumpCurrentWeekBtn">هذا الأسبوع</button>` : ''}
+              <span class="stat-label">${weekRangeLabel}</span>
+            </div>
+          </div>
           <div class="progress-custom-list">
             ${weeklyGoalsList.length ? weeklyGoalsList.map(g => `
               <div class="progress-custom-item">
@@ -2631,6 +2664,12 @@ function render(){
   app.querySelectorAll('[data-del-weekly-goal]').forEach(btn => {
     btn.addEventListener('click', () => removeWeeklyGoal(btn.getAttribute('data-del-weekly-goal')));
   });
+  const prevWeekBtn = document.getElementById('prevWeekBtn');
+  if(prevWeekBtn) prevWeekBtn.addEventListener('click', () => shiftViewingWeek(-1));
+  const nextWeekBtn = document.getElementById('nextWeekBtn');
+  if(nextWeekBtn) nextWeekBtn.addEventListener('click', () => shiftViewingWeek(1));
+  const jumpCurrentWeekBtn = document.getElementById('jumpCurrentWeekBtn');
+  if(jumpCurrentWeekBtn) jumpCurrentWeekBtn.addEventListener('click', jumpToCurrentWeek);
   const openAddWeeklyGoalBtn = document.getElementById('openAddWeeklyGoal');
   if(openAddWeeklyGoalBtn) openAddWeeklyGoalBtn.addEventListener('click', () => { addingWeeklyGoal = !addingWeeklyGoal; render(); });
   const cancelWeeklyGoalBtn = document.getElementById('cancelWeeklyGoal');
