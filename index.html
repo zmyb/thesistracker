@@ -85,16 +85,12 @@
     background: var(--panel-2); border:1px solid var(--line); color: var(--text);
     width:30px; height:30px; border-radius:50%; cursor:pointer; font-size:14px;
     display:flex; align-items:center; justify-content:center; flex-shrink:0;
-    transition: border-color .15s ease, transform .15s ease;
   }
-  .icon-toggle-btn:hover{ border-color: var(--gold); transform: translateY(-2px); }
   .design-select{
     background: var(--panel-2); border:1px solid var(--line); color: var(--text);
     border-radius: 8px; padding: 5px 6px; font-family: var(--font-display);
     font-size: 11px; cursor:pointer; flex-shrink:0;
-    transition: border-color .15s ease;
   }
-  .design-select:hover{ border-color: var(--gold); }
 
   /* Header */
   .title{
@@ -155,80 +151,66 @@
   }
   .act-btn{
     display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap: 8px; padding: 16px 10px; border-radius: 16px;
+    gap: 6px; padding: 14px 8px; border-radius: 15px;
     color: var(--text); cursor:pointer;
     font-family: var(--font-display); font-size: 13px; font-weight:700;
-    transition: transform .18s cubic-bezier(.2,.8,.3,1), box-shadow .18s ease, border-color .18s ease, background-color .18s ease;
+    transition: 0.3s ease, transform .12s ease;
     -webkit-tap-highlight-color: transparent;
     position: relative;
-    background: var(--panel);
-    border: 1px solid var(--line);
-    will-change: transform;
+    border: 2px solid transparent;
   }
-  .act-btn:active{ transform: translateY(0) scale(0.97); transition-duration: .08s; }
-  .act-btn .emoji{
-    font-size: 18px; width: 36px; height: 36px; border-radius: 10px;
-    display:flex; align-items:center; justify-content:center;
-    background: var(--panel-2); transition: background-color .18s ease, transform .18s ease;
-  }
-  .act-btn .xp{ font-family: var(--font-mono); font-size: 12px; color: var(--muted); transition: color .18s ease; }
+  .act-btn:active{ transform: scale(0.96); }
+  .act-btn .emoji{ font-size: 22px; }
+  .act-btn .xp{ font-family: var(--font-mono); font-size: 12px; }
 
-  /* Clean, flat card design — accent communicated through the icon badge and a
-     subtle hover lift rather than a border glow. */
-  .act-btn.plus .emoji{ background: color-mix(in srgb, var(--green-soft) 16%, var(--panel-2)); }
-  .act-btn.plus .xp{ color: var(--green-soft); }
+  /* Uiverse-style "user-profile" border look: only a thin edge carries the corner-fade
+     gradient (center stays the normal panel color), and it glows brighter on hover. */
+  .act-btn.plus{
+    background:
+      linear-gradient(var(--panel), var(--panel)) padding-box,
+      linear-gradient(135deg, var(--green-soft) 0%, transparent 50%) border-box;
+  }
   .act-btn.plus:hover, .act-btn.plus:focus-within{
-    border-color: color-mix(in srgb, var(--green-soft) 45%, var(--line));
-    box-shadow: 0 6px 18px -8px color-mix(in srgb, var(--green-soft) 45%, transparent);
-    transform: translateY(-3px);
+    background:
+      linear-gradient(var(--panel), var(--panel)) padding-box,
+      linear-gradient(135deg, var(--green-soft) 0%, transparent 65%) border-box;
+    box-shadow: 0 0 10px color-mix(in srgb, var(--green-soft) 50%, transparent);
   }
-  .act-btn.plus:hover .emoji, .act-btn.plus:focus-within .emoji{
-    background: color-mix(in srgb, var(--green-soft) 28%, var(--panel-2));
-  }
+  .act-btn.plus .xp{ color: var(--green-soft); }
 
-  .act-btn.minus .emoji{ background: color-mix(in srgb, var(--red-soft) 16%, var(--panel-2)); }
-  .act-btn.minus .xp{ color: var(--red-soft); }
+  .act-btn.minus{
+    background:
+      linear-gradient(var(--panel), var(--panel)) padding-box,
+      linear-gradient(135deg, var(--red-soft) 0%, transparent 50%) border-box;
+  }
   .act-btn.minus:hover, .act-btn.minus:focus-within{
-    border-color: color-mix(in srgb, var(--red-soft) 45%, var(--line));
-    box-shadow: 0 6px 18px -8px color-mix(in srgb, var(--red-soft) 45%, transparent);
-    transform: translateY(-3px);
+    background:
+      linear-gradient(var(--panel), var(--panel)) padding-box,
+      linear-gradient(135deg, var(--red-soft) 0%, transparent 65%) border-box;
+    box-shadow: 0 0 10px color-mix(in srgb, var(--red-soft) 50%, transparent);
   }
-  .act-btn.minus:hover .emoji, .act-btn.minus:focus-within .emoji{
-    background: color-mix(in srgb, var(--red-soft) 28%, var(--panel-2));
-  }
+  .act-btn.minus .xp{ color: var(--red-soft); }
 
   .act-btn.wide{ grid-column: span 2; flex-direction: row; }
   .act-btn .del-x{
     position:absolute; top:4px; left:4px; width:18px; height:18px;
     border-radius:50%; background: var(--panel-2); border:1px solid var(--line);
     color: var(--muted); font-size:11px; line-height:16px; text-align:center;
-    cursor:pointer; z-index:2; transition: background-color .15s ease, color .15s ease, transform .15s ease;
+    cursor:pointer; z-index:2;
   }
-  .act-btn .del-x:hover{ background: var(--red); color:#fff; transform: scale(1.1); }
   .act-btn .edit-pencil{
     position:absolute; top:4px; right:4px; width:18px; height:18px;
     border-radius:50%; background: var(--panel-2); border:1px solid var(--line);
     color: var(--muted); font-size:10px; line-height:16px; text-align:center;
-    cursor:pointer; z-index:2; transition: background-color .15s ease, color .15s ease, transform .15s ease;
+    cursor:pointer; z-index:2;
   }
-  .act-btn .edit-pencil:hover{ background: var(--gold); color:#241f0a; transform: scale(1.1); }
   .add-panel .reset-link{
     background:none; border:none; color: var(--muted); font-size:12px;
     text-decoration: underline; cursor:pointer; padding:0; margin-inline-end:auto;
-    transition: color .15s ease;
   }
-  .add-panel .reset-link:hover{ color: var(--text); }
   .act-btn.add-new{
     border-style: dashed; border-color: var(--line); color: var(--muted);
     background: transparent; border-width: 2px;
-  }
-  .act-btn.add-new .emoji{ background: transparent; font-size: 22px; width:auto; height:auto; }
-  .act-btn.add-new:hover, .act-btn.add-new:focus-within{
-    border-color: var(--gold);
-    color: var(--text);
-    background: color-mix(in srgb, var(--gold) 8%, transparent);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 18px -8px color-mix(in srgb, var(--gold) 45%, transparent);
   }
 
   /* Sections + sorting */
@@ -242,17 +224,13 @@
   .sort-btn{
     background: var(--panel-2); border:1px solid var(--line); color: var(--muted);
     font-family: var(--font-display); font-size:11px; border-radius:8px; padding:5px 8px; cursor:pointer;
-    transition: border-color .15s ease, color .15s ease, transform .15s ease;
   }
-  .sort-btn:hover:not(.active){ border-color: var(--gold); color: var(--text); }
   .sort-btn.active{ background: var(--gold); color:#241f0a; border-color: var(--gold); font-weight:700; }
   .order-arrows{ display:flex; gap:4px; margin-top:2px; }
   .arrow-btn{
     width:22px; height:18px; border-radius:5px; background: var(--panel-2); border:1px solid var(--line);
     color: var(--muted); font-size:10px; cursor:pointer; line-height:1;
-    transition: background-color .15s ease, color .15s ease, transform .15s ease;
   }
-  .arrow-btn:hover{ background: var(--gold); color:#241f0a; transform: translateY(-1px); }
 
   /* Add-action panel */
   .add-panel{
@@ -269,12 +247,9 @@
   .add-panel button{
     border-radius:10px; border:1px solid var(--line); padding: 9px 14px;
     font-family: var(--font-display); font-weight:700; font-size: 13px; cursor:pointer;
-    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease, background-color .15s ease;
   }
   .add-panel .save-btn{ background: var(--gold); color:#241f0a; border-color: var(--gold); }
-  .add-panel .save-btn:hover{ transform: translateY(-2px); box-shadow: 0 6px 14px -6px color-mix(in srgb, var(--gold) 55%, transparent); }
   .add-panel .cancel-btn{ background: transparent; color: var(--muted); }
-  .add-panel .cancel-btn:hover{ border-color: var(--muted); color: var(--text); }
   .add-hint{ color: var(--muted); font-size:11px; }
 
   /* Log */
@@ -284,12 +259,9 @@
   .daynav-btn{
     background: var(--panel-2); border:1px solid var(--line); color: var(--text);
     width:26px; height:26px; border-radius:8px; cursor:pointer; font-size:14px;
-    transition: background-color .15s ease, border-color .15s ease, transform .15s ease;
   }
-  .daynav-btn:hover:not(:disabled){ border-color: var(--gold); transform: translateY(-1px); }
   .daynav-btn:disabled{ opacity:.35; cursor:default; }
-  .undo{ font-size:12px; color: var(--muted); background:none; border:none; cursor:pointer; text-decoration: underline; padding:0; transition: color .15s ease; }
-  .undo:hover:not(:disabled){ color: var(--text); }
+  .undo{ font-size:12px; color: var(--muted); background:none; border:none; cursor:pointer; text-decoration: underline; padding:0; }
   .undo:disabled{ opacity:.4; cursor:default; text-decoration:none; }
   .log-list{ display:flex; flex-direction:column; gap:6px; }
   .log-empty{ color: var(--muted); font-size:13px; text-align:center; padding: 14px 0; }
@@ -316,9 +288,7 @@
   .note-toggle{
     background:none; border:none; color: var(--muted); font-size:11px;
     text-decoration: underline; cursor:pointer; padding:0; margin-top:6px;
-    transition: color .15s ease;
   }
-  .note-toggle:hover{ color: var(--text); }
   .note-editor{ margin-top:8px; display:flex; flex-direction:column; gap:8px; }
   .note-editor textarea{
     background: var(--panel); border:1px solid var(--line); border-radius:10px;
@@ -337,12 +307,9 @@
   .note-editor button{
     border-radius:10px; border:1px solid var(--line); padding: 7px 12px;
     font-family: var(--font-display); font-weight:700; font-size: 12px; cursor:pointer;
-    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
   }
   .note-editor .save-btn{ background: var(--gold); color:#241f0a; border-color: var(--gold); }
-  .note-editor .save-btn:hover{ transform: translateY(-2px); box-shadow: 0 6px 14px -6px color-mix(in srgb, var(--gold) 55%, transparent); }
   .note-editor .cancel-btn{ background: transparent; color: var(--muted); }
-  .note-editor .cancel-btn:hover{ border-color: var(--muted); color: var(--text); }
 
   /* History */
   .history{ display:flex; gap:6px; align-items:flex-end; height: 60px; margin-top: 6px; }
@@ -359,9 +326,7 @@
     width:100%; background: var(--panel-2); border:1px solid var(--line); border-radius:10px;
     color: var(--text); font-family: var(--font-display); font-weight:700; font-size:13px;
     padding: 10px; cursor:pointer;
-    transition: border-color .15s ease;
   }
-  .cal-toggle:hover{ border-color: var(--gold); }
   .section-order-bar{
     display:flex; align-items:center; justify-content:space-between; gap:10px;
     background: var(--panel-2); border:1px solid var(--gold-dim); border-radius:10px;
@@ -369,11 +334,9 @@
   }
   .section-order-hint{ font-size:12px; color: var(--gold); font-weight:700; }
   .section-order-bar .reset-link{
-    transition: color .15s ease;
     background:transparent; border:none; color: var(--muted); font-family: var(--font-display);
     font-size:12px; text-decoration:underline; cursor:pointer; padding:4px; flex-shrink:0;
   }
-  .section-order-bar .reset-link:hover{ color: var(--text); }
   .icon-toggle-btn.active{ background: var(--gold); color:#241f0a; border-color: var(--gold); }
   .section-reorder-bar{
     display:flex; align-items:center; justify-content:space-between; gap:10px;
@@ -393,10 +356,8 @@
     aspect-ratio: 1; border-radius: 8px; border:1px solid var(--line);
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     background: var(--panel-2); gap:2px;
-    transition: transform .15s ease, border-color .15s ease;
   }
   .cal-day:not(.oor){ cursor:pointer; }
-  .cal-day:not(.oor):hover{ transform: translateY(-2px); border-color: var(--gold); }
   .cal-day.oor{ background: transparent; border-color: transparent; opacity:.28; cursor:default; }
   .cal-day.zero{ background: var(--panel-2); }
   .cal-day.partial{ background: rgba(242,201,76,.14); border-color: rgba(242,201,76,.4); }
@@ -507,9 +468,7 @@
     width:100%; background: transparent; border:1px dashed var(--line); border-radius:10px;
     color: var(--muted); font-family: var(--font-display); font-weight:700; font-size:13px;
     padding: 10px; cursor:pointer; margin-top: 4px;
-    transition: border-color .15s ease, color .15s ease, background-color .15s ease;
   }
-  .progress-add-btn:hover{ border-color: var(--gold); color: var(--text); background: color-mix(in srgb, var(--gold) 8%, transparent); }
   .progress-add-panel{
     background: var(--panel); border:1px solid var(--line); border-radius:14px;
     padding: 14px; margin-top:10px; display:flex; flex-direction:column; gap:10px;
@@ -526,12 +485,9 @@
   .progress-add-panel button{
     border-radius:10px; border:1px solid var(--line); padding: 9px 14px;
     font-family: var(--font-display); font-weight:700; font-size: 13px; cursor:pointer;
-    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
   }
   .progress-add-panel .save-btn{ background: var(--gold); color:#241f0a; border-color: var(--gold); }
-  .progress-add-panel .save-btn:hover{ transform: translateY(-2px); box-shadow: 0 6px 14px -6px color-mix(in srgb, var(--gold) 55%, transparent); }
   .progress-add-panel .cancel-btn{ background: transparent; color: var(--muted); }
-  .progress-add-panel .cancel-btn:hover{ border-color: var(--muted); color: var(--text); }
 
   /* Pie chart for overall progress */
   .progress-pie-wrap{ display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:14px; flex-wrap:wrap; }
@@ -549,9 +505,8 @@
   .emoji-swatch-btn{
     width:30px; height:30px; border-radius:8px; background: var(--panel-2); border:1px solid var(--line);
     font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0;
-    transition: border-color .15s ease, transform .15s ease;
   }
-  .emoji-swatch-btn:hover{ border-color: var(--gold); transform: translateY(-2px); }
+  .emoji-swatch-btn:hover{ border-color: var(--gold); }
 
   /* Favorite quote section */
   .quote-card{
@@ -567,9 +522,7 @@
     margin-top:14px; background: var(--panel-2); border:1px solid var(--line); color: var(--text);
     font-family: var(--font-display); font-weight:700; font-size:12px; border-radius:10px;
     padding: 8px 14px; cursor:pointer;
-    transition: border-color .15s ease, transform .15s ease;
   }
-  .quote-edit-btn:hover{ border-color: var(--gold); transform: translateY(-2px); }
   .quote-editor{ margin-top:14px; display:flex; flex-direction:column; gap:10px; }
   .quote-editor textarea{
     background: var(--panel-2); border:1px solid var(--line); border-radius:10px;
@@ -580,12 +533,9 @@
   .quote-editor button{
     border-radius:10px; border:1px solid var(--line); padding: 9px 16px;
     font-family: var(--font-display); font-weight:700; font-size: 13px; cursor:pointer;
-    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
   }
   .quote-editor .save-btn{ background: var(--gold); color:#241f0a; border-color: var(--gold); }
-  .quote-editor .save-btn:hover{ transform: translateY(-2px); box-shadow: 0 6px 14px -6px color-mix(in srgb, var(--gold) 55%, transparent); }
   .quote-editor .cancel-btn{ background: transparent; color: var(--muted); }
-  .quote-editor .cancel-btn:hover{ border-color: var(--muted); color: var(--text); }
 
   /* Login screen */
   #loginScreen{ text-align:center; padding-top: 60px; }
@@ -603,9 +553,7 @@
   .user-bar .signout-btn{
     background:none; border:none; color: var(--muted); font-size:12px;
     text-decoration: underline; cursor:pointer; padding:0;
-    transition: color .15s ease;
   }
-  .user-bar .signout-btn:hover{ color: var(--text); }
 
   /* Unified emoji style: Microsoft 3D Fluent images (same rendering on iPhone/Android/desktop) */
   img.femoji{
@@ -626,33 +574,6 @@
     overflow: hidden;
     z-index: -1;
     pointer-events: none;
-  }
-  /* Interactive cursor glow — soft pink/violet light that trails the mouse,
-     mirroring the reference site's hero background interaction. */
-  #cursor-glow{
-    position:absolute;
-    top:0; left:0;
-    width: 520px; height: 520px;
-    border-radius: 50%;
-    opacity: 0;
-    transition: opacity .4s ease;
-    pointer-events: none;
-    background: radial-gradient(circle at center,
-      rgba(255,45,149,.55) 0%,
-      rgba(217,70,239,.35) 30%,
-      rgba(147,51,234,.16) 55%,
-      rgba(147,51,234,0) 75%);
-    filter: blur(6px);
-    mix-blend-mode: screen;
-    z-index: 1;
-  }
-  [data-theme="light"] #cursor-glow{
-    background: radial-gradient(circle at center,
-      rgba(255,45,149,.35) 0%,
-      rgba(217,70,239,.22) 30%,
-      rgba(147,51,234,.10) 55%,
-      rgba(147,51,234,0) 75%);
-    mix-blend-mode: multiply;
   }
   #stars, #stars2, #stars3 { position: absolute; top: 0; left: 0; }
   #stars {
@@ -2960,43 +2881,9 @@ window.addEventListener('load', function(){
 
 <!-- Starfield background effect -->
 <div id="starfield-container">
-  <div id="cursor-glow"></div>
   <div id="stars"></div>
   <div id="stars2"></div>
   <div id="stars3"></div>
 </div>
-<script>
-(function(){
-  // Interactive mouse-reactive glow: a soft pink/violet light that trails the
-  // cursor with gentle inertia, layered over the starfield background.
-  var glow = document.getElementById('cursor-glow');
-  if(!glow) return;
-
-  var targetX = window.innerWidth / 2, targetY = window.innerHeight / 2;
-  var curX = targetX, curY = targetY;
-  var active = false;
-
-  function onMove(e){
-    var p = e.touches && e.touches[0] ? e.touches[0] : e;
-    targetX = p.clientX;
-    targetY = p.clientY;
-    if(!active){
-      active = true;
-      glow.style.opacity = '1';
-    }
-  }
-  window.addEventListener('mousemove', onMove, { passive: true });
-  window.addEventListener('touchmove', onMove, { passive: true });
-  window.addEventListener('mouseleave', function(){ glow.style.opacity = '0'; });
-
-  function tick(){
-    curX += (targetX - curX) * 0.08;
-    curY += (targetY - curY) * 0.08;
-    glow.style.transform = 'translate3d(' + (curX - 260) + 'px,' + (curY - 260) + 'px,0)';
-    requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-})();
-</script>
 </body>
 </html>
