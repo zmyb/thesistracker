@@ -47,6 +47,9 @@
     --font-display: 'ThmanyahSansMedium', 'Tajawal', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
     --font-title: 'ThmanyahSerifDisplayBlack', 'Tajawal', sans-serif;
+    --grid-line: color-mix(in srgb, var(--text) 8%, transparent);
+    --grid-line-bright: color-mix(in srgb, var(--text) 40%, transparent);
+    --spot-color: color-mix(in srgb, var(--gold) 55%, transparent);
   }
   [data-theme="light"]{
     --bg: #f4f2fa;
@@ -85,12 +88,20 @@
     background: var(--panel-2); border:1px solid var(--line); color: var(--text);
     width:30px; height:30px; border-radius:50%; cursor:pointer; font-size:14px;
     display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    transition: border-color .2s ease, transform .15s ease, box-shadow .2s ease;
   }
+  .icon-toggle-btn:hover{
+    border-color: var(--gold); transform: translateY(-2px);
+    box-shadow: 0 6px 14px -8px color-mix(in srgb, var(--gold) 50%, transparent);
+  }
+  .icon-toggle-btn:active{ transform: scale(.92); }
   .design-select{
     background: var(--panel-2); border:1px solid var(--line); color: var(--text);
     border-radius: 8px; padding: 5px 6px; font-family: var(--font-display);
     font-size: 11px; cursor:pointer; flex-shrink:0;
+    transition: border-color .2s ease;
   }
+  .design-select:hover{ border-color: var(--gold); }
 
   /* Header */
   .title{
@@ -159,35 +170,46 @@
     position: relative;
     border: 2px solid transparent;
   }
+  .act-btn:hover{ transform: translateY(-3px); box-shadow: 0 10px 20px -12px rgba(0,0,0,.35); }
   .act-btn:active{ transform: scale(0.96); }
-  .act-btn .emoji{ font-size: 22px; }
+  .act-btn .emoji{ font-size: 22px; transition: transform .25s ease; }
+  .act-btn:hover .emoji{ transform: scale(1.12) rotate(-4deg); }
   .act-btn .xp{ font-family: var(--font-mono); font-size: 12px; }
 
-  /* Uiverse-style "user-profile" border look: only a thin edge carries the corner-fade
-     gradient (center stays the normal panel color), and it glows brighter on hover. */
+  /* Glass-style action cards: soft translucent tint + blur, with a gentle lift and glow on interaction */
   .act-btn.plus{
-    background:
-      linear-gradient(var(--panel), var(--panel)) padding-box,
-      linear-gradient(135deg, var(--green-soft) 0%, transparent 50%) border-box;
+    background: color-mix(in srgb, var(--green) 9%, var(--panel) 91%);
+    border-color: color-mix(in srgb, var(--green) 28%, var(--line) 72%);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--green) 10%, transparent);
   }
   .act-btn.plus:hover, .act-btn.plus:focus-within{
-    background:
-      linear-gradient(var(--panel), var(--panel)) padding-box,
-      linear-gradient(135deg, var(--green-soft) 0%, transparent 65%) border-box;
-    box-shadow: 0 0 10px color-mix(in srgb, var(--green-soft) 50%, transparent);
+    background: color-mix(in srgb, var(--green) 16%, var(--panel) 84%);
+    border-color: color-mix(in srgb, var(--green) 55%, var(--line) 45%);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--green) 18%, transparent),
+      0 10px 24px -10px color-mix(in srgb, var(--green) 55%, transparent),
+      0 0 0 1px color-mix(in srgb, var(--green) 20%, transparent);
+    transform: translateY(-3px);
   }
   .act-btn.plus .xp{ color: var(--green-soft); }
 
   .act-btn.minus{
-    background:
-      linear-gradient(var(--panel), var(--panel)) padding-box,
-      linear-gradient(135deg, var(--red-soft) 0%, transparent 50%) border-box;
+    background: color-mix(in srgb, var(--red) 9%, var(--panel) 91%);
+    border-color: color-mix(in srgb, var(--red) 28%, var(--line) 72%);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--red) 10%, transparent);
   }
   .act-btn.minus:hover, .act-btn.minus:focus-within{
-    background:
-      linear-gradient(var(--panel), var(--panel)) padding-box,
-      linear-gradient(135deg, var(--red-soft) 0%, transparent 65%) border-box;
-    box-shadow: 0 0 10px color-mix(in srgb, var(--red-soft) 50%, transparent);
+    background: color-mix(in srgb, var(--red) 16%, var(--panel) 84%);
+    border-color: color-mix(in srgb, var(--red) 55%, var(--line) 45%);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--red) 18%, transparent),
+      0 10px 24px -10px color-mix(in srgb, var(--red) 55%, transparent),
+      0 0 0 1px color-mix(in srgb, var(--red) 20%, transparent);
+    transform: translateY(-3px);
   }
   .act-btn.minus .xp{ color: var(--red-soft); }
 
@@ -196,14 +218,16 @@
     position:absolute; top:4px; left:4px; width:18px; height:18px;
     border-radius:50%; background: var(--panel-2); border:1px solid var(--line);
     color: var(--muted); font-size:11px; line-height:16px; text-align:center;
-    cursor:pointer; z-index:2;
+    cursor:pointer; z-index:2; transition: border-color .2s ease, color .2s ease, transform .15s ease;
   }
+  .act-btn .del-x:hover{ border-color: var(--red); color: var(--red); transform: scale(1.12); }
   .act-btn .edit-pencil{
     position:absolute; top:4px; right:4px; width:18px; height:18px;
     border-radius:50%; background: var(--panel-2); border:1px solid var(--line);
     color: var(--muted); font-size:10px; line-height:16px; text-align:center;
-    cursor:pointer; z-index:2;
+    cursor:pointer; z-index:2; transition: border-color .2s ease, color .2s ease, transform .15s ease;
   }
+  .act-btn .edit-pencil:hover{ border-color: var(--gold); color: var(--gold); transform: scale(1.12); }
   .add-panel .reset-link{
     background:none; border:none; color: var(--muted); font-size:12px;
     text-decoration: underline; cursor:pointer; padding:0; margin-inline-end:auto;
@@ -212,6 +236,12 @@
     border-style: dashed; border-color: var(--line); color: var(--muted);
     background: transparent; border-width: 2px;
   }
+  .act-btn.add-new:hover, .act-btn.add-new:focus-within{
+    border-color: var(--gold); color: var(--gold);
+    background: color-mix(in srgb, var(--gold) 8%, transparent);
+    box-shadow: 0 10px 20px -12px color-mix(in srgb, var(--gold) 40%, transparent);
+  }
+  .act-btn.add-new:hover .emoji{ transform: scale(1.15) rotate(90deg); }
 
   /* Sections + sorting */
   .section-header{
@@ -224,13 +254,17 @@
   .sort-btn{
     background: var(--panel-2); border:1px solid var(--line); color: var(--muted);
     font-family: var(--font-display); font-size:11px; border-radius:8px; padding:5px 8px; cursor:pointer;
+    transition: border-color .2s ease, color .2s ease, transform .15s ease;
   }
+  .sort-btn:hover:not(.active){ border-color: var(--gold); color: var(--text); transform: translateY(-1px); }
   .sort-btn.active{ background: var(--gold); color:#241f0a; border-color: var(--gold); font-weight:700; }
   .order-arrows{ display:flex; gap:4px; margin-top:2px; }
   .arrow-btn{
     width:22px; height:18px; border-radius:5px; background: var(--panel-2); border:1px solid var(--line);
     color: var(--muted); font-size:10px; cursor:pointer; line-height:1;
+    transition: border-color .2s ease, color .2s ease;
   }
+  .arrow-btn:hover{ border-color: var(--gold); color: var(--gold); }
 
   /* Add-action panel */
   .add-panel{
@@ -247,9 +281,13 @@
   .add-panel button{
     border-radius:10px; border:1px solid var(--line); padding: 9px 14px;
     font-family: var(--font-display); font-weight:700; font-size: 13px; cursor:pointer;
+    transition: filter .2s ease, border-color .2s ease, color .2s ease, transform .15s ease;
   }
+  .add-panel button:hover{ transform: translateY(-1px); }
   .add-panel .save-btn{ background: var(--gold); color:#241f0a; border-color: var(--gold); }
+  .add-panel .save-btn:hover{ filter: brightness(1.1); box-shadow: 0 6px 14px -8px color-mix(in srgb, var(--gold) 60%, transparent); }
   .add-panel .cancel-btn{ background: transparent; color: var(--muted); }
+  .add-panel .cancel-btn:hover{ border-color: var(--muted); color: var(--text); }
   .add-hint{ color: var(--muted); font-size:11px; }
 
   /* Log */
@@ -259,9 +297,12 @@
   .daynav-btn{
     background: var(--panel-2); border:1px solid var(--line); color: var(--text);
     width:26px; height:26px; border-radius:8px; cursor:pointer; font-size:14px;
+    transition: border-color .2s ease, transform .15s ease;
   }
+  .daynav-btn:hover:not(:disabled){ border-color: var(--gold); transform: translateY(-1px); }
   .daynav-btn:disabled{ opacity:.35; cursor:default; }
   .undo{ font-size:12px; color: var(--muted); background:none; border:none; cursor:pointer; text-decoration: underline; padding:0; }
+  .undo:hover:not(:disabled){ color: var(--text); }
   .undo:disabled{ opacity:.4; cursor:default; text-decoration:none; }
   .log-list{ display:flex; flex-direction:column; gap:6px; }
   .log-empty{ color: var(--muted); font-size:13px; text-align:center; padding: 14px 0; }
@@ -288,7 +329,9 @@
   .note-toggle{
     background:none; border:none; color: var(--muted); font-size:11px;
     text-decoration: underline; cursor:pointer; padding:0; margin-top:6px;
+    transition: color .2s ease;
   }
+  .note-toggle:hover{ color: var(--gold); }
   .note-editor{ margin-top:8px; display:flex; flex-direction:column; gap:8px; }
   .note-editor textarea{
     background: var(--panel); border:1px solid var(--line); border-radius:10px;
@@ -307,9 +350,13 @@
   .note-editor button{
     border-radius:10px; border:1px solid var(--line); padding: 7px 12px;
     font-family: var(--font-display); font-weight:700; font-size: 12px; cursor:pointer;
+    transition: filter .2s ease, border-color .2s ease, color .2s ease, transform .15s ease;
   }
+  .note-editor button:hover{ transform: translateY(-1px); }
   .note-editor .save-btn{ background: var(--gold); color:#241f0a; border-color: var(--gold); }
+  .note-editor .save-btn:hover{ filter: brightness(1.1); }
   .note-editor .cancel-btn{ background: transparent; color: var(--muted); }
+  .note-editor .cancel-btn:hover{ border-color: var(--muted); color: var(--text); }
 
   /* History */
   .history{ display:flex; gap:6px; align-items:flex-end; height: 60px; margin-top: 6px; }
@@ -325,8 +372,9 @@
   .cal-toggle{
     width:100%; background: var(--panel-2); border:1px solid var(--line); border-radius:10px;
     color: var(--text); font-family: var(--font-display); font-weight:700; font-size:13px;
-    padding: 10px; cursor:pointer;
+    padding: 10px; cursor:pointer; transition: border-color .2s ease;
   }
+  .cal-toggle:hover{ border-color: var(--gold); }
   .section-order-bar{
     display:flex; align-items:center; justify-content:space-between; gap:10px;
     background: var(--panel-2); border:1px solid var(--gold-dim); border-radius:10px;
@@ -357,7 +405,9 @@
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     background: var(--panel-2); gap:2px;
   }
+  .cal-day{ transition: transform .15s ease, border-color .2s ease; }
   .cal-day:not(.oor){ cursor:pointer; }
+  .cal-day:not(.oor):hover{ border-color: var(--gold); transform: translateY(-1px); }
   .cal-day.oor{ background: transparent; border-color: transparent; opacity:.28; cursor:default; }
   .cal-day.zero{ background: var(--panel-2); }
   .cal-day.partial{ background: rgba(242,201,76,.14); border-color: rgba(242,201,76,.4); }
@@ -447,7 +497,9 @@
     width:100%; display:flex; justify-content:space-between; align-items:center; gap:8px;
     background:none; border:none; padding:10px 12px; cursor:pointer; color: var(--text);
     font-family: var(--font-display); font-size:13px; font-weight:700; text-align:right;
+    transition: background .2s ease;
   }
+  .progress-section-header:hover{ background: color-mix(in srgb, var(--gold) 6%, transparent); }
   .progress-section-pct{ font-family: var(--font-mono); font-size:11px; color: var(--muted); font-weight:700; white-space:nowrap; }
   .progress-section-body{ padding: 10px 12px 12px; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:10px; }
   .progress-item{ display:flex; align-items:center; gap:8px; font-size:13px; cursor:pointer; }
@@ -468,7 +520,9 @@
     width:100%; background: transparent; border:1px dashed var(--line); border-radius:10px;
     color: var(--muted); font-family: var(--font-display); font-weight:700; font-size:13px;
     padding: 10px; cursor:pointer; margin-top: 4px;
+    transition: border-color .2s ease, color .2s ease;
   }
+  .progress-add-btn:hover{ border-color: var(--gold); color: var(--gold); }
   .progress-add-panel{
     background: var(--panel); border:1px solid var(--line); border-radius:14px;
     padding: 14px; margin-top:10px; display:flex; flex-direction:column; gap:10px;
@@ -485,9 +539,13 @@
   .progress-add-panel button{
     border-radius:10px; border:1px solid var(--line); padding: 9px 14px;
     font-family: var(--font-display); font-weight:700; font-size: 13px; cursor:pointer;
+    transition: filter .2s ease, border-color .2s ease, color .2s ease, transform .15s ease;
   }
+  .progress-add-panel button:hover{ transform: translateY(-1px); }
   .progress-add-panel .save-btn{ background: var(--gold); color:#241f0a; border-color: var(--gold); }
+  .progress-add-panel .save-btn:hover{ filter: brightness(1.1); }
   .progress-add-panel .cancel-btn{ background: transparent; color: var(--muted); }
+  .progress-add-panel .cancel-btn:hover{ border-color: var(--muted); color: var(--text); }
 
   /* Pie chart for overall progress */
   .progress-pie-wrap{ display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:14px; flex-wrap:wrap; }
@@ -564,126 +622,44 @@
     margin: 0 0.02em;
   }
 
-  /* ---------- Starfield background effect (Uiverse.io by sinful_9361) ---------- */
+  /* ---------- Ambient background: mouse-reactive grid + spotlight ---------- */
   #starfield-container {
     position: fixed;
     inset: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(ellipse at bottom, #321b35 0%, #090a0f 100%);
     overflow: hidden;
     z-index: -1;
     pointer-events: none;
+    background: var(--bg);
   }
-  #stars, #stars2, #stars3 { position: absolute; top: 0; left: 0; }
-  #stars {
-    width: 1px;
-    height: 1px;
-    background: transparent;
-    box-shadow:
-      501px 811px #fff, 1450px 1324px #fff, 1093px 1780px #fff, 1469px 678px #fff,
-      904px 741px #fff, 1160px 781px #fff, 1841px 1962px #fff, 1630px 1667px #fff,
-      1788px 676px #fff, 367px 1734px #fff, 1343px 156px #fff, 1283px 1142px #fff,
-      1062px 378px #fff, 1395px 467px #fff, 1017px 1891px #fff, 137px 1114px #fff,
-      1767px 1403px #fff, 1543px 11px #fff, 1078px 181px #fff, 1189px 1574px #fff,
-      1697px 1551px #fff, 439px 472px #fff, 1491px 677px #fff, 1364px 599px #fff,
-      34px 382px #fff, 1221px 1584px #fff, 1266px 1499px #fff, 169px 1907px #fff,
-      1219px 1125px #fff, 659px 18px #fff, 1731px 1959px #fff, 332px 1216px #fff,
-      1913px 788px #fff, 80px 712px #fff, 326px 1605px #fff, 574px 1502px #fff,
-      473px 1653px #fff, 404px 975px #fff, 322px 1797px #fff, 425px 1321px #fff,
-      1121px 1797px #fff, 731px 647px #fff, 891px 1584px #fff, 1523px 109px #fff,
-      1379px 244px #fff, 865px 1064px #fff, 493px 956px #fff, 624px 1380px #fff,
-      440px 619px #fff, 1630px 767px #fff, 955px 1196px #fff, 62px 729px #fff,
-      126px 946px #fff, 1256px 896px #fff, 1444px 256px #fff, 661px 1628px #fff,
-      1078px 1716px #fff, 300px 737px #fff, 1734px 413px #fff, 1296px 129px #fff,
-      1771px 1678px #fff, 977px 1764px #fff, 1879px 549px #fff, 665px 1531px #fff,
-      89px 701px #fff, 1084px 1183px #fff, 1597px 1576px #fff, 1354px 1774px #fff,
-      554px 1471px #fff, 1469px 287px #fff, 887px 106px #fff, 1962px 766px #fff,
-      638px 805px #fff, 1651px 741px #fff, 1517px 1826px #fff, 24px 1152px #fff,
-      507px 558px #fff, 1262px 652px #fff, 246px 1048px #fff, 1077px 421px #fff,
-      1866px 1847px #fff, 1986px 1561px #fff, 704px 632px #fff, 1991px 1875px #fff,
-      1227px 395px #fff, 45px 1116px #fff, 247px 786px #fff, 890px 607px #fff,
-      787px 1235px #fff, 557px 524px #fff, 1582px 1285px #fff, 1725px 1366px #fff,
-      952px 747px #fff, 251px 458px #fff, 1500px 1250px #fff, 1999px 1734px #fff,
-      1336px 1955px #fff, 1705px 1464px #fff, 728px 697px #fff, 594px 510px #fff;
-    animation: animStar 50s linear infinite;
+  #gridfx-base, #gridfx-bright{
+    position:absolute; inset:-2px;
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 42px 42px;
   }
-  #stars:after {
-    content: " ";
-    position: absolute;
-    top: 2000px;
-    width: 1px;
-    height: 1px;
-    background: transparent;
-    box-shadow: inherit;
+  #gridfx-bright{
+    background-image:
+      linear-gradient(var(--grid-line-bright) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line-bright) 1px, transparent 1px);
+    -webkit-mask-image: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), #000 0%, transparent 72%);
+    mask-image: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), #000 0%, transparent 72%);
+    opacity: 0;
+    transition: opacity .4s ease;
   }
-  #stars2 {
-    width: 2px;
-    height: 2px;
-    background: transparent;
-    box-shadow:
-      1925px 1320px #fff, 693px 1778px #fff, 1016px 711px #fff, 1171px 563px #fff,
-      661px 1919px #fff, 1610px 44px #fff, 1275px 140px #fff, 1208px 1802px #fff,
-      1473px 1587px #fff, 11px 1117px #fff, 853px 1757px #fff, 1149px 937px #fff,
-      1353px 428px #fff, 270px 279px #fff, 258px 1404px #fff, 417px 1188px #fff,
-      286px 561px #fff, 393px 1765px #fff, 147px 881px #fff, 666px 1097px #fff,
-      1425px 1278px #fff, 806px 156px #fff, 1252px 561px #fff, 218px 52px #fff,
-      1371px 1980px #fff, 171px 745px #fff, 1424px 89px #fff, 137px 244px #fff,
-      939px 1922px #fff, 137px 1080px #fff, 1757px 50px #fff, 904px 536px #fff,
-      1938px 1001px #fff, 1172px 440px #fff, 72px 1475px #fff, 102px 121px #fff,
-      804px 1671px #fff, 1314px 270px #fff, 440px 1341px #fff, 1216px 511px #fff,
-      1061px 1523px #fff, 97px 274px #fff, 704px 1318px #fff, 52px 1872px #fff,
-      1962px 296px #fff, 111px 289px #fff, 1157px 1236px #fff, 1347px 1451px #fff,
-      820px 286px #fff, 1389px 1169px #fff, 644px 841px #fff, 1286px 522px #fff,
-      955px 659px #fff, 428px 1805px #fff, 237px 557px #fff, 1689px 1058px #fff,
-      636px 1882px #fff, 1349px 1664px #fff, 1548px 432px #fff, 1841px 504px #fff,
-      302px 252px #fff, 827px 1765px #fff, 620px 123px #fff, 207px 748px #fff;
-    animation: animStar 100s linear infinite;
+  #starfield-container.is-active #gridfx-bright{ opacity: 1; }
+  #gridfx-glow{
+    position:absolute; inset:0;
+    background: radial-gradient(560px circle at var(--mx, 50%) var(--my, 50%), var(--spot-color), transparent 70%);
+    opacity: 0;
+    transition: opacity .4s ease;
   }
-  #stars2:after {
-    content: " ";
-    position: absolute;
-    top: 2000px;
-    width: 2px;
-    height: 2px;
-    background: transparent;
-    box-shadow: inherit;
-  }
-  #stars3 {
-    width: 3px;
-    height: 3px;
-    background: transparent;
-    box-shadow:
-      200px 981px #fff, 1731px 521px #fff, 132px 1039px #fff, 1888px 1547px #fff,
-      899px 1226px #fff, 1887px 580px #fff, 1548px 1092px #fff, 1626px 689px #fff,
-      254px 1072px #fff, 1684px 1211px #fff, 672px 1267px #fff, 939px 668px #fff,
-      1969px 645px #fff, 1126px 983px #fff, 457px 568px #fff, 476px 876px #fff,
-      829px 1896px #fff, 1364px 1846px #fff, 1507px 1120px #fff, 936px 1948px #fff,
-      1833px 832px #fff, 1424px 285px #fff, 1377px 1596px #fff, 432px 153px #fff,
-      1348px 1410px #fff, 1529px 954px #fff, 1102px 387px #fff, 264px 297px #fff,
-      811px 977px #fff, 1931px 673px #fff, 1734px 978px #fff, 1772px 1567px #fff,
-      1197px 1400px #fff, 764px 282px #fff, 1103px 822px #fff, 872px 1803px #fff,
-      1057px 1763px #fff, 52px 1299px #fff, 1312px 1236px #fff, 235px 1082px #fff,
-      299px 1086px #fff, 1017px 1602px #fff, 1950px 626px #fff, 1306px 132px #fff,
-      1358px 1618px #fff, 1873px 1718px #fff, 1447px 940px #fff, 1888px 1195px #fff,
-      1704px 1765px #fff, 872px 1357px #fff, 1555px 1120px #fff, 250px 1415px #fff,
-      450px 415px #fff, 492px 901px #fff, 170px 1641px #fff, 56px 1129px #fff,
-      627px 1514px #fff, 1221px 500px #fff, 324px 1895px #fff, 1397px 1775px #fff,
-      1966px 598px #fff, 1550px 763px #fff, 326px 1605px #fff, 261px 969px #fff;
-    animation: animStar 150s linear infinite;
-  }
-  #stars3:after {
-    content: " ";
-    position: absolute;
-    top: 2000px;
-    width: 3px;
-    height: 3px;
-    background: transparent;
-    box-shadow: inherit;
-  }
-  @keyframes animStar {
-    from { transform: translateY(0px); }
-    to { transform: translateY(-2000px); }
+  #starfield-container.is-active #gridfx-glow{ opacity: 1; }
+  #gridfx-vignette{
+    position:absolute; inset:0;
+    background: radial-gradient(120% 90% at 50% -10%, transparent 40%, color-mix(in srgb, var(--bg) 55%, transparent) 100%);
   }
   [data-starfield="off"] #starfield-container{
     display: none;
@@ -696,7 +672,7 @@
     <select class="design-select" id="designSelectLogin" title="نمط التصميم">
       <option value="normal">🎨 عادي</option>
     </select>
-    <button class="icon-toggle-btn" id="starfieldToggleBtnLogin" title="تشغيل/إيقاف خلفية النجوم المتحركة">🌌</button>
+    <button class="icon-toggle-btn" id="starfieldToggleBtnLogin" title="تشغيل/إيقاف تأثير الخلفية التفاعلي">🌐</button>
     <button class="icon-toggle-btn" id="themeToggleBtnLogin" title="تبديل الوضع الداكن/الفاتح">☀️</button>
   </div>
   <div class="title login-title"><span class="mark">⚡</span> سجل XP اليومي</div>
@@ -823,7 +799,7 @@ function toggleStarfield(){
   applyStarfield(next);
   localStorage.setItem(STARFIELD_KEY, next);
   const loginBtn = document.getElementById('starfieldToggleBtnLogin');
-  if(loginBtn) loginBtn.textContent = next === 'off' ? '✨' : '🌌';
+  if(loginBtn) loginBtn.textContent = next === 'off' ? '◻️' : '🌐';
   if(state){
     state.starfield = next;
     saveState();
@@ -2394,7 +2370,7 @@ function render(){
           <option value="normal" ${currentDesign==='normal'?'selected':''}>🎨 عادي</option>
         </select>
         <button class="icon-toggle-btn" id="layoutToggleBtn" title="تبديل نمط العرض (عرضي/طولي)">${layoutMode === 'wide' ? '📱' : '💻'}</button>
-        <button class="icon-toggle-btn" id="starfieldToggleBtn" title="تشغيل/إيقاف خلفية النجوم المتحركة">${starfieldMode === 'off' ? '✨' : '🌌'}</button>
+        <button class="icon-toggle-btn" id="starfieldToggleBtn" title="تشغيل/إيقاف تأثير الخلفية التفاعلي">${starfieldMode === 'off' ? '◻️' : '🌐'}</button>
         <button class="icon-toggle-btn" id="themeToggleBtn" title="تبديل الوضع الداكن/الفاتح">${isLight ? '🌙' : '☀️'}</button>
         <button class="icon-toggle-btn ${sectionOrderEditMode?'active':''}" id="sectionOrderToggle" title="ترتيب الأقسام">${sectionOrderEditMode ? '✕' : '🔀'}</button>
         <button class="signout-btn" id="signOutBtn">تسجيل الخروج</button>
@@ -2727,7 +2703,7 @@ window.addEventListener('load', function(){
 
   const loginStarfieldBtn = document.getElementById('starfieldToggleBtnLogin');
   if(loginStarfieldBtn){
-    loginStarfieldBtn.textContent = starfieldMode === 'off' ? '✨' : '🌌';
+    loginStarfieldBtn.textContent = starfieldMode === 'off' ? '◻️' : '🌐';
     loginStarfieldBtn.addEventListener('click', toggleStarfield);
   }
 
@@ -2879,11 +2855,61 @@ window.addEventListener('load', function(){
 })();
 </script>
 
-<!-- Starfield background effect -->
+<!-- Ambient background: grid + cursor spotlight -->
 <div id="starfield-container">
-  <div id="stars"></div>
-  <div id="stars2"></div>
-  <div id="stars3"></div>
+  <div id="gridfx-base"></div>
+  <div id="gridfx-bright"></div>
+  <div id="gridfx-glow"></div>
+  <div id="gridfx-vignette"></div>
 </div>
+<script>
+(function(){
+  var root = document.documentElement;
+  var container = document.getElementById('starfield-container');
+  var hasPointer = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var target = { x: window.innerWidth/2, y: window.innerHeight/2 };
+  var current = { x: target.x, y: target.y };
+  var raf = null;
+
+  function setVars(x, y){
+    root.style.setProperty('--mx', x + 'px');
+    root.style.setProperty('--my', y + 'px');
+  }
+  setVars(current.x, current.y);
+
+  function tick(){
+    current.x += (target.x - current.x) * 0.12;
+    current.y += (target.y - current.y) * 0.12;
+    setVars(current.x, current.y);
+    if(Math.abs(target.x - current.x) > 0.3 || Math.abs(target.y - current.y) > 0.3){
+      raf = requestAnimationFrame(tick);
+    } else {
+      raf = null;
+    }
+  }
+
+  function onMove(e){
+    target.x = e.clientX;
+    target.y = e.clientY;
+    if(container) container.classList.add('is-active');
+    if(!raf) raf = requestAnimationFrame(tick);
+  }
+
+  if(hasPointer){
+    window.addEventListener('mousemove', onMove, { passive: true });
+    window.addEventListener('mouseleave', function(){
+      if(container) container.classList.remove('is-active');
+    });
+  }
+  window.addEventListener('resize', function(){
+    if(!hasPointer){
+      target.x = window.innerWidth/2;
+      target.y = window.innerHeight/2;
+      current.x = target.x; current.y = target.y;
+      setVars(current.x, current.y);
+    }
+  });
+})();
+</script>
 </body>
 </html>
