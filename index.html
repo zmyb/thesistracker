@@ -13,7 +13,6 @@
 <meta name="theme-color" content="#0f0e17">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Manrope:wght@400;600;800&family=Space+Grotesk:wght@400;600;700&family=Nunito:wght@400;700;900&family=Poppins:wght@400;600;800&family=Baloo+2:wght@500;700&family=Oswald:wght@400;600;700&family=Archivo+Black&family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Share+Tech+Mono&family=Playfair+Display:wght@600;800&family=Cormorant+Garamond:wght@500;700&family=Caveat:wght@500;700&family=Shantell+Sans:wght@400;700&family=Cinzel:wght@500;700&family=Abril+Fatface&family=Righteous&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -48,19 +47,6 @@
     --font-display: 'ThmanyahSansMedium', 'Tajawal', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
     --font-title: 'ThmanyahSerifDisplayBlack', 'Tajawal', sans-serif;
-
-    /* Style-theme engine: shape / texture tokens (overridden per data-style-theme) */
-    --radius-lg: 16px;
-    --radius-md: 15px;
-    --radius-sm: 8px;
-    --border-w: 1px;
-    --shadow-card: none;
-    --shadow-btn: none;
-    --heading-tt: none;
-    --heading-ls: .5px;
-    --card-blur: none;
-    --card-bg-extra: none;
-    --body-bg-image: none;
   }
   [data-theme="light"]{
     --bg: #f4f2fa;
@@ -75,347 +61,16 @@
     --red: #d1414f;
   }
 
-
-  /* =========================================================
-     STYLE THEME ENGINE — 27 selectable visual styles
-     ========================================================= */
-  [data-style-theme="minimalist"]{
-    --bg:#fafafa; --panel:#ffffff; --panel-2:#f2f2f2; --line:#e6e6e6; --text:#1a1a1a; --muted:#8a8a8a;
-    --gold:#111111; --gold-dim:#cfcfcf; --green:#2f9e58; --red:#d64545;
-    --font-display:'Inter','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Inter','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-mono:'Inter','JetBrains Mono',monospace;
-    --radius-lg:10px; --radius-md:10px; --radius-sm:6px; --border-w:1px;
-    --shadow-card:none; --shadow-btn:none; --heading-tt:none; --heading-ls:0;
-  }
-
-  [data-style-theme="corporate"]{
-    --bg:#f5f7fa; --panel:#ffffff; --panel-2:#eef1f6; --line:#d7dee6; --text:#1c2733; --muted:#5b6b7a;
-    --gold:#1f5fa8; --gold-dim:#a9c4e6; --green:#1f8a5c; --red:#c23b3b;
-    --font-display:'Manrope','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Manrope','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-mono:'Space Mono','JetBrains Mono',monospace;
-    --radius-lg:10px; --radius-md:8px; --radius-sm:6px; --border-w:1px;
-    --shadow-card:0 1px 4px rgba(20,40,70,.10); --shadow-btn:none; --heading-tt:none; --heading-ls:0;
-  }
-
-  [data-style-theme="swiss"]{
-    --bg:#ffffff; --panel:#ffffff; --panel-2:#f1f1f1; --line:#111111; --text:#0a0a0a; --muted:#555555;
-    --gold:#e10600; --gold-dim:#f4b8b4; --green:#0a7d3c; --red:#e10600;
-    --font-display:'Space Grotesk','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Space Grotesk','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-mono:'Space Mono','JetBrains Mono',monospace;
-    --radius-lg:0px; --radius-md:0px; --radius-sm:0px; --border-w:2px;
-    --shadow-card:none; --shadow-btn:none; --heading-tt:uppercase; --heading-ls:1px;
-  }
-
-  [data-style-theme="flat-material"]{
-    --bg:#eef1f5; --panel:#ffffff; --panel-2:#e3e8ee; --line:#dbe1e8; --text:#20242b; --muted:#6b7684;
-    --gold:#3f51b5; --gold-dim:#c5cae9; --green:#2e7d32; --red:#c62828;
-    --font-display:'Inter','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Inter','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-mono:'JetBrains Mono',monospace;
-    --radius-lg:12px; --radius-md:12px; --radius-sm:8px; --border-w:0px;
-    --shadow-card:0 2px 8px rgba(20,30,60,.14); --shadow-btn:0 1px 4px rgba(20,30,60,.12); --heading-tt:none; --heading-ls:0;
-  }
-
-  [data-style-theme="nordic"]{
-    --bg:#eef0ee; --panel:#ffffff; --panel-2:#e4e7e2; --line:#d3d7d0; --text:#2b2f2c; --muted:#7a8079;
-    --gold:#5c7a63; --gold-dim:#c9d6c9; --green:#4c7a5c; --red:#b5675a;
-    --font-display:'Nunito','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Nunito','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-mono:'JetBrains Mono',monospace;
-    --radius-lg:14px; --radius-md:12px; --radius-sm:8px; --border-w:1px;
-    --shadow-card:none; --shadow-btn:none; --heading-tt:none; --heading-ls:0;
-  }
-
-  [data-style-theme="bento"]{
-    --bg:#f2f2f7; --panel:#ffffff; --panel-2:#eceef5; --line:#e2e4ee; --text:#1c1c1e; --muted:#8a8a8e;
-    --gold:#ff9500; --gold-dim:#ffd7a6; --green:#34c759; --red:#ff3b30;
-    --font-display:'Poppins','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Poppins','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-mono:'JetBrains Mono',monospace;
-    --radius-lg:22px; --radius-md:18px; --radius-sm:12px; --border-w:0px;
-    --shadow-card:0 6px 18px rgba(0,0,0,.08); --shadow-btn:0 2px 8px rgba(0,0,0,.06); --heading-tt:none; --heading-ls:0;
-  }
-
-  [data-style-theme="zen"]{
-    --bg:#f0ede6; --panel:#f8f5ef; --panel-2:#e9e4da; --line:#d9d2c2; --text:#3a352c; --muted:#8c8474;
-    --gold:#a9583c; --gold-dim:#e3c2ae; --green:#6f7d5c; --red:#a9583c;
-    --font-display:'Nunito','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Cormorant Garamond','ThmanyahSerifDisplayBlack','Tajawal',serif;
-    --font-mono:'JetBrains Mono',monospace;
-    --radius-lg:2px 22px 2px 22px; --radius-md:2px 14px; --radius-sm:2px 10px; --border-w:1px;
-    --shadow-card:none; --shadow-btn:none; --heading-tt:none; --heading-ls:1px;
-  }
-
-  [data-style-theme="neomorphism"]{
-    --bg:#e6e7ee; --panel:#e6e7ee; --panel-2:#e6e7ee; --line:#d3d5e0; --text:#2b2d3a; --muted:#6b6f82;
-    --gold:#5b6ee1; --gold-dim:#c7cdf5; --green:#3fae76; --red:#d1616f;
-    --font-display:'Inter','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Inter','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-mono:'JetBrains Mono',monospace;
-    --radius-lg:22px; --radius-md:18px; --radius-sm:12px; --border-w:0px;
-    --shadow-card:8px 8px 16px #c5c6cf, -8px -8px 16px #ffffff;
-    --shadow-btn:5px 5px 10px #c5c6cf, -5px -5px 10px #ffffff; --heading-tt:none; --heading-ls:0;
-  }
-
-  [data-style-theme="luxury"]{
-    --bg:#0d0d0d; --panel:#161513; --panel-2:#1e1c18; --line:#3a331f; --text:#f1e9d8; --muted:#a89a72;
-    --gold:#d4af37; --gold-dim:#8a742a; --green:#5fae7d; --red:#c8574a;
-    --font-display:'Cormorant Garamond','ThmanyahSansMedium','Tajawal',serif;
-    --font-title:'Cinzel','ThmanyahSerifDisplayBlack','Tajawal',serif;
-    --font-mono:'JetBrains Mono',monospace;
-    --radius-lg:4px; --radius-md:4px; --radius-sm:2px; --border-w:1px;
-    --shadow-card:0 8px 26px rgba(0,0,0,.55); --shadow-btn:none; --heading-tt:uppercase; --heading-ls:2.5px;
-  }
-
-  [data-style-theme="dark-modern"]{
-    --bg:#0f0e17; --panel:#1a1826; --panel-2:#221f33; --line:#322e47; --text:#efeaf7; --muted:#948db3;
-    --gold:#f2c94c; --gold-dim:#7a6a2a; --green:#6ee7a8; --red:#ff6b78;
-    --font-display:'ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'ThmanyahSerifDisplayBlack','Tajawal',sans-serif;
-    --font-mono:'JetBrains Mono',monospace;
-    --radius-lg:16px; --radius-md:15px; --radius-sm:8px; --border-w:1px;
-    --shadow-card:none; --shadow-btn:none; --heading-tt:none; --heading-ls:.5px;
-  }
-
-  [data-style-theme="cyberpunk"]{
-    --bg:#05010f; --panel:#0d0620; --panel-2:#150b33; --line:#4a1c80; --text:#f1e8ff; --muted:#a483d9;
-    --gold:#ff2ec4; --gold-dim:#7a1a5c; --green:#00ffc6; --red:#ff2ec4;
-    --font-display:'Space Grotesk','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Bebas Neue','ThmanyahSerifDisplayBlack','Tajawal',sans-serif;
-    --font-mono:'Share Tech Mono','JetBrains Mono',monospace;
-    --radius-lg:10px; --radius-md:10px; --radius-sm:6px; --border-w:1px;
-    --shadow-card:0 0 0 1px var(--line), 0 0 22px rgba(255,46,196,.22);
-    --shadow-btn:0 0 12px rgba(0,255,198,.25); --heading-tt:uppercase; --heading-ls:1.5px;
-  }
-  [data-style-theme="cyberpunk"] .title{ text-shadow:0 0 12px rgba(255,46,196,.6); }
-
-  [data-style-theme="brutalist"]{
-    --bg:#f2f2f2; --panel:#ffffff; --panel-2:#e6e6e6; --line:#000000; --text:#000000; --muted:#333333;
-    --gold:#000000; --gold-dim:#ffe600; --green:#0a8a2b; --red:#e00000;
-    --font-display:'Space Mono','ThmanyahSansMedium','Tajawal',monospace;
-    --font-title:'Archivo Black','ThmanyahSerifDisplayBlack','Tajawal',sans-serif;
-    --font-mono:'Space Mono',monospace;
-    --radius-lg:0px; --radius-md:0px; --radius-sm:0px; --border-w:3px;
-    --shadow-card:6px 6px 0 #000000; --shadow-btn:4px 4px 0 #000000; --heading-tt:uppercase; --heading-ls:0;
-  }
-
-  [data-style-theme="maximalist"]{
-    --bg:#1a0e2e; --panel:#2a1550; --panel-2:#391d6b; --line:#6a3fb5; --text:#fdf5ff; --muted:#c9a9f0;
-    --gold:#ffb703; --gold-dim:#ff5c8a; --green:#00e5a0; --red:#ff5c8a;
-    --font-display:'Poppins','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Baloo 2','ThmanyahSerifDisplayBlack','Tajawal',sans-serif;
-    --font-mono:'JetBrains Mono',monospace;
-    --radius-lg:22px; --radius-md:18px; --radius-sm:12px; --border-w:2px;
-    --shadow-card:0 10px 28px rgba(255,92,138,.28); --shadow-btn:0 4px 12px rgba(255,183,3,.25);
-    --heading-tt:none; --heading-ls:0;
-    --card-bg-extra:linear-gradient(135deg, rgba(255,183,3,.10), rgba(0,229,160,.08));
-  }
-
-  [data-style-theme="gradient"]{
-    --bg:#1e1b3a; --panel:#241f4a; --panel-2:#2c2758; --line:#453f7a; --text:#fdfbff; --muted:#b9b3e0;
-    --gold:#ff7ab8; --gold-dim:#7c5cff; --green:#38e0c4; --red:#ff7ab8;
-    --font-display:'Space Grotesk','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Space Grotesk','ThmanyahSerifDisplayBlack','Tajawal',sans-serif;
-    --font-mono:'JetBrains Mono',monospace;
-    --radius-lg:18px; --radius-md:16px; --radius-sm:10px; --border-w:0px;
-    --shadow-card:0 10px 34px rgba(0,0,0,.35); --shadow-btn:none; --heading-tt:none; --heading-ls:0;
-    --body-bg-image:linear-gradient(135deg,#1e1b3a 0%,#3a2a6b 30%,#6b2a6b 60%,#2a4a6b 100%);
-    --card-bg-extra:linear-gradient(135deg, rgba(255,122,184,.14), rgba(56,224,196,.10));
-  }
-
-  [data-style-theme="playful"]{
-    --bg:#fff6ea; --panel:#ffffff; --panel-2:#fff0d9; --line:#ffd9a0; --text:#3a2c1a; --muted:#a3876a;
-    --gold:#ff6f59; --gold-dim:#ffd166; --green:#06d6a0; --red:#ef476f;
-    --font-display:'Baloo 2','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Baloo 2','ThmanyahSerifDisplayBlack','Tajawal',sans-serif;
-    --font-mono:'JetBrains Mono',monospace;
-    --radius-lg:26px; --radius-md:20px; --radius-sm:14px; --border-w:2px;
-    --shadow-card:0 6px 0 var(--line); --shadow-btn:0 3px 0 rgba(0,0,0,.15); --heading-tt:none; --heading-ls:0;
-  }
-
-  [data-style-theme="editorial"]{
-    --bg:#faf8f4; --panel:#ffffff; --panel-2:#f0ece2; --line:#d8d2c4; --text:#161311; --muted:#6b6156;
-    --gold:#b3261e; --gold-dim:#e7c9c6; --green:#2f6d4c; --red:#b3261e;
-    --font-display:'Manrope','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Abril Fatface','ThmanyahSerifDisplayBlack','Tajawal',serif;
-    --font-mono:'JetBrains Mono',monospace;
-    --radius-lg:2px; --radius-md:2px; --radius-sm:2px; --border-w:1px;
-    --shadow-card:none; --shadow-btn:none; --heading-tt:none; --heading-ls:0;
-  }
-  [data-style-theme="editorial"] .card{ border-width:0 0 3px 0; border-color:var(--gold); border-radius:0; }
-
-  [data-style-theme="parallax"]{
-    --bg:#0b1220; --panel:rgba(20,28,45,.72); --panel-2:rgba(30,40,60,.55); --line:rgba(255,255,255,.14);
-    --text:#eef2ff; --muted:#93a0bd; --gold:#5cc8ff; --gold-dim:#1c4c73; --green:#57e0b0; --red:#ff7a7a;
-    --font-display:'Manrope','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Space Grotesk','ThmanyahSerifDisplayBlack','Tajawal',sans-serif;
-    --font-mono:'JetBrains Mono',monospace;
-    --radius-lg:18px; --radius-md:16px; --radius-sm:10px; --border-w:1px;
-    --shadow-card:0 12px 34px rgba(0,0,0,.45); --shadow-btn:none; --heading-tt:none; --heading-ls:0;
-    --card-blur:blur(10px);
-    --body-bg-image:radial-gradient(circle at 18% 12%, rgba(92,200,255,.18), transparent 40%), radial-gradient(circle at 82% 82%, rgba(87,224,176,.15), transparent 45%);
-  }
-
-  [data-style-theme="terminal"]{
-    --bg:#050806; --panel:#0a100c; --panel-2:#0f1811; --line:#1d3324; --text:#8CFCA6; --muted:#3f7a54;
-    --gold:#00ff66; --gold-dim:#0a4d24; --green:#00ff66; --red:#ff5555;
-    --font-display:'Share Tech Mono','JetBrains Mono',monospace;
-    --font-title:'Share Tech Mono','JetBrains Mono',monospace;
-    --font-mono:'Share Tech Mono','JetBrains Mono',monospace;
-    --radius-lg:2px; --radius-md:2px; --radius-sm:2px; --border-w:1px;
-    --shadow-card:0 0 0 1px var(--line); --shadow-btn:none; --heading-tt:uppercase; --heading-ls:1px;
-  }
-
-  [data-style-theme="glassmorphism"]{
-    --bg:#1b2a4a; --panel:rgba(255,255,255,.10); --panel-2:rgba(255,255,255,.06); --line:rgba(255,255,255,.25);
-    --text:#f5f8ff; --muted:#b7c3e0; --gold:#8ec9ff; --gold-dim:#3f6fa8; --green:#7ef0c9; --red:#ff8fa3;
-    --font-display:'Manrope','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Manrope','ThmanyahSerifDisplayBlack','Tajawal',sans-serif;
-    --font-mono:'JetBrains Mono',monospace;
-    --radius-lg:20px; --radius-md:16px; --radius-sm:10px; --border-w:1px;
-    --shadow-card:0 8px 32px rgba(0,0,0,.28); --shadow-btn:none; --heading-tt:none; --heading-ls:0;
-    --card-blur:blur(16px);
-    --body-bg-image:linear-gradient(135deg,#0f2148,#1b3a6b 50%,#0f2148);
-  }
-
-  [data-style-theme="glasspunk"]{
-    --bg:#170a29; --panel:rgba(255,61,240,.10); --panel-2:rgba(53,242,224,.08); --line:rgba(255,255,255,.22);
-    --text:#fbf2ff; --muted:#cbaee0; --gold:#ff3df0; --gold-dim:#8a1f80; --green:#35f2e0; --red:#ff3df0;
-    --font-display:'Space Grotesk','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Bebas Neue','ThmanyahSerifDisplayBlack','Tajawal',sans-serif;
-    --font-mono:'Share Tech Mono','JetBrains Mono',monospace;
-    --radius-lg:22px; --radius-md:18px; --radius-sm:12px; --border-w:1px;
-    --shadow-card:0 8px 30px rgba(255,61,240,.22); --shadow-btn:0 0 10px rgba(53,242,224,.3); --heading-tt:uppercase; --heading-ls:1px;
-    --card-blur:blur(18px);
-    --body-bg-image:radial-gradient(circle at 28% 18%, rgba(255,61,240,.25), transparent 45%), radial-gradient(circle at 76% 76%, rgba(53,242,224,.2), transparent 45%);
-  }
-
-  [data-style-theme="skeuomorphic"]{
-    --bg:#cbb994; --panel:#f4ecd8; --panel-2:#e7dcc0; --line:#c9b98f; --text:#3b2f1e; --muted:#7a6a4a;
-    --gold:#8a5a2b; --gold-dim:#c9a06a; --green:#3f7a4a; --red:#8a2b2b;
-    --font-display:'Nunito','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Cormorant Garamond','ThmanyahSerifDisplayBlack','Tajawal',serif;
-    --font-mono:'JetBrains Mono',monospace;
-    --radius-lg:8px; --radius-md:8px; --radius-sm:6px; --border-w:2px;
-    --shadow-card:inset 0 1px 0 rgba(255,255,255,.45), 0 4px 10px rgba(0,0,0,.30);
-    --shadow-btn:inset 0 1px 0 rgba(255,255,255,.35), 0 2px 4px rgba(0,0,0,.25); --heading-tt:none; --heading-ls:0;
-  }
-
-  [data-style-theme="art-deco"]{
-    --bg:#0c0c0c; --panel:#141414; --panel-2:#1c1c1c; --line:#caa14b; --text:#f2e9d8; --muted:#a89468;
-    --gold:#caa14b; --gold-dim:#7a5f26; --green:#3f8a6b; --red:#a83c3c;
-    --font-display:'Cormorant Garamond','ThmanyahSansMedium','Tajawal',serif;
-    --font-title:'Cinzel','ThmanyahSerifDisplayBlack','Tajawal',serif;
-    --font-mono:'JetBrains Mono',monospace;
-    --radius-lg:0px; --radius-md:0px; --radius-sm:0px; --border-w:2px;
-    --shadow-card:0 0 0 1px var(--gold-dim) inset; --shadow-btn:none; --heading-tt:uppercase; --heading-ls:3px;
-  }
-
-  [data-style-theme="bohemian"]{
-    --bg:#f6ecd9; --panel:#fdf6ea; --panel-2:#f1e3c6; --line:#e0c48f; --text:#4a3623; --muted:#8a7455;
-    --gold:#c97b3d; --gold-dim:#e8c48c; --green:#7a8a4a; --red:#c1553d;
-    --font-display:'Nunito','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Caveat','ThmanyahSerifDisplayBlack','Tajawal',cursive;
-    --font-mono:'JetBrains Mono',monospace;
-    --radius-lg:18px 4px 18px 4px; --radius-md:14px 4px; --radius-sm:10px 2px; --border-w:2px;
-    --shadow-card:none; --shadow-btn:none; --heading-tt:none; --heading-ls:0;
-  }
-  [data-style-theme="bohemian"] .title{ font-size:28px; }
-
-  [data-style-theme="industrial"]{
-    --bg:#2b2b2b; --panel:#333333; --panel-2:#3d3d3d; --line:#4a4a4a; --text:#e8e6e2; --muted:#9a9690;
-    --gold:#c76b3c; --gold-dim:#7a4326; --green:#5a8a6b; --red:#a83c2b;
-    --font-display:'Oswald','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Oswald','ThmanyahSerifDisplayBlack','Tajawal',sans-serif;
-    --font-mono:'JetBrains Mono',monospace;
-    --radius-lg:2px; --radius-md:2px; --radius-sm:2px; --border-w:2px;
-    --shadow-card:none; --shadow-btn:none; --heading-tt:uppercase; --heading-ls:1.5px;
-    --card-bg-extra:repeating-linear-gradient(135deg, rgba(255,255,255,.025) 0 2px, transparent 2px 11px);
-  }
-
-  [data-style-theme="vintage-rustic"]{
-    --bg:#2e2b28; --panel:#3a3632; --panel-2:#433e39; --line:#5a544c; --text:#f2ece0; --muted:#b8ae9c;
-    --gold:#e8dcc0; --gold-dim:#8a8072; --green:#8fae7a; --red:#c97a6a;
-    --font-display:'Nunito','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Caveat','ThmanyahSerifDisplayBlack','Tajawal',cursive;
-    --font-mono:'JetBrains Mono',monospace;
-    --radius-lg:4px; --radius-md:4px; --radius-sm:3px; --border-w:2px;
-    --shadow-card:none; --shadow-btn:none; --heading-tt:none; --heading-ls:0;
-  }
-  [data-style-theme="vintage-rustic"] .card{ border-style:dashed; }
-  [data-style-theme="vintage-rustic"] .title{ font-size:28px; }
-
-  [data-style-theme="organic"]{
-    --bg:#f1ede2; --panel:#faf7ef; --panel-2:#e9e2cf; --line:#d3c7a8; --text:#39351f; --muted:#7d7455;
-    --gold:#7a8f4a; --gold-dim:#c3cf9e; --green:#5c8f5a; --red:#b5583f;
-    --font-display:'Nunito','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Nunito','ThmanyahSerifDisplayBlack','Tajawal',sans-serif;
-    --font-mono:'JetBrains Mono',monospace;
-    --radius-lg:26px; --radius-md:20px; --radius-sm:14px; --border-w:1px;
-    --shadow-card:none; --shadow-btn:none; --heading-tt:none; --heading-ls:0;
-  }
-
-  [data-style-theme="retro"]{
-    --bg:#f2e6cf; --panel:#fff7e6; --panel-2:#f0d9a8; --line:#d9a441; --text:#3c2b17; --muted:#8a6a3a;
-    --gold:#d97b29; --gold-dim:#f0b25a; --green:#3f8a5c; --red:#c1442e;
-    --font-display:'Poppins','ThmanyahSansMedium','Tajawal',sans-serif;
-    --font-title:'Righteous','ThmanyahSerifDisplayBlack','Tajawal',sans-serif;
-    --font-mono:'Space Mono','JetBrains Mono',monospace;
-    --radius-lg:10px; --radius-md:10px; --radius-sm:8px; --border-w:2px;
-    --shadow-card:4px 4px 0 var(--line); --shadow-btn:none; --heading-tt:none; --heading-ls:0;
-  }
-
-  /* Theme-picker UI */
-  .theme-picker-overlay{
-    position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:200;
-    display:flex; align-items:flex-end; justify-content:center;
-  }
-  .theme-picker-panel{
-    background:var(--panel); border:1px solid var(--line); border-radius:20px 20px 0 0;
-    width:100%; max-width:560px; max-height:82vh; overflow-y:auto; padding:16px 16px 24px;
-  }
-  @media (min-width:640px){
-    .theme-picker-overlay{ align-items:center; }
-    .theme-picker-panel{ border-radius:20px; max-height:80vh; }
-  }
-  .theme-picker-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
-  .theme-picker-header h3{ margin:0; font-size:16px; font-family:var(--font-title); }
-  .theme-picker-close{
-    background:var(--panel-2); border:1px solid var(--line); color:var(--text);
-    width:28px; height:28px; border-radius:50%; cursor:pointer; font-size:14px;
-  }
-  .theme-picker-group-title{
-    color:var(--muted); font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px;
-    margin:14px 0 8px;
-  }
-  .theme-picker-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-  @media (min-width:640px){ .theme-picker-grid{ grid-template-columns:1fr 1fr 1fr; } }
-  .theme-opt{
-    display:flex; align-items:center; gap:8px; padding:10px; border-radius:12px;
-    border:1px solid var(--line); background:var(--panel-2); cursor:pointer; text-align:start;
-    color:var(--text); font-family:var(--font-display);
-  }
-  .theme-opt.active{ border-color:var(--gold); box-shadow:0 0 0 1px var(--gold); }
-  .theme-opt .emoji{ font-size:18px; flex-shrink:0; }
-  .theme-opt .meta{ overflow:hidden; }
-  .theme-opt .name{ font-size:12.5px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .theme-opt .desc{ font-size:10.5px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-
   *{ box-sizing: border-box; }
   body{
     margin:0;
     background: var(--bg);
-    background-image: var(--body-bg-image);
-    background-attachment: fixed;
     color: var(--text);
     font-family: var(--font-display);
     line-height: 1.55;
     padding: 20px 14px 60px;
     min-height: 100vh;
-    transition: background .25s ease, color .25s ease;
+    transition: background .2s ease, color .2s ease;
   }
   .wrap{ max-width: 480px; margin: 0 auto; transition: max-width .2s ease; }
   .wrap.wide{ max-width: 1100px; }
@@ -433,10 +88,9 @@
   }
   /* Header */
   .title{
-    font-size: 22px; font-weight: 900; letter-spacing: var(--heading-ls);
+    font-size: 22px; font-weight: 900; letter-spacing: .5px;
     display:flex; align-items:center; gap:8px; margin-bottom:2px;
     font-family: var(--font-title); line-height: 1.3;
-    text-transform: var(--heading-tt);
   }
   .title span.mark{ color: var(--gold); }
   .subtitle{ color: var(--muted); font-size: 13px; margin-bottom: 18px; }
@@ -462,14 +116,10 @@
   /* Today card */
   .card{
     background: var(--panel);
-    border: var(--border-w) solid var(--line);
-    border-radius: var(--radius-lg);
+    border: 1px solid var(--line);
+    border-radius: 16px;
     padding: 18px;
     margin-bottom: 0;
-    box-shadow: var(--shadow-card);
-    backdrop-filter: var(--card-blur);
-    -webkit-backdrop-filter: var(--card-blur);
-    background-image: var(--card-bg-extra);
   }
   .xp-row{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:10px; }
   .xp-today{
@@ -495,15 +145,13 @@
   }
   .act-btn{
     display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap: 6px; padding: 14px 8px; border-radius: var(--radius-md);
+    gap: 6px; padding: 14px 8px; border-radius: 15px;
     color: var(--text); cursor:pointer;
     font-family: var(--font-display); font-size: 13px; font-weight:700;
     transition: 0.3s ease, transform .12s ease;
     -webkit-tap-highlight-color: transparent;
     position: relative;
     border: 2px solid transparent;
-    box-shadow: var(--shadow-btn);
-    text-transform: var(--heading-tt);
   }
   .act-btn:active{ transform: scale(0.96); }
   .act-btn .emoji{ font-size: 22px; }
@@ -1037,7 +685,6 @@
 </style>
 </head>
 <body>
-<div id="styleThemePickerHost"></div>
 <div class="wrap" id="loginScreen" style="display:none;">
   <div class="login-top">
     <button class="icon-toggle-btn" id="starfieldToggleBtnLogin" title="تشغيل/إيقاف خلفية النجوم المتحركة">🌌</button>
@@ -1155,96 +802,6 @@ function toggleStarfield(){
     saveState();
     render();
   }
-}
-
-/* ---------- Style theme (الستايلات البصرية للموقع) ---------- */
-const STYLE_THEME_KEY = 'xp-tracker-style-theme';
-const STYLE_THEMES = [
-  { group: 'مرتّبة وهادئة', items: [
-    { id:'minimalist',    emoji:'⬜', name:'Minimalist',     desc:'أناقة وبياض ومساحات فارغة' },
-    { id:'corporate',     emoji:'👔', name:'Corporate',      desc:'ثقة، تنظيم، احترافية' },
-    { id:'swiss',         emoji:'🇨🇭', name:'Swiss',          desc:'شبكة صارمة وطباعة قوية' },
-    { id:'flat-material', emoji:'◼️', name:'Flat / Material', desc:'أسطح نظيفة وارتفاع خفيف' },
-    { id:'nordic',        emoji:'❄️', name:'Nordic',         desc:'ألوان هادئة وتهوية وظيفية' },
-    { id:'bento',         emoji:'🍱', name:'Bento Grid',     desc:'بطاقات متنوعة الأحجام بروح Apple' },
-    { id:'zen',           emoji:'⛩️', name:'Japanese / Zen', desc:'واباي سابي، هدوء، لا تناظر' },
-    { id:'neomorphism',   emoji:'⚪', name:'Neomorphism',    desc:'واجهة ناعمة وعمق خفيف' },
-    { id:'luxury',        emoji:'✨', name:'Luxury',         desc:'خطوط كلاسيكية ولمسات ذهبية' },
-  ]},
-  { group: 'جريئة وحيوية', items: [
-    { id:'dark-modern', emoji:'🌑', name:'Dark Modern', desc:'داكن وأنيق وتقني (الافتراضي)' },
-    { id:'cyberpunk',   emoji:'🌌', name:'Cyberpunk',   desc:'توهج نيون وتباين عالٍ' },
-    { id:'brutalist',   emoji:'🧱', name:'Brutalist',   desc:'خام وجريء وضد التنميق' },
-    { id:'maximalist',  emoji:'🎆', name:'Maximalist',  desc:'أنماط جريئة وطبقات حيوية' },
-    { id:'gradient',    emoji:'🎨', name:'Gradient',    desc:'تدرجات ملونة وفن تجريدي' },
-    { id:'playful',     emoji:'🌈', name:'Playful',     desc:'مرح وحيوية وأشكال دائرية' },
-    { id:'editorial',   emoji:'📰', name:'Editorial',   desc:'عناوين جريئة بروح المجلات' },
-    { id:'parallax',    emoji:'🌍', name:'Parallax',    desc:'طبقات غامرة وعمق تمرير' },
-    { id:'terminal',    emoji:'💻', name:'Terminal',    desc:'خط أحادي المسافة بروح المبرمجين' },
-  ]},
-  { group: 'ذات ملمس وطابع', items: [
-    { id:'glassmorphism', emoji:'💎', name:'Glassmorphism',   desc:'زجاج مصنفر شفاف' },
-    { id:'glasspunk',     emoji:'🔮', name:'Glasspunk',       desc:'طبقات زجاجية زاهية وعمق' },
-    { id:'skeuomorphic',  emoji:'📓', name:'Skeuomorphic',    desc:'ملمس واقعي يحاكي الأشياء الحقيقية' },
-    { id:'art-deco',      emoji:'💠', name:'Art Deco',        desc:'أشكال هندسية وخطوط ذهبية أنيقة' },
-    { id:'bohemian',      emoji:'🌻', name:'Bohemian',        desc:'خط بخط اليد ودفء وتنوّع' },
-    { id:'industrial',    emoji:'🏭', name:'Industrial',      desc:'طابع الطوب والصلب والخرسانة' },
-    { id:'vintage-rustic',emoji:'✍️', name:'Vintage Rustic',  desc:'سبورة طباشير ولمسة يدوية حرفية' },
-    { id:'organic',       emoji:'🌿', name:'Organic',         desc:'ألوان ترابية ودافئة مستوحاة من الطبيعة' },
-    { id:'retro',         emoji:'📼', name:'Retro',           desc:'نوستالجيا وأجواء كلاسيكية' },
-  ]},
-];
-
-function getStoredStyleTheme(){
-  return localStorage.getItem(STYLE_THEME_KEY) || 'dark-modern';
-}
-function applyStyleTheme(id){
-  document.documentElement.setAttribute('data-style-theme', id);
-}
-function setStyleTheme(id){
-  localStorage.setItem(STYLE_THEME_KEY, id);
-  applyStyleTheme(id);
-  renderStyleThemePanel();
-}
-
-let styleThemePanelOpen = false;
-function renderStyleThemePanel(){
-  const host = document.getElementById('styleThemePickerHost');
-  if(!host) return;
-  if(!styleThemePanelOpen){ host.innerHTML = ''; return; }
-  const current = document.documentElement.getAttribute('data-style-theme') || getStoredStyleTheme();
-  const groupsHtml = STYLE_THEMES.map(g => `
-    <div class="theme-picker-group-title">${g.group}</div>
-    <div class="theme-picker-grid">
-      ${g.items.map(t => `
-        <button type="button" class="theme-opt ${t.id === current ? 'active' : ''}" data-style-theme-id="${t.id}">
-          <span class="emoji">${t.emoji}</span>
-          <span class="meta"><span class="name">${t.name}</span><span class="desc">${t.desc}</span></span>
-        </button>
-      `).join('')}
-    </div>
-  `).join('');
-  host.innerHTML = `
-    <div class="theme-picker-overlay" id="styleThemeOverlay">
-      <div class="theme-picker-panel">
-        <div class="theme-picker-header">
-          <h3>اختر ستايل الموقع</h3>
-          <button type="button" class="theme-picker-close" id="styleThemeCloseBtn">✕</button>
-        </div>
-        ${groupsHtml}
-      </div>
-    </div>
-  `;
-  const overlay = document.getElementById('styleThemeOverlay');
-  overlay.addEventListener('click', (e) => { if(e.target === overlay){ styleThemePanelOpen = false; renderStyleThemePanel(); } });
-  document.getElementById('styleThemeCloseBtn').addEventListener('click', () => { styleThemePanelOpen = false; renderStyleThemePanel(); });
-  host.querySelectorAll('[data-style-theme-id]').forEach(btn => {
-    btn.addEventListener('click', () => setStyleTheme(btn.getAttribute('data-style-theme-id')));
-  });
-}
-function toggleStyleThemePanel(){
-  styleThemePanelOpen = !styleThemePanelOpen;
-  renderStyleThemePanel();
 }
 
 function signInWithGoogle(){
@@ -2838,7 +2395,6 @@ function render(){
     <div class="user-bar">
       <span class="u-name">${currentUser && currentUser.picture ? `<img src="${currentUser.picture}" alt="">` : ''}${escapeHtml(currentUser ? (currentUser.name || currentUser.email) : '')}</span>
       <span class="u-right">
-        <button class="icon-toggle-btn" id="styleThemeToggleBtn" title="ستايلات الموقع">🎨</button>
         <button class="icon-toggle-btn" id="layoutToggleBtn" title="تبديل نمط العرض (عرضي/طولي)">${layoutMode === 'wide' ? '📱' : '💻'}</button>
         <button class="icon-toggle-btn" id="starfieldToggleBtn" title="تشغيل/إيقاف خلفية النجوم المتحركة">${starfieldMode === 'off' ? '✨' : '🌌'}</button>
         <button class="icon-toggle-btn" id="themeToggleBtn" title="تبديل الوضع الداكن/الفاتح">${isLight ? '🌙' : '☀️'}</button>
@@ -3157,8 +2713,6 @@ function render(){
 
   const themeBtn = document.getElementById('themeToggleBtn');
   if(themeBtn) themeBtn.addEventListener('click', toggleTheme);
-  const styleThemeBtn = document.getElementById('styleThemeToggleBtn');
-  if(styleThemeBtn) styleThemeBtn.addEventListener('click', toggleStyleThemePanel);
   const layoutBtn = document.getElementById('layoutToggleBtn');
   if(layoutBtn) layoutBtn.addEventListener('click', toggleLayout);
   const starfieldBtn = document.getElementById('starfieldToggleBtn');
@@ -3168,7 +2722,6 @@ function render(){
 window.addEventListener('load', function(){
   applyTheme(getStoredTheme());
   applyStarfield(getStoredStarfield());
-  applyStyleTheme(getStoredStyleTheme());
   layoutMode = getStoredLayout();
 
   const loginThemeBtn = document.getElementById('themeToggleBtnLogin');
